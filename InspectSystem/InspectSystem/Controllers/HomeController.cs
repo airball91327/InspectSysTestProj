@@ -26,5 +26,6 @@ namespace InspectSystem.Controllers
 
             return View();
         }
+        
     }
 }

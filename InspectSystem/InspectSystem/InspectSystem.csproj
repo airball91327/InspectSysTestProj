@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D2E7F70F-3913-4318-9860-34A8479DBC16}</ProjectGuid>
+    <ProjectGuid>{90697D3D-35B5-4078-8F0D-8FD389CF80FB}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -53,6 +53,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -191,13 +193,24 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InspectAreasController.cs" />
+    <Compile Include="Controllers\InspectClassesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BMEDcontext.cs" />
+    <Compile Include="Models\ClassesOfAreas.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InspectAreas.cs" />
+    <Compile Include="Models\InspectClasses.cs" />
+    <Compile Include="Models\InspectDocDetails.cs" />
+    <Compile Include="Models\InspectDocs.cs" />
+    <Compile Include="Models\InspectFields.cs" />
+    <Compile Include="Models\InspectItems.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Precautions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -224,7 +237,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -258,6 +273,16 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\InspectClasses\Create.cshtml" />
+    <Content Include="Views\InspectClasses\Delete.cshtml" />
+    <Content Include="Views\InspectClasses\Details.cshtml" />
+    <Content Include="Views\InspectClasses\Edit.cshtml" />
+    <Content Include="Views\InspectClasses\Index.cshtml" />
+    <Content Include="Views\InspectAreas\Create.cshtml" />
+    <Content Include="Views\InspectAreas\Delete.cshtml" />
+    <Content Include="Views\InspectAreas\Details.cshtml" />
+    <Content Include="Views\InspectAreas\Edit.cshtml" />
+    <Content Include="Views\InspectAreas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -291,9 +316,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>11970</DevelopmentServerPort>
+          <DevelopmentServerPort>2543</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11970/</IISUrl>
+          <IISUrl>http://localhost:2543/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

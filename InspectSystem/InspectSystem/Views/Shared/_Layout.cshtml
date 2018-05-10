@@ -8,6 +8,19 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <style>
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0px;
+            list-style-type: none;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,6 +38,21 @@
                     <li>@Html.ActionLink("首頁", "Index", "Home")</li>
                     <li>@Html.ActionLink("關於", "About", "Home")</li>
                     <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>
+                    <li class="dropdown">@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("新增", "Create", "InspectAreas")</li>
+                            <li>@Html.ActionLink("修改", "Index", "InspectAreas")</li>
+                            <li>@Html.ActionLink("列表", "Index", "InspectAreas")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">@Html.ActionLink("巡檢類別維護", "Index", "InspectClasses")
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("新增", "Create", "InspectClasses")</li>
+                            <li>@Html.ActionLink("修改", "Index", "InspectClasses")</li>
+                            <li>@Html.ActionLink("列表", "Index", "InspectClasses")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("巡檢項目維護", "Index", "InspectFields")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -34,7 +62,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
+            <p>&copy; @DateTime.Now - 我的 ASP.NET 應用程式</p>
         </footer>
     </div>
 
