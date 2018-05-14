@@ -1,0 +1,88 @@
+﻿@model IEnumerable<InspectSystem.Models.InspectItems>
+
+@{
+    ViewBag.Title = "巡檢項目維護";
+}
+
+<h2>巡檢項目維護</h2>
+
+
+<p class="col-md-3">
+    @Html.DropDownList("AreaList")
+</p>
+
+
+
+
+
+
+
+
+
+<p>
+    @Html.ActionLink("新增項目", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AreaID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InspectClasses.ClassName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AreaID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
+        </td>
+    </tr>
+}
+
+</table>

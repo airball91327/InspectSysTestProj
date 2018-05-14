@@ -7,17 +7,17 @@ namespace InspectSystem.Models
     [Table("InspectItems")]
     public class InspectItems
     {
-        [Key]
+        [Key, Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "ID")]
         public int ID { get; set; }         //對應ClassesOfAreas的ID
-        [Required]
-        [Display(Name = "區域代碼")]
+        [ForeignKey("InspectAreas")]
         public int AreaID { get; set; }
-        [Required]
-        [Display(Name = "類別代碼")]
+        [ForeignKey("InspectClasses")]
         public int ClassID { get; set; }
-        [Key]
+        [Key, Column(Order = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "項目代碼")]
         public int ItemID { get; set; }
@@ -27,6 +27,10 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "項目狀態")]
         public Boolean ItemStatus { get; set; }
+
+
+        public virtual InspectAreas InspectAreas { get; set; }
+        public virtual InspectClasses InspectClasses { get; set; }
 
     }
 }

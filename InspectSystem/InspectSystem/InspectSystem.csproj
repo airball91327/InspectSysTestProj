@@ -195,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
     <Compile Include="Controllers\InspectClassesController.cs" />
+    <Compile Include="Controllers\InspectItemsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -283,6 +284,11 @@
     <Content Include="Views\InspectAreas\Details.cshtml" />
     <Content Include="Views\InspectAreas\Edit.cshtml" />
     <Content Include="Views\InspectAreas\Index.cshtml" />
+    <Content Include="Views\InspectItems\Create.cshtml" />
+    <Content Include="Views\InspectItems\Delete.cshtml" />
+    <Content Include="Views\InspectItems\Details.cshtml" />
+    <Content Include="Views\InspectItems\Edit.cshtml" />
+    <Content Include="Views\InspectItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
