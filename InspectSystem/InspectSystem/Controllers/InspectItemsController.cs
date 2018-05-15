@@ -20,9 +20,25 @@ namespace InspectSystem.Controllers
             var InspectItems = db.InspectItems
                                  .Include(i => i.InspectAreas)
                                  .Include(i => i.InspectClasses);
+
+            //DropDownList for user to select area and class
             ViewBag.AreaList = new SelectList(db.InspectAreas, "AreaID", "AreaName");
+            ViewBag.ClassList = new SelectList(db.InspectClasses, "ClassID", "ClassName");
 
             return View(InspectItems.ToList());
+        }
+
+        public ActionResult SearchItems()
+        {
+            int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
+            int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
+            TempData["TestValue"] = AreaListValue + "/" + ClassListValue;
+
+            var InspectItems = db.InspectItems
+                                 .Include(i => i.InspectAreas)
+                                 .Include(i => i.InspectClasses);
+
+            return RedirectToAction("Index");
         }
 
         // GET: InspectItems/Details/5

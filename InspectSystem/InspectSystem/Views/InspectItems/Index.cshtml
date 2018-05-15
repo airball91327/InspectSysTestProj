@@ -1,27 +1,38 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectItems>
 
 @{
+    /**/
+
     ViewBag.Title = "巡檢項目維護";
 }
 
 <h2>巡檢項目維護</h2>
 
+<hr />
+@using (Html.BeginForm("SearchItems", "InspectItems", FormMethod.Post, new { @class="form-inline"}))
+{
+    <div class="container">
+        <div class="form-group col-md-5">
+            @Html.Label("選擇區域:", new { @for = "AreaList" })
+            @Html.DropDownList("AreaList", null, "請選擇", new { @class = "form-control", @id = "AreaList" })
+        </div>
+        <div class="form-group col-md-5">
+            @Html.Label("選擇類別:", new { @for = "ClassList" })
+            @Html.DropDownList("ClassList", null, "請選擇", new { @class = "form-control", @id = "ClassList" })
+        </div>
+        <div class="form-group col-md-2">
+            <input type="submit" value="查詢項目" class="btn" />
+        </div>
+    </div>
+}
+<hr />
+<div>@TempData["TestValue"]</div>
+<hr />
+<div class="container">
+    <a href="@Url.Action("Create")" class="btn btn-primary">新增項目</a>
+</div>
+<hr />
 
-<p class="col-md-3">
-    @Html.DropDownList("AreaList")
-</p>
-
-
-
-
-
-
-
-
-
-<p>
-    @Html.ActionLink("新增項目", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -51,38 +62,39 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AreaID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemStatus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
+            </td>
+        </tr>
+    }
 
 </table>

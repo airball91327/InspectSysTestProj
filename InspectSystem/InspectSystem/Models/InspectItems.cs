@@ -11,7 +11,7 @@ namespace InspectSystem.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "ID")]
-        public int ID { get; set; }         //對應ClassesOfAreas的ID
+        public int ID { get; set; }         //對應ClassesOfAreas的ID、程式產生
         [ForeignKey("InspectAreas")]
         public int AreaID { get; set; }
         [ForeignKey("InspectClasses")]
