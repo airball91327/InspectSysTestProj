@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectItems>
 
 @{
-    /**/
 
     ViewBag.Title = "巡檢項目維護";
+
+
+    var SearchResult = TempData["SearchResult"] as List<InspectSystem.Models.InspectItems>;
+    
 }
 
 <h2>巡檢項目維護</h2>
@@ -20,6 +23,7 @@
             @Html.Label("選擇類別:", new { @for = "ClassList" })
             @Html.DropDownList("ClassList", null, "請選擇", new { @class = "form-control", @id = "ClassList" })
         </div>
+
         <div class="form-group col-md-2">
             <input type="submit" value="查詢項目" class="btn" />
         </div>
@@ -62,39 +66,46 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @if (SearchResult == null)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemStatus)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
-            </td>
-        </tr>
+
+    }
+     else
+    {
+        foreach (var item in SearchResult)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemStatus)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
+                </td>
+            </tr>
+        }
     }
 
 </table>
