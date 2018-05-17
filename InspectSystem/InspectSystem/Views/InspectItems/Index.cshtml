@@ -6,13 +6,13 @@
 
 
     var SearchResult = TempData["SearchResult"] as List<InspectSystem.Models.InspectItems>;
-    
+
 }
 
 <h2>巡檢項目維護</h2>
 
 <hr />
-@using (Html.BeginForm("SearchItems", "InspectItems", FormMethod.Post, new { @class="form-inline"}))
+@using (Html.BeginForm("SearchItems", "InspectItems", FormMethod.Post, new { @class = "form-inline" }))
 {
     <div class="container">
         <div class="form-group col-md-5">
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group col-md-2">
-            <input type="submit" value="查詢項目" class="btn" />
+            <input type="submit" value="查詢項目" class="btn" id="SearchBtn" />
         </div>
     </div>
 }
@@ -70,7 +70,7 @@
     {
 
     }
-     else
+    else
     {
         foreach (var item in SearchResult)
         {
