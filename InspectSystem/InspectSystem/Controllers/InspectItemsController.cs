@@ -31,8 +31,8 @@ namespace InspectSystem.Controllers
 
         public ActionResult SearchItems()
         {
-            //尚未處理的例外:request回傳null => 於view要求使用者尚未選取之前不可search
-            //               SearchResult回傳null => 查無資料
+            //尚未處理的例外:SearchResult回傳null => 查無資料
+
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
             TempData["TestValue"] = AreaListValue + "/" + ClassListValue;

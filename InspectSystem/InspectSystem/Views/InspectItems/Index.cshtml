@@ -17,15 +17,16 @@
     <div class="container">
         <div class="form-group col-md-5">
             @Html.Label("選擇區域:", new { @for = "AreaList" })
-            @Html.DropDownList("AreaList", null, "請選擇", new { @class = "form-control", @id = "AreaList" })
+            @Html.DropDownList("AreaList", null, "請選擇", 
+                                new { @class = "form-control", id = "AreaList", required = "required" })
         </div>
         <div class="form-group col-md-5">
             @Html.Label("選擇類別:", new { @for = "ClassList" })
-            @Html.DropDownList("ClassList", null, "請選擇", new { @class = "form-control", @id = "ClassList" })
+            @Html.DropDownList("ClassList", null, "請選擇", 
+                                new { @class = "form-control", id = "ClassList", required = "required" })
         </div>
-
         <div class="form-group col-md-2">
-            <input type="submit" value="查詢項目" class="btn" id="SearchBtn" />
+            <input type="submit" value="查詢項目" class="btn" />
         </div>
     </div>
 }
