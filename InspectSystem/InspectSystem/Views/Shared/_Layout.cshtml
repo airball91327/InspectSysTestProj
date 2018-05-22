@@ -7,8 +7,10 @@
     <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles//jquery")
 
     <style>
+        /* Dropdown Content (Hidden by Default) */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -16,11 +18,12 @@
             list-style-type: none;
         }
 
+        /* Show the dropdown menu on hover */
         .dropdown:hover .dropdown-menu {
             display: block;
         }
     </style>
-
+    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

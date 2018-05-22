@@ -31,11 +31,12 @@ namespace InspectSystem.Controllers
 
         public ActionResult SearchItems()
         {
-            //尚未處理的例外:SearchResult回傳null => 查無資料
+            //尚未處理的例外:SearchResult回傳null => 尚未有項目
 
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
-            TempData["TestValue"] = AreaListValue + "/" + ClassListValue;
+            TempData["AreaListValue"] = AreaListValue;
+            TempData["ClassListValue"] = ClassListValue;
 
             var InspectItems = db.InspectItems
                                  .Include(i => i.InspectAreas)
@@ -85,7 +86,23 @@ namespace InspectSystem.Controllers
 
             return View(inspectItems);
         }
-
+        public ActionResult Edit()
+        {
+            int id = System.Convert.ToInt32(Request.Form["item.ID"]);
+            int itemID = System.Convert.ToInt32(Request.Form["item.ItemID"]);
+            InspectItems inspectItems = db.InspectItems.Find(id, itemID);
+            inspectItems.ItemName = Request.Form["item.ItemName"];
+            string itemStatus = Request.Form["item.ItemStatus"];
+            inspectItems.ItemStatus = System.Convert.ToBoolean(itemStatus);
+            if (ModelState.IsValid)
+            {
+                db.Entry(inspectItems).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+        /*
         // GET: InspectItems/Edit/5
         public ActionResult Edit(int? id, int? Itemid)
         {
@@ -104,6 +121,7 @@ namespace InspectSystem.Controllers
         // POST: InspectItems/Edit/5
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,ItemID,AreaID,ClassID,ItemName,ItemStatus")] InspectItems inspectItems)
@@ -116,7 +134,7 @@ namespace InspectSystem.Controllers
             }
             return View(inspectItems);
         }
-
+        */
         // GET: InspectItems/Delete/5
         public ActionResult Delete(int? id, int? Itemid)
         {

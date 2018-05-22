@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectItems>
+@Scripts.Render("~/bundles//jquery")
 
 @{
 
@@ -6,24 +7,33 @@
 
 
     var SearchResult = TempData["SearchResult"] as List<InspectSystem.Models.InspectItems>;
-
+    TempData.Keep();
 }
+
+<script>
+    $(document).ready(function () {
+        $("#EditBtn").click(function () {
+            $("#EditBtn").hide();
+        });
+    });
+</script>
 
 <h2>巡檢項目維護</h2>
 
+<!--使用者選擇區域與類別進行搜尋-->
 <hr />
 @using (Html.BeginForm("SearchItems", "InspectItems", FormMethod.Post, new { @class = "form-inline" }))
 {
     <div class="container">
         <div class="form-group col-md-5">
             @Html.Label("選擇區域:", new { @for = "AreaList" })
-            @Html.DropDownList("AreaList", null, "請選擇", 
-                                new { @class = "form-control", id = "AreaList", required = "required" })
+            @Html.DropDownList("AreaList", null, "請選擇",
+                                new { @class = "form-control", name = "AreaList", required = "required" })
         </div>
         <div class="form-group col-md-5">
             @Html.Label("選擇類別:", new { @for = "ClassList" })
-            @Html.DropDownList("ClassList", null, "請選擇", 
-                                new { @class = "form-control", id = "ClassList", required = "required" })
+            @Html.DropDownList("ClassList", null, "請選擇",
+                                new { @class = "form-control", name = "ClassList", required = "required" })
         </div>
         <div class="form-group col-md-2">
             <input type="submit" value="查詢項目" class="btn" />
@@ -31,10 +41,11 @@
     </div>
 }
 <hr />
-<div>@TempData["TestValue"]</div>
+<!--接收值測試-->
+<div>@TempData["AreaListValue"] / @TempData["ClassListValue"]</div>
 <hr />
 <div class="container">
-    <a href="@Url.Action("Create")" class="btn btn-primary">新增項目</a>
+    <a href="@Url.Action("Create")" class="btn btn-primary" id="CreateBtn">新增項目</a>
 </div>
 <hr />
 
@@ -105,6 +116,88 @@
                     @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
                 </td>
+            </tr>
+        }
+    }
+
+</table>
+<table class="table" id="TestTable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AreaID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InspectClasses.ClassName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemStatus)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (SearchResult == null)
+    {
+
+    }
+    else
+    {
+        foreach (var item in SearchResult)
+        {
+            <tr>
+                @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post, new { @class = "form-inline" }))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AreaID, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InspectAreas.AreaName, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassID, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InspectClasses.ClassName, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(modelItem => item.ItemID)
+                    </td>
+                    <td>
+                        @Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => item.ItemName, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        <!--bug:request固定傳回一個false-->
+                        @Html.CheckBoxFor(modelItem => item.ItemStatus, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        <button type="submit" class="btn" id="EditBtn" onclick="">編輯</button>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
+                    </td>
+                }
             </tr>
         }
     }
