@@ -86,14 +86,29 @@ namespace InspectSystem.Controllers
 
             return View(inspectItems);
         }
+
+        [HttpPost]
         public ActionResult Edit()
         {
+            Boolean itemStatus = true;
+
+            //找出要更改數值的資料
             int id = System.Convert.ToInt32(Request.Form["item.ID"]);
             int itemID = System.Convert.ToInt32(Request.Form["item.ItemID"]);
             InspectItems inspectItems = db.InspectItems.Find(id, itemID);
+
+            //處理Request.Form無法處理Checkbox回傳值的問題
+            if( Request.Form["item.ItemStatus"].Contains("true") == true)
+            {
+                itemStatus = true;
+            }
+            else
+                itemStatus = false;
+
+            //更改ItemName跟ItemStatus的數值
             inspectItems.ItemName = Request.Form["item.ItemName"];
-            string itemStatus = Request.Form["item.ItemStatus"];
-            inspectItems.ItemStatus = System.Convert.ToBoolean(itemStatus);
+            inspectItems.ItemStatus = itemStatus;
+
             if (ModelState.IsValid)
             {
                 db.Entry(inspectItems).State = EntityState.Modified;
@@ -102,39 +117,7 @@ namespace InspectSystem.Controllers
             }
             return RedirectToAction("Index");
         }
-        /*
-        // GET: InspectItems/Edit/5
-        public ActionResult Edit(int? id, int? Itemid)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InspectItems inspectItems = db.InspectItems.Find(id, Itemid);
-            if (inspectItems == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inspectItems);
-        }
 
-        // POST: InspectItems/Edit/5
-        // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
-        // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ItemID,AreaID,ClassID,ItemName,ItemStatus")] InspectItems inspectItems)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(inspectItems).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(inspectItems);
-        }
-        */
         // GET: InspectItems/Delete/5
         public ActionResult Delete(int? id, int? Itemid)
         {
