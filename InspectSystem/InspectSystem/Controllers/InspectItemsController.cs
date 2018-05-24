@@ -23,8 +23,8 @@ namespace InspectSystem.Controllers
                                  .Include(i => i.InspectClasses);
 
             //DropDownList for user to select area and class
-            ViewBag.AreaList = new SelectList(db.InspectAreas, "AreaID", "AreaName");
-            ViewBag.ClassList = new SelectList(db.InspectClasses, "ClassID", "ClassName");
+            ViewBag.AreaList = new SelectList(db.InspectAreas, "AreaID", "AreaName", TempData["AreaListValue"]);
+            ViewBag.ClassList = new SelectList(db.InspectClasses, "ClassID", "ClassName", TempData["ClassListValue"]);
 
             return View(InspectItems.ToList());
         }
@@ -32,7 +32,6 @@ namespace InspectSystem.Controllers
         public ActionResult SearchItems()
         {
             //尚未處理的例外:SearchResult回傳null => 尚未有項目
-
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
             TempData["AreaListValue"] = AreaListValue;
@@ -45,6 +44,24 @@ namespace InspectSystem.Controllers
                                .Where(s => s.AreaID == AreaListValue &&
                                            s.ClassID == ClassListValue);
             TempData["SearchResult"]  = SearchResult.ToList();
+
+            return RedirectToAction("Index");
+        }
+
+        //暫時把SearchResult的程式分開成ReloadPage
+        public ActionResult ReloadPage()
+        {
+            //將保留的搜尋資訊重新搜尋更新資料
+            int AreaListValue = System.Convert.ToInt32(TempData["AreaListValue"]);
+            int ClassListValue = System.Convert.ToInt32(TempData["ClassListValue"]);
+
+            var InspectItems = db.InspectItems
+                                 .Include(i => i.InspectAreas)
+                                 .Include(i => i.InspectClasses);
+            var SearchResult = InspectItems
+                               .Where(s => s.AreaID == AreaListValue &&
+                                           s.ClassID == ClassListValue);
+            TempData["SearchResult"] = SearchResult.ToList();
 
             return RedirectToAction("Index");
         }
@@ -113,9 +130,9 @@ namespace InspectSystem.Controllers
             {
                 db.Entry(inspectItems).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ReloadPage");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("ReloadPage");
         }
 
         // GET: InspectItems/Delete/5

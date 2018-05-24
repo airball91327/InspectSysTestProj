@@ -14,22 +14,30 @@
     $(document).ready(function () {
 
         //When a edit button click
-        $(".EditBtn").click(function () {
-            //hide edit button and new a save button
-            $(this).after("<input type='button' class='btn btn-primary' id='saveBtn' value='儲存' />");
+        $(".editBtn").click(function () {
+            //hide edit button
             $(this).hide();
             //When Editing, disable other edit buttons
-            $(".EditBtn").attr("disabled", true);
+            $(".editBtn").attr("disabled", true);
+            //Change the selected row to be edit
+            $(".displayRow" + $(this).attr("id")).hide();
+            $(".editRow" + + $(this).attr("id")).show();
         });
 
-        //動態新增的elements需要用.on的方式綁定事件
-        $("body").on("click", "#saveBtn", function () {
-            //$("#saveBtn").attr("type", "submit");
+        //Create a new row for insert item's detail
+        $("#createBtn").click(function () {
+            $("#editTable").after("")
             alert("Test");
         });
     });
 </script>
 
+<style>
+    /* The items that can be edit (Hidden by Default) */
+    .hideEditItems {
+        display: none;
+    }
+</style>
 
 <h2>巡檢項目維護</h2>
 
@@ -53,16 +61,14 @@
         </div>
     </div>
 }
-<hr />
-<!--接收值測試-->
-<div>@TempData["AreaListValue"] / @TempData["ClassListValue"]</div>
+
 <hr />
 <div class="container">
-    <a href="@Url.Action("Create")" class="btn btn-primary" id="CreateBtn">新增項目</a>
+    <button class="btn btn-primary" id="createBtn">新增項目</button>
 </div>
 <hr />
 
-<table class="table" id="EditTable">
+<table class="table" id="editTable">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
@@ -88,12 +94,15 @@
     }
     else
     {
+        int row = 1;
         foreach (var item in SearchResult)
         {
+            string displayRow = "displayRow" + row;
+            string editRow = "editRow" + row;
             <tr>
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
-                        @Html.HiddenFor(modelItem => item.ID)
+                    @Html.HiddenFor(modelItem => item.ID)
                     <td>
                         @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
                     </td>
@@ -105,24 +114,35 @@
                         @Html.HiddenFor(modelItem => item.ItemID)
                     </td>
                     <td>
-                        @Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
+                        <span class="@editRow hideEditItems">@Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })</span>
                         @Html.ValidationMessageFor(modelItem => item.ItemName, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.CheckBoxFor(modelItem => item.ItemStatus)
+                        <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
+                        <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
                     </td>
                     <td>
-                        <input type="button" class="btn EditBtn" value="編輯" />
+                        <input type="button" class="btn editBtn" value="編輯" id="@row" />
+                        <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
                     </td>
                 }
             </tr>
+            row++;
         }
     }
-
 </table>
 
 
+<hr />
+<p style="text-align:center">-----------------------以下測試---------------------------</p>
+<!--接收值測試-->
+<div>
+    TempData["AreaListValue"] = @TempData["AreaListValue"] <br />
+    TempData["ClassListValue"] = @TempData["ClassListValue"] <br />
 
+</div>
+<hr />
 <div>測試對照資料表</div>
 <table class="table">
     <tr>
