@@ -28,14 +28,16 @@ namespace InspectSystem.Controllers
 
             return View(InspectItems.ToList());
         }
-
+        
         public ActionResult SearchItems()
         {
             //尚未處理的例外:SearchResult回傳null => 尚未有項目
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
             TempData["AreaListValue"] = AreaListValue;
+            //TempData["AreaListName"] = 
             TempData["ClassListValue"] = ClassListValue;
+
 
             var InspectItems = db.InspectItems
                                  .Include(i => i.InspectAreas)
@@ -43,7 +45,7 @@ namespace InspectSystem.Controllers
             var SearchResult = InspectItems
                                .Where(s => s.AreaID == AreaListValue &&
                                            s.ClassID == ClassListValue);
-            TempData["SearchResult"]  = SearchResult.ToList();
+            TempData["SearchResult"]  = SearchResult.ToList(); ;
 
             return RedirectToAction("Index");
         }
