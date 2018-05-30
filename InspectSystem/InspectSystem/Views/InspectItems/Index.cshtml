@@ -24,11 +24,94 @@
             $(".editRow" + + $(this).attr("id")).show();
         });
 
+        //Get the areaName and className that user selected.
+        var areaName = $("#areaName").text();
+        var className = $("#className").text();
+
+        function createItemForm() {
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.setAttribute("class", "col-md-2");
+            var td2 = document.createElement("td");
+            td2.setAttribute("class", "col-md-2");
+            var td3 = document.createElement("td");
+            td3.setAttribute("class", "col-md-2");
+            var td4 = document.createElement("td");
+            td4.setAttribute("class", "col-md-2");
+            var td5 = document.createElement("td");
+            td5.setAttribute("class", "col-md-2");
+            var td6 = document.createElement("td");
+            td6.setAttribute("class", "col-md-2");
+
+            var aName = document.createTextNode(areaName);
+            var cName = document.createTextNode(className);
+
+            var f = document.createElement("form");
+            f.setAttribute("method", "post");
+            f.setAttribute("action", "/InspectItems/Create");
+            f.setAttribute("id", "formForCreateItem");
+
+            var inputAreaID = document.createElement("input"); //input element, hidden areaID
+            inputAreaID.setAttribute("type", "hidden");
+            inputAreaID.setAttribute("name", "areaID");
+            inputAreaID.setAttribute("value", "@TempData["AreaListValue"]");
+
+            var inputClassID = document.createElement("input"); //input element, hidden classID
+            inputClassID.setAttribute("type", "hidden");
+            inputClassID.setAttribute("name", "classID");
+            inputClassID.setAttribute("value", "@TempData["ClassListValue"]");
+
+            var inputitemID = document.createElement("input"); //input element, itemID
+            inputitemID.setAttribute("type", "text");
+            inputitemID.setAttribute("name", "itemID");
+            inputitemID.setAttribute("class", "form-control");
+
+            var inputitemName = document.createElement("input"); //input element, itemName
+            inputitemName.setAttribute("type", "text");
+            inputitemName.setAttribute("name", "itemName");
+            inputitemName.setAttribute("class", "form-control");
+
+            var inputitemStatus = document.createElement("input"); //input element, itemStatus
+            inputitemStatus.setAttribute("type", "checkbox");
+            inputitemStatus.setAttribute("name", "itemStatus");
+            inputitemStatus.setAttribute("checked", "true");
+
+            var submitBtn = document.createElement("input"); //input element, Submit button
+            submitBtn.setAttribute("type", "submit");
+            submitBtn.setAttribute("value", "儲存");
+            submitBtn.setAttribute("class", "btn btn-primary");
+
+            var backBtn = document.createElement("a");
+            backBtn.setAttribute("class", "btn");
+            backBtn.setAttribute("href", "InspectItems/Index");
+            var btnText = document.createTextNode("返回");
+            backBtn.appendChild(btnText);
+
+            td1.appendChild(inputAreaID);
+            td1.appendChild(aName);
+            td2.appendChild(inputClassID);
+            td2.appendChild(cName);
+            td3.appendChild(inputitemID);
+            td4.appendChild(inputitemName);
+            td5.appendChild(inputitemStatus);
+            td6.appendChild(submitBtn);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+            tr.appendChild(td6);
+            f.appendChild(tr);
+
+            document.getElementById("createTable").appendChild(f);
+        }
+
         //Create a new row for insert item's detail
         $("#createBtn").click(function () {
-            $("#editTable").after("")
-            alert("Test");
+            createItemForm();
         });
+
     });
 </script>
 
@@ -65,27 +148,26 @@
 <hr />
 <div class="container">
     <button class="btn btn-primary" id="createBtn">新增項目</button>
-</div>
-<hr />
+</div><br />
 
 <table class="table" id="editTable">
     <tr>
-        <th>
+        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
         </th>
-        <th>
+        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.InspectClasses.ClassName)
         </th>
-        <th>
+        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemID)
         </th>
-        <th>
+        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemName)
         </th>
-        <th>
+        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemStatus)
         </th>
-        <th></th>
+        <th class="col-md-2"></th>
     </tr>
 
     @if (SearchResult == null)
@@ -103,26 +185,26 @@
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
                     @Html.HiddenFor(modelItem => item.ID)
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+                    <td class="col-md-2">
+                        <span id="areaName">@Html.DisplayFor(modelItem => item.InspectAreas.AreaName)</span>
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
+                    <td class="col-md-2">
+                        <span id="className">@Html.DisplayFor(modelItem => item.InspectClasses.ClassName)</span>
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.ItemID)
                         @Html.HiddenFor(modelItem => item.ItemID)
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
                         <span class="@editRow hideEditItems">@Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })</span>
                         @Html.ValidationMessageFor(modelItem => item.ItemName, "", new { @class = "text-danger" })
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
                         <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         <input type="button" class="btn editBtn" value="編輯" id="@row" />
                         <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
                     </td>
@@ -132,7 +214,7 @@
         }
     }
 </table>
-
+<table class="table" id="createTable"></table>
 
 <hr />
 <p style="text-align:center">-----------------------以下測試---------------------------</p>
