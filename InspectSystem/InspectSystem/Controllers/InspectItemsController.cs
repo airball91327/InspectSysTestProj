@@ -48,7 +48,6 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        //暫時把SearchResult的程式分開成ReloadPage
         public ActionResult ReloadPage()
         {
             //將保留的搜尋資訊重新搜尋更新資料
@@ -93,8 +92,8 @@ namespace InspectSystem.Controllers
             int areaID = System.Convert.ToInt32(Request.Form["areaID"]);
             int classID = System.Convert.ToInt32(Request.Form["classID"]);
             int itemID = System.Convert.ToInt32(Request.Form["itemID"]);
-            //處理Request.Form無法處理Checkbox回傳值的問題
-            if (Request.Form["itemStatus"].Contains("true") == true)
+            //If CheckBox is not selected, it will return nothing
+            if (Request.Form["itemStatus"] != null)
             {
                 itemStatus = true;
             }
@@ -130,7 +129,7 @@ namespace InspectSystem.Controllers
             InspectItems inspectItems = db.InspectItems.Find(id, itemID);
 
             //處理Request.Form無法處理Checkbox回傳值的問題
-            if( Request.Form["item.ItemStatus"].Contains("true") == true)
+            if( Request.Form["item.ItemStatus"].Contains("true") == true )
             {
                 itemStatus = true;
             }

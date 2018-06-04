@@ -13,103 +13,119 @@
 <script>
     $(document).ready(function () {
 
-        //When a edit button click
+        /* When a edit button click */
         $(".editBtn").click(function () {
-            //hide edit button
+            /* hide edit button */
             $(this).hide();
-            //When Editing, disable other edit buttons
+            /* When Editing, disable other edit buttons */
             $(".editBtn").attr("disabled", true);
-            //Change the selected row to be edit
+            /* Change the selected row to be edit */
             $(".displayRow" + $(this).attr("id")).hide();
             $(".editRow" + + $(this).attr("id")).show();
         });
 
-        //Get the areaName and className that user selected.
+        /* Get the areaName and className that user selected. */
         var areaName = $("#areaName").text();
         var className = $("#className").text();
 
+        /* To create a table row for user to new a item. */
         function createItemForm() {
-            var tr = document.createElement("tr");
-            var td1 = document.createElement("td");
-            td1.setAttribute("class", "col-md-2");
-            var td2 = document.createElement("td");
-            td2.setAttribute("class", "col-md-2");
-            var td3 = document.createElement("td");
-            td3.setAttribute("class", "col-md-2");
-            var td4 = document.createElement("td");
-            td4.setAttribute("class", "col-md-2");
-            var td5 = document.createElement("td");
-            td5.setAttribute("class", "col-md-2");
-            var td6 = document.createElement("td");
-            td6.setAttribute("class", "col-md-2");
+
+            /* Create table row and data elements */ 
+            var newRow = document.createElement("TR");
+            var newCell1 = document.createElement("TD");
+            newCell1.setAttribute("class", "col-md-2");
+            var newCell2 = document.createElement("TD");
+            newCell2.setAttribute("class", "col-md-2");
+            var newCell3 = document.createElement("TD");
+            newCell3.setAttribute("class", "col-md-2");
+            var newCell4 = document.createElement("TD");
+            newCell4.setAttribute("class", "col-md-2");
+            var newCell5 = document.createElement("TD");
+            newCell5.setAttribute("class", "col-md-2");
+            var newCell6 = document.createElement("TD");
+            newCell6.setAttribute("class", "col-md-2");
 
             var aName = document.createTextNode(areaName);
             var cName = document.createTextNode(className);
 
-            var f = document.createElement("form");
-            f.setAttribute("method", "post");
-            f.setAttribute("action", "/InspectItems/Create");
-            f.setAttribute("id", "formForCreateItem");
-
-            var inputAreaID = document.createElement("input"); //input element, hidden areaID
+            /* input element, hidden areaID */
+            var inputAreaID = document.createElement("input");     
             inputAreaID.setAttribute("type", "hidden");
             inputAreaID.setAttribute("name", "areaID");
             inputAreaID.setAttribute("value", "@TempData["AreaListValue"]");
 
-            var inputClassID = document.createElement("input"); //input element, hidden classID
+            /* input element, hidden classID */
+            var inputClassID = document.createElement("input");    
             inputClassID.setAttribute("type", "hidden");
             inputClassID.setAttribute("name", "classID");
             inputClassID.setAttribute("value", "@TempData["ClassListValue"]");
 
-            var inputitemID = document.createElement("input"); //input element, itemID
+            /* input element, itemID */
+            var inputitemID = document.createElement("input");     
             inputitemID.setAttribute("type", "text");
             inputitemID.setAttribute("name", "itemID");
             inputitemID.setAttribute("class", "form-control");
 
-            var inputitemName = document.createElement("input"); //input element, itemName
+            /* input element, itemName */
+            var inputitemName = document.createElement("input");   
             inputitemName.setAttribute("type", "text");
             inputitemName.setAttribute("name", "itemName");
             inputitemName.setAttribute("class", "form-control");
 
-            var inputitemStatus = document.createElement("input"); //input element, itemStatus
+            /* input element, itemStatus */
+            var inputitemStatus = document.createElement("input"); 
             inputitemStatus.setAttribute("type", "checkbox");
             inputitemStatus.setAttribute("name", "itemStatus");
-            inputitemStatus.setAttribute("checked", "true");
+            inputitemStatus.setAttribute("id", "itemStatusCheck");
+            inputitemStatus.setAttribute("data-val", "true");
+            inputitemStatus.setAttribute("value", "true");
+            inputitemStatus.setAttribute("checked", "true");  //set default value to true
 
-            var submitBtn = document.createElement("input"); //input element, Submit button
+            /* input element, submit button */
+            var submitBtn = document.createElement("input");       
             submitBtn.setAttribute("type", "submit");
             submitBtn.setAttribute("value", "儲存");
             submitBtn.setAttribute("class", "btn btn-primary");
 
-            var backBtn = document.createElement("a");
+            /* hyperlink element, Back to Index button */
+            var backBtn = document.createElement("a");             
             backBtn.setAttribute("class", "btn");
-            backBtn.setAttribute("href", "InspectItems/Index");
+            backBtn.setAttribute("href", "@Url.Action("Index")");
             var btnText = document.createTextNode("返回");
             backBtn.appendChild(btnText);
 
-            td1.appendChild(inputAreaID);
-            td1.appendChild(aName);
-            td2.appendChild(inputClassID);
-            td2.appendChild(cName);
-            td3.appendChild(inputitemID);
-            td4.appendChild(inputitemName);
-            td5.appendChild(inputitemStatus);
-            td6.appendChild(submitBtn);
+            /* Insert elements to cells */
+            newCell1.appendChild(inputAreaID);
+            newCell1.appendChild(aName);
+            newCell2.appendChild(inputClassID);
+            newCell2.appendChild(cName);
+            newCell3.appendChild(inputitemID);
+            newCell4.appendChild(inputitemName);
+            newCell5.appendChild(inputitemStatus);
+            newCell6.appendChild(submitBtn);
+            newCell6.appendChild(backBtn);
 
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            tr.appendChild(td3);
-            tr.appendChild(td4);
-            tr.appendChild(td5);
-            tr.appendChild(td6);
-            f.appendChild(tr);
+            /* Insert cells to the new row */
+            newRow.appendChild(newCell1);
+            newRow.appendChild(newCell2);
+            newRow.appendChild(newCell3);
+            newRow.appendChild(newCell4);
+            newRow.appendChild(newCell5);
+            newRow.appendChild(newCell6);
 
-            document.getElementById("createTable").appendChild(f);
+            document.getElementById("createTable").appendChild(newRow);
         }
 
-        //Create a new row for insert item's detail
+        if (@TempData["AreaListValue"] != null && @TempData["ClassListValue"] != null) {
+            $("#createBtn").attr("disabled", false);
+        }
+        /* Create a new row for insert item's detail */
         $("#createBtn").click(function () {
+
             createItemForm();
+            /* When Creating new item, disable other edit buttons */
+            $(".editBtn").attr("disabled", true);
         });
 
     });
@@ -147,8 +163,9 @@
 
 <hr />
 <div class="container">
-    <button class="btn btn-primary" id="createBtn">新增項目</button>
+    <button class="btn btn-primary" id="createBtn" disabled>新增項目</button>
 </div><br />
+
 
 <table class="table" id="editTable">
     <tr>
@@ -214,9 +231,14 @@
         }
     }
 </table>
-<table class="table" id="createTable"></table>
 
-<hr />
+@using (Html.BeginForm("Create", "InspectItems", FormMethod.Post))
+{
+    <table class="table" id="createTable"></table>
+}
+
+
+    <hr />
 <p style="text-align:center">-----------------------以下測試---------------------------</p>
 <!--接收值測試-->
 <div>
