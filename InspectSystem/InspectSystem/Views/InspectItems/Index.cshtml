@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectItems>
+
+
 @Scripts.Render("~/bundles//jquery")
 
 @{
 
     ViewBag.Title = "巡檢項目維護";
-
 
     var SearchResult = TempData["SearchResult"] as List<InspectSystem.Models.InspectItems>;
     TempData.Keep();
