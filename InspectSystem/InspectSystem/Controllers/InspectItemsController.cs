@@ -45,7 +45,7 @@ namespace InspectSystem.Controllers
             var SearchResult = InspectItems
                                .Where(s => s.AreaID == AreaListValue &&
                                            s.ClassID == ClassListValue);
-            TempData["SearchResult"]  = SearchResult.ToList(); ;
+            TempData["SearchResult"]  = SearchResult.ToList(); 
 
             return RedirectToAction("Index");
         }
