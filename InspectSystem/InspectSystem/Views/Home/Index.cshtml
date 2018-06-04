@@ -1,31 +1,147 @@
-﻿@{
+﻿@Scripts.Render("~/bundles//jquery")
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<script>
+    $(document).ready(function () {
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+        //Get the areaName and className that user selected.
+        var areaName = $("#areaName").text();
+        var className = $("#className").text();
+
+        function createItemForm() {
+            var newRow = document.createElement("TR");
+            var newCell1 = document.createElement("TD");
+            newCell1.setAttribute("class", "col-md-2");
+            var newCell2 = document.createElement("TD");
+            newCell2.setAttribute("class", "col-md-2");
+            var newCell3 = document.createElement("TD");
+            newCell3.setAttribute("class", "col-md-2");
+            var newCell4 = document.createElement("TD");
+            newCell4.setAttribute("class", "col-md-2");
+            var newCell5 = document.createElement("TD");
+            newCell5.setAttribute("class", "col-md-2");
+            var newCell6 = document.createElement("TD");
+            newCell6.setAttribute("class", "col-md-2");
+
+            var aName = document.createTextNode(areaName);
+            var cName = document.createTextNode(className);
+            /*
+            var f = document.createElement("form");
+            f.setAttribute("method", "post");
+            f.setAttribute("action", "/InspectItems/Create");
+            f.setAttribute("id", "formForCreateItem");
+
+            var inputAreaID = document.createElement("input"); //input element, hidden areaID
+            inputAreaID.setAttribute("type", "hidden");
+            inputAreaID.setAttribute("name", "areaID");
+            inputAreaID.setAttribute("value", "AreaListValue");
+            
+            var inputClassID = document.createElement("input"); //input element, hidden classID
+            inputClassID.setAttribute("type", "hidden");
+            inputClassID.setAttribute("name", "classID");
+            inputClassID.setAttribute("value", "ClassListValue");
+            */
+            var inputitemID = document.createElement("input"); //input element, itemID
+            inputitemID.setAttribute("type", "text");
+            inputitemID.setAttribute("name", "itemID");
+            inputitemID.setAttribute("class", "form-control");
+
+            var inputitemName = document.createElement("input"); //input element, itemName
+            inputitemName.setAttribute("type", "text");
+            inputitemName.setAttribute("name", "itemName");
+            inputitemName.setAttribute("class", "form-control");
+
+            var inputitemStatus = document.createElement("input"); //input element, itemStatus
+            inputitemStatus.setAttribute("type", "checkbox");
+            inputitemStatus.setAttribute("name", "itemStatus");
+            inputitemStatus.setAttribute("checked", "true");       //set default value to true
+
+            var submitBtn = document.createElement("input"); //input element, Submit button
+            submitBtn.setAttribute("type", "submit");
+            submitBtn.setAttribute("value", "儲存");
+            submitBtn.setAttribute("class", "btn btn-primary");
+
+            var backBtn = document.createElement("a");       //a element, Back to Index button
+            backBtn.setAttribute("class", "btn");
+            backBtn.setAttribute("href", "InspectItems/Index");
+            var btnText = document.createTextNode("返回");
+            backBtn.appendChild(btnText);
+
+            //newCell1.appendChild(inputAreaID);
+            //newCell1.appendChild(aName);
+            //newCell2.appendChild(inputClassID);
+            //newCell2.appendChild(cName);
+            newCell3.appendChild(inputitemID);
+            newCell4.appendChild(inputitemName);
+            newCell5.appendChild(inputitemStatus);
+            newCell6.appendChild(submitBtn);
+            newCell6.appendChild(backBtn);
+
+            newRow.appendChild(newCell1);
+            newRow.appendChild(newCell2);
+            newRow.appendChild(newCell3);
+            newRow.appendChild(newCell4);
+            newRow.appendChild(newCell5);
+            newRow.appendChild(newCell6);
+
+            document.getElementById("editTable").appendChild(newRow);
+        }
+
+        //Create a new row for insert item's detail
+        $("#createBtn").click(function () {
+            createItemForm();
+        });
+
+    });
+</script>
+
+<hr />
+<button class="btn btn-primary" id="createBtn">新增</button>
+<hr />
+
+@using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
+{
+<table class="table" id="editTable">
+    <tr>
+        <th class="col-md-2">
+            TestCol1
+        </th>
+        <th class="col-md-2">
+            TestCol2
+        </th>
+        <th class="col-md-2">
+            TestCol3
+        </th>
+        <th class="col-md-2">
+            TestCol4
+        </th>
+        <th class="col-md-2">
+            TestCol5
+        </th>
+        <th class="col-md-2">TestCol6</th>
+    </tr>
+
+    <tr>
+        <td class="col-md-2">
+            AreaName
+        </td>
+        <td class="col-md-2">
+            ClassName
+        </td>
+        <td class="col-md-2">
+            <input type="text" name="testText1" class="form-control"/>
+        </td>
+        <td class="col-md-2">
+            <input type="text" name="testText2" class="form-control"/>
+        </td>
+        <td class="col-md-2">
+            <input type="checkbox" name="testCheckBox" class="form-control"/>
+        </td>
+        <td class="col-md-2">
+            <input type="submit" class="hideEditItems btn btn-primary" value="儲存" />
+        </td>
+    </tr>
+</table>
+}
