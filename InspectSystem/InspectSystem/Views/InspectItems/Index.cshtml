@@ -25,6 +25,11 @@
             $(".editRow" + + $(this).attr("id")).show();
         });
 
+        /* When fieldBtn click, silde the field table */
+        $(".fieldBtn").click(function () {
+            $(".fieldPanelNo" + $(this).attr("value")).slideToggle("slow");
+        });
+
         /* Get the areaName and className that user selected. */
         var areaName = $("#areaName").text();
         var className = $("#className").text();
@@ -137,6 +142,10 @@
     .hideEditItems {
         display: none;
     }
+    /* The fields of items (Hidden by Default) */
+    .fieldPanel {
+        display: none;
+    }
 </style>
 
 <h2>巡檢項目維護</h2>
@@ -185,7 +194,8 @@
         <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemStatus)
         </th>
-        <th class="col-md-2"></th>
+        <th class="col-md-1"></th>
+        <th class="col-md-1"></th>
     </tr>
 
     @if (SearchResult == null)
@@ -194,11 +204,16 @@
     }
     else
     {
+        /* 參數row做為各個編輯項目的指標 */
         int row = 1;
+
         foreach (var item in SearchResult)
         {
+            /* Give class name to the display rows,edit rows and panels with each row */
             string displayRow = "displayRow" + row;
             string editRow = "editRow" + row;
+            string fieldPanelNo = "fieldPanelNo" + row;
+
             <tr>
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
@@ -222,11 +237,30 @@
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
                         <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
                     </td>
-                    <td class="col-md-2">
+                    <td class="col-md-1">
                         <input type="button" class="btn editBtn" value="編輯" id="@row" />
                         <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
                     </td>
                 }
+                <td class="col-md-1"> 
+                    <button class="btn fieldBtn" value="@row">欄位</button>
+                </td>
+            </tr>
+
+            /* 給TR及欄位的Panel皆定義fieldPanel與fieldPanelNo的class，作雙層slide的視覺表現 */
+            <tr class="fieldPanel @fieldPanelNo">
+                <td colspan=7>
+                    <div class="panel panel-info fieldPanel @fieldPanelNo">
+                        <div class="panel-heading">欄位</div>
+                        <div class="panel-body">
+                            <button class="btn btn-primary">新增欄位(not working)</button><br />
+                            <br />
+                            <div>
+                                --------此處放Table顯示該項目的欄位--------
+                            </div>
+                        </div>
+                    </div>
+                </td>
             </tr>
             row++;
         }
@@ -239,85 +273,11 @@
 }
 
 
-    <hr />
+<hr />
 <p style="text-align:center">-----------------------以下測試---------------------------</p>
 <!--接收值測試-->
 <div>
     TempData["AreaListValue"] = @TempData["AreaListValue"] <br />
     TempData["ClassListValue"] = @TempData["ClassListValue"] <br />
-
 </div>
 <hr />
-<div>測試對照資料表</div>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AreaID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InspectClasses.ClassName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemStatus)
-        </th>
-        <th></th>
-    </tr>
-
-    @if (SearchResult == null)
-    {
-
-    }
-    else
-    {
-        foreach (var item in SearchResult)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AreaID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ClassID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemStatus)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID, Itemid = item.ItemID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID, Itemid = item.ItemID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID, Itemid = item.ItemID })
-                </td>
-            </tr>
-        }
-    }
-
-</table>
