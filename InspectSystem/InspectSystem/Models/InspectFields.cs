@@ -30,9 +30,9 @@ namespace InspectSystem.Models
         [Display(Name = "單位")]
         public string UnitOfData { get; set; }
         [Display(Name = "最小值")]
-        public float MinValue { get; set; }
+        public double MinValue { get; set; }
         [Display(Name = "最大值")]
-        public float MaxValue { get; set; }
+        public double MaxValue { get; set; }
 
     }
 }

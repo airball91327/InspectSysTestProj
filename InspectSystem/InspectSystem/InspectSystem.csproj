@@ -195,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
     <Compile Include="Controllers\InspectClassesController.cs" />
+    <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -296,6 +297,11 @@
     <Content Include="Views\InspectItems\Details.cshtml" />
     <Content Include="Views\InspectItems\Edit.cshtml" />
     <Content Include="Views\InspectItems\Index.cshtml" />
+    <Content Include="Views\InspectFields\Create.cshtml" />
+    <Content Include="Views\InspectFields\Delete.cshtml" />
+    <Content Include="Views\InspectFields\Details.cshtml" />
+    <Content Include="Views\InspectFields\Edit.cshtml" />
+    <Content Include="Views\InspectFields\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
