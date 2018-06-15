@@ -2,6 +2,7 @@
 
 
 @Scripts.Render("~/bundles//jquery")
+<script src="~/Scripts/InspectItemsIndex.js"></script>
 
 @{
 
@@ -13,22 +14,6 @@
 
 <script>
     $(document).ready(function () {
-
-        /* When a edit button click */
-        $(".editBtn").click(function () {
-            /* hide edit button */
-            $(this).hide();
-            /* When Editing, disable other edit buttons */
-            $(".editBtn").attr("disabled", true);
-            /* Change the selected row to be edit */
-            $(".displayRow" + $(this).attr("id")).hide();
-            $(".editRow" + + $(this).attr("id")).show();
-        });
-
-        /* When fieldBtn click, silde the field table */
-        $(".fieldBtn").click(function () {
-            $(".fieldPanelNo" + $(this).attr("value")).slideToggle("slow");
-        });
 
         /* Get the areaName and className that user selected. */
         var areaName = $("#areaName").text();
@@ -126,6 +111,7 @@
         if (@TempData["AreaListValue"] != null && @TempData["ClassListValue"] != null) {
             $("#createBtn").attr("disabled", false);
         }
+
         /* Create a new row for insert item's detail */
         $("#createBtn").click(function () {
 
@@ -204,20 +190,23 @@
     }
     else
     {
-        /* 參數row做為各個編輯項目的指標 */
+        /* 參數row做為各個編輯項目的編號 */
         int row = 1;
 
         foreach (var item in SearchResult)
         {
-            /* Give class name to the display rows,edit rows and panels with each row */
+            /* Give class name, ID to the display rows, edit rows and panels with each row */
             string displayRow = "displayRow" + row;
             string editRow = "editRow" + row;
             string fieldPanelNo = "fieldPanelNo" + row;
+            string fieldDivNo = "fieldDivNo" + row;
+            string hideACIDNo = "hideACIDNo" + row;
+            string hideItemIDNo = "hideItemIDNo" + row;
 
             <tr>
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
-                    @Html.HiddenFor(modelItem => item.ID)
+                    @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
                     <td class="col-md-2">
                         <span id="areaName">@Html.DisplayFor(modelItem => item.InspectAreas.AreaName)</span>
                     </td>
@@ -226,7 +215,7 @@
                     </td>
                     <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.ItemID)
-                        @Html.HiddenFor(modelItem => item.ItemID)
+                        @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
                     </td>
                     <td class="col-md-2">
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
@@ -254,9 +243,7 @@
                     <div class="panel panel-info fieldPanel @fieldPanelNo">
                         <div class="panel-heading">欄位</div>
                         <div class="panel-body">
-                            <div>
-                                @Html.Action("Index","InspectFields")
-                            </div>
+                            <div id="@fieldDivNo"></div>
                         </div>
                     </div>
                 </td>

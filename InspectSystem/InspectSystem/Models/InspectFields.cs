@@ -10,8 +10,8 @@ namespace InspectSystem.Models
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
-        [Display(Name = "ID")]
-        public int ID { get; set; }         //對應ClassesOfAreas的ID、程式產生
+        [Display(Name = "ACID")]
+        public int ACID { get; set; }         //對應ClassesOfAreas的ID、程式產生
         [Key, Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]

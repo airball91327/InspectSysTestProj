@@ -1,0 +1,51 @@
+﻿@model IEnumerable<InspectSystem.Models.InspectFields>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FieldName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitOfData)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxValue)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FieldName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitOfData)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinValue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxValue)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

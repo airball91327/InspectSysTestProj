@@ -9,8 +9,8 @@ namespace InspectSystem.Models
     {
         [Key]
         [Required]
-        [Display(Name = "ID")]
-        public int ID { get; set; }
+        [Display(Name = "ACID")]
+        public int ACID { get; set; }
         [Required]
         [Display(Name = "區域代碼")]
         public int AreaID { get; set; }

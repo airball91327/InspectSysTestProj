@@ -20,6 +20,14 @@ namespace InspectSystem.Controllers
             return PartialView(db.InspectFields.ToList());
         }
 
+        public ActionResult Search(int acid, int itemid)
+        {
+            var SearchResult = db.InspectFields
+                                 .Where(i => i.ACID == acid &&
+                                             i.ItemID == itemid);
+            return PartialView(SearchResult.ToList());
+        }
+
         // GET: InspectFields/Details/5
         public ActionResult Details(int? id)
         {

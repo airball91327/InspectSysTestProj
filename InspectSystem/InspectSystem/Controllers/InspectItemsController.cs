@@ -103,7 +103,7 @@ namespace InspectSystem.Controllers
                 itemStatus = false;
 
             //Insert the values to create items
-            inspectItems.ID = (areaID) * 100 + classID;
+            inspectItems.ACID = (areaID) * 100 + classID;
             inspectItems.AreaID = areaID;
             inspectItems.ClassID = classID;
             inspectItems.ItemID = itemID;
@@ -126,9 +126,9 @@ namespace InspectSystem.Controllers
             Boolean itemStatus = true;
 
             //找出要更改數值的資料
-            int id = System.Convert.ToInt32(Request.Form["item.ID"]);
+            int ACID = System.Convert.ToInt32(Request.Form["item.ACID"]);
             int itemID = System.Convert.ToInt32(Request.Form["item.ItemID"]);
-            InspectItems inspectItems = db.InspectItems.Find(id, itemID);
+            InspectItems inspectItems = db.InspectItems.Find(ACID, itemID);
 
             //處理Request.Form無法處理Checkbox回傳值的問題
             if( Request.Form["item.ItemStatus"].Contains("true") == true )
