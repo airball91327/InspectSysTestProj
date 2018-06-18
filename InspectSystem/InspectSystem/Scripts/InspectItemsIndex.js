@@ -10,7 +10,7 @@
         $(".displayRow" + $(this).attr("id")).hide();
         $(".editRow" + + $(this).attr("id")).show();
     });
-
+    
     $(".fieldBtn").click(function () {
 
         var number = $(this).attr("value");
@@ -19,9 +19,9 @@
 
         /* When fieldBtn click, silde the field table */
         $(".fieldPanelNo" + number).slideToggle("slow");
-
+        /*Get the search result of fields*/
         $.ajax({
-            type: "GET",    
+            type: "GET",
             url: "/InspectFields/Search",
             data: { acid: ACID, itemid: itemID },
             success: function (result) {

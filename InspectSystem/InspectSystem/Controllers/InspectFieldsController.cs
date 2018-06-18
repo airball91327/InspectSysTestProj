@@ -67,13 +67,13 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectFields/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? ACID, int? itemID, int? fieldID)
         {
-            if (id == null)
+            if (ACID == null || itemID == null || fieldID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            InspectFields inspectFields = db.InspectFields.Find(id);
+            InspectFields inspectFields = db.InspectFields.Find(ACID, itemID, fieldID);
             if (inspectFields == null)
             {
                 return HttpNotFound();

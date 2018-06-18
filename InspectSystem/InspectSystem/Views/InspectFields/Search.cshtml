@@ -1,10 +1,37 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectFields>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<script>
+    $(".fieldBtn").click(function () {
+
+        var number = $(this).attr("value");
+        var ACID = $("#hideACIDNo" + number).attr("value");
+        var itemID = $("#hideItemIDNo" + number).attr("value");
+        var fieldID = $("#hideFieldIDNo" + number).attr("value");
+        
+        $.ajax({
+            type: "GET",
+            url: "/InspectFields/Edit",
+            data: { acid: ACID, itemid: itemID , fieldid: fieldID},
+            success: function (result) {
+                console.log(result); //For debug
+                $("#rowNo" + number).html(result);
+            },
+            //error: function (msg) {
+            //    alert(msg);
+            //}
+        });
+    });
+</script>
+
+<div class="container">
+    <button class="btn btn-primary" id="createBtn" disabled>新增項目</button>
+</div><br />
+
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FieldID)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.FieldName)
         </th>
@@ -23,29 +50,51 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FieldName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnitOfData)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MinValue)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxValue)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+    @{
+        int row = 1;
+    }
+    @foreach (var item in Model)
+    {
+        string displayRow = "displayRow" + row;
+        string editRow = "editRow" + row;
+        string rowNo = "rowNo" + row;
+        string hideACIDNo = "hideACIDNo" + row;
+        string hideItemIDNo = "hideItemIDNo" + row;
+        string hideFieldIDNo = "hideFieldIDNo" + row;
+
+        <tr id="@rowNo">
+
+            @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
+            @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
+            <td>
+                @Html.DisplayFor(modelItem => item.FieldID)
+                @Html.HiddenFor(modelItem => item.FieldID, new { id = hideFieldIDNo})
+            </td>
+            <td>
+                <span class="@displayRow">@Html.DisplayFor(modelItem => item.FieldName)</span>
+            </td>
+            <td>
+                <span class="@displayRow">@Html.DisplayFor(modelItem => item.DataType)</span>
+            </td>
+            <td>
+                <span class="@displayRow">@Html.DisplayFor(modelItem => item.UnitOfData)</span>
+            </td>
+            <td>
+                <span class="@displayRow">@Html.DisplayFor(modelItem => item.MinValue)</span>
+            </td>
+            <td>
+                <span class="@displayRow">@Html.DisplayFor(modelItem => item.MaxValue)</span>
+            </td>
+            <td>
+                <button class="btn fieldBtn" value="@row">Test</button>
+                @Html.ActionLink("Edit", "Edit", new { ACID = item.ACID, itemID = item.ItemID, fieldID = item.FieldID }) |
+            </td>
+        </tr>
+    }
 
 </table>
+
+@using (Html.BeginForm("Create", "InspectFields", FormMethod.Post))
+{
+    <table class="table" id="createTable"></table>
+}
