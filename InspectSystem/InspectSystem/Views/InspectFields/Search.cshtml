@@ -1,33 +1,22 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectFields>
 
-<script>
-    $(".fieldBtn").click(function () {
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="~/Scripts/InspectFieldsSearch.js"></script>
 
-        var number = $(this).attr("value");
-        var ACID = $("#hideACIDNo" + number).attr("value");
-        var itemID = $("#hideItemIDNo" + number).attr("value");
-        var fieldID = $("#hideFieldIDNo" + number).attr("value");
-        
-        $.ajax({
-            type: "GET",
-            url: "/InspectFields/Edit",
-            data: { acid: ACID, itemid: itemID , fieldid: fieldID},
-            success: function (result) {
-                console.log(result); //For debug
-                $("#rowNo" + number).html(result);
-            },
-            //error: function (msg) {
-            //    alert(msg);
-            //}
-        });
-    });
-</script>
+@{ 
+    int zoneNo = (ViewBag.ACID * 100) + ViewBag.ItemID;
+}
+<style>
+    #fieldModal01 {
+        display: none;
+    }
+</style>
 
 <div class="container">
-    <button class="btn btn-primary" id="createBtn" disabled>新增項目</button>
+    <button class="btn btn-primary" disabled>新增項目</button>
 </div><br />
 
-<table class="table">
+<table class="table @zoneNo">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FieldID)
@@ -55,46 +44,62 @@
     }
     @foreach (var item in Model)
     {
-        string displayRow = "displayRow" + row;
-        string editRow = "editRow" + row;
-        string rowNo = "rowNo" + row;
-        string hideACIDNo = "hideACIDNo" + row;
-        string hideItemIDNo = "hideItemIDNo" + row;
-        string hideFieldIDNo = "hideFieldIDNo" + row;
+        //string displayRow = "displayRow" + row;
+        //string editRow = "editRow" + row;
+        //string rowNo = "rowNo" + row;
+        int rowNumber = (zoneNo * 100) + row;
+        string hideACIDNo = "hideACIDNo" + rowNumber;
+        string hideItemIDNo = "hideItemIDNo" + rowNumber;
+        string hideFieldIDNo = "hideFieldIDNo" + rowNumber;
 
-        <tr id="@rowNo">
-
+        <tr>
             @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
             @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
             <td>
                 @Html.DisplayFor(modelItem => item.FieldID)
-                @Html.HiddenFor(modelItem => item.FieldID, new { id = hideFieldIDNo})
+                @Html.HiddenFor(modelItem => item.FieldID, new { id = hideFieldIDNo })
             </td>
             <td>
-                <span class="@displayRow">@Html.DisplayFor(modelItem => item.FieldName)</span>
+                @Html.DisplayFor(modelItem => item.FieldName)
             </td>
             <td>
-                <span class="@displayRow">@Html.DisplayFor(modelItem => item.DataType)</span>
+                @Html.DisplayFor(modelItem => item.DataType)
             </td>
             <td>
-                <span class="@displayRow">@Html.DisplayFor(modelItem => item.UnitOfData)</span>
+                @Html.DisplayFor(modelItem => item.UnitOfData)
             </td>
             <td>
-                <span class="@displayRow">@Html.DisplayFor(modelItem => item.MinValue)</span>
+                @Html.DisplayFor(modelItem => item.MinValue)
             </td>
             <td>
-                <span class="@displayRow">@Html.DisplayFor(modelItem => item.MaxValue)</span>
+                @Html.DisplayFor(modelItem => item.MaxValue)
             </td>
             <td>
-                <button class="btn fieldBtn" value="@row">Test</button>
-                @Html.ActionLink("Edit", "Edit", new { ACID = item.ACID, itemID = item.ItemID, fieldID = item.FieldID }) |
+                <button class="btn fieldEditBtn" value="@rowNumber">編輯</button>
             </td>
         </tr>
+        row++;
     }
 
 </table>
 
 @using (Html.BeginForm("Create", "InspectFields", FormMethod.Post))
 {
-    <table class="table" id="createTable"></table>
+    <table class="table"></table>
 }
+
+<div class="w3-modal" id="fieldModal01">
+    <div class="w3-modal-content w3-animate-zoom">
+      <header class="w3-container w3-teal"> 
+        <span onclick="document.getElementById('fieldModal01').style.display = 'none'" 
+        class="w3-button w3-display-topright">&times;</span>
+        <h2>欄位編輯</h2>
+      </header>
+      <div class="w3-container">
+        <p id="fieldModalContent01">Some text..</p>
+      </div>
+      <footer class="w3-container w3-teal">
+          <p><br /></p>
+      </footer>
+    </div>
+  </div>

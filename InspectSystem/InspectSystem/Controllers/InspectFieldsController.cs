@@ -25,6 +25,8 @@ namespace InspectSystem.Controllers
             var SearchResult = db.InspectFields
                                  .Where(i => i.ACID == acid &&
                                              i.ItemID == itemid);
+            ViewBag.ACID = acid;
+            ViewBag.ItemID = itemid;
             return PartialView(SearchResult.ToList());
         }
 
@@ -86,15 +88,18 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ItemID,FieldID,FieldName,DataType,UnitOfData,MinValue,MaxValue")] InspectFields inspectFields)
+        public ActionResult Edit(InspectFields inspectFields)
         {
+            var ACID = inspectFields.ACID;
+            var itemID = inspectFields.ItemID;
+
             if (ModelState.IsValid)
             {
                 db.Entry(inspectFields).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Search",new { acid = ACID, itemid = itemID });
             }
-            return PartialView(inspectFields);
+            return RedirectToAction("Search");
         }
 
         // GET: InspectFields/Delete/5

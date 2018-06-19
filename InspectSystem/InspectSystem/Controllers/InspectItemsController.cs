@@ -17,6 +17,13 @@ namespace InspectSystem.Controllers
         // GET: InspectItems
         public ActionResult Index()
         {
+            //Initialize the TempData
+            if(TempData["AreaListValue"] == null || TempData["ClassListValue"] == null)
+            {
+                TempData["AreaListValue"] = 0;
+                TempData["ClassListValue"] = 0;
+            }
+            
             //Get the data from table "InspectItems", "InspectAreas", and "InspectClasses"
             var InspectItems = db.InspectItems
                                  .Include(i => i.InspectAreas)
@@ -35,9 +42,7 @@ namespace InspectSystem.Controllers
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
             TempData["AreaListValue"] = AreaListValue;
-            //TempData["AreaListName"] = 
             TempData["ClassListValue"] = ClassListValue;
-
 
             var InspectItems = db.InspectItems
                                  .Include(i => i.InspectAreas)
