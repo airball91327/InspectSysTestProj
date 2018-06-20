@@ -46,8 +46,11 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectFields/Create
-        public ActionResult Create()
+        public ActionResult Create(int acid, int itemid)
         {
+            ViewBag.CreateACID = acid;
+            ViewBag.CreateItemID = itemid;
+
             return PartialView();
         }
 
@@ -56,7 +59,7 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,ItemID,FieldID,FieldName,DataType,UnitOfData,MinValue,MaxValue")] InspectFields inspectFields)
+        public ActionResult Create( InspectFields inspectFields)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +102,7 @@ namespace InspectSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Search",new { acid = ACID, itemid = itemID });
             }
-            return RedirectToAction("Search");
+            return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
         }
 
         // GET: InspectFields/Delete/5

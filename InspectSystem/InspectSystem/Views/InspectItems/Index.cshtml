@@ -198,10 +198,13 @@
             /* Give class name, ID to the display rows, edit rows and panels with each row */
             string displayRow = "displayRow" + row;
             string editRow = "editRow" + row;
-            string fieldPanelNo = "fieldPanelNo" + row;
-            string fieldDivNo = "fieldDivNo" + row;
             string hideACIDNo = "hideACIDNo" + row;
             string hideItemIDNo = "hideItemIDNo" + row;
+            string fieldPanelNo = "fieldPanelNo" + row;
+            int acid = item.ACID;
+            int itemid = item.ItemID;
+            int zoneNo = acid * 100 + itemid;
+            string fieldDivNo = "fieldDivNo" + zoneNo;
 
             <tr>
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
@@ -262,7 +265,7 @@
 <hr />
 <p style="text-align:center">-----------------------以下測試---------------------------</p>
 <!--接收值測試-->
-<div>
+<div id="test01">
     TempData["AreaListValue"] = @TempData["AreaListValue"] <br />
     TempData["ClassListValue"] = @TempData["ClassListValue"] <br />
 </div>

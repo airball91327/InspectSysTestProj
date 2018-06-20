@@ -16,8 +16,10 @@
         var number = $(this).attr("value");
         var ACID = $("#hideACIDNo" + number).attr("value");
         var itemID = $("#hideItemIDNo" + number).attr("value");
+        var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
 
-        /* When fieldBtn click, silde the field table */
+        /* Control all the slide panel */
+        $(".fieldPanel").not(".fieldPanelNo" + number).slideUp("slow");
         $(".fieldPanelNo" + number).slideToggle("slow");
         /*Get the search result of fields*/
         $.ajax({
@@ -26,7 +28,7 @@
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
                 console.log(result); //For debug
-                $("#fieldDivNo" + number).html(result);
+                $("#fieldDivNo" + zoneNo).html(result);
             },
             error: function (msg) {
                 alert(msg);

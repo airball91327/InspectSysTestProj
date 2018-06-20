@@ -20,12 +20,14 @@ namespace InspectSystem.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult Contact(string name)
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = name;
 
             return PartialView();
         }
+
         
     }
 }
