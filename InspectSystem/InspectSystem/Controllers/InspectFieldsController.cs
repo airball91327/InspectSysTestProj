@@ -20,6 +20,8 @@ namespace InspectSystem.Controllers
             return PartialView(db.InspectFields.ToList());
         }
 
+        // GET: InspectFields/Search
+        /* Use ACID and ItemID to search the fields. */
         public ActionResult Search(int acid, int itemid)
         {
             var SearchResult = db.InspectFields
@@ -30,6 +32,7 @@ namespace InspectSystem.Controllers
             return PartialView(SearchResult.ToList());
         }
 
+        /* Unused code
         // GET: InspectFields/Details/5
         public ActionResult Details(int? id)
         {
@@ -44,6 +47,7 @@ namespace InspectSystem.Controllers
             }
             return PartialView(inspectFields);
         }
+        */
 
         // GET: InspectFields/Create
         public ActionResult Create(int acid, int itemid)
@@ -105,6 +109,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
         }
 
+        /* Unused code
         // GET: InspectFields/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -130,6 +135,7 @@ namespace InspectSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        */
 
         protected override void Dispose(bool disposing)
         {

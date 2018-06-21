@@ -12,8 +12,9 @@
 <!DOCTYPE html>
 
 <script>
+    /* When submit, close the modal. */
     $(document).ready(function () {
-        $("#submitBtn1").click(function () {
+        $("#submitBtnEdit").click(function () {
             document.getElementById("@editModalNo").style.display = "none";
         });
     });
@@ -35,6 +36,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
+            <h4></h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ACID)
@@ -85,7 +87,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" id="submitBtn1"/>
+                    <input type="submit" value="Save" class="btn btn-default" id="submitBtnEdit"/>
                 </div>
             </div>
         </div>

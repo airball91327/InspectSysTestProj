@@ -4,11 +4,3 @@
     ViewBag.Title = "Home Page";
 }
 
-@using (Ajax.BeginForm("Contact", new AjaxOptions { UpdateTargetId = "test1" }))
-{
-    @Html.Label("ForTest")
-    @Html.Editor("name")
-    <input type="submit" value="Save" />
-}
-<p>TestTest</p>
-<div id="test1"></div>

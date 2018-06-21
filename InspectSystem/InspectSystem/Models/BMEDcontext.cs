@@ -17,6 +17,7 @@ namespace InspectSystem.Models
         public DbSet<InspectClasses> InspectClasses { get; set; }
         public DbSet<InspectItems> InspectItems { get; set; }
         public DbSet<InspectFields> InspectFields { get; set; }
+        public DbSet<ClassesOfAreas> ClassesOfAreas { get; set; }
 
     }
 }

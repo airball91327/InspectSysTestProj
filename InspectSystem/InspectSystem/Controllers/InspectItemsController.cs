@@ -35,10 +35,11 @@ namespace InspectSystem.Controllers
 
             return View(InspectItems.ToList());
         }
-        
+
+        // GET: InspectItems/SearchItems
+        /* Get the area and class that user selected, and return search result. */
         public ActionResult SearchItems()
         {
-            //尚未處理的例外:SearchResult回傳null => 尚未有項目
             int AreaListValue = System.Convert.ToInt32(Request.Form["AreaList"]);
             int ClassListValue = System.Convert.ToInt32(Request.Form["ClassList"]);
             TempData["AreaListValue"] = AreaListValue;
@@ -55,9 +56,11 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: InspectItems/ReloadPage
+        /* After create items or edit items, will redirect to the function to reload page. */
         public ActionResult ReloadPage()
         {
-            //將保留的搜尋資訊重新搜尋更新資料
+            //將保留的搜尋資訊，重新去搜尋更新後的資料
             int AreaListValue = System.Convert.ToInt32(TempData["AreaListValue"]);
             int ClassListValue = System.Convert.ToInt32(TempData["ClassListValue"]);
 
@@ -72,6 +75,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        /* Unused code
         // GET: InspectItems/Details/5
         public ActionResult Details(int? id, int? Itemid)
         {
@@ -86,6 +90,7 @@ namespace InspectSystem.Controllers
             }
             return View(inspectItems);
         }
+        */
 
         // POST: InspectItems/Create
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
@@ -96,10 +101,14 @@ namespace InspectSystem.Controllers
 
             Boolean itemStatus = true;
 
+            //Get the value from Request.
             int areaID = System.Convert.ToInt32(Request.Form["areaID"]);
             int classID = System.Convert.ToInt32(Request.Form["classID"]);
+            int ACID = (areaID) * 100 + classID;
             int itemID = System.Convert.ToInt32(Request.Form["itemID"]);
-            //If CheckBox is not selected, it will return nothing
+
+            /* If CheckBox is not selected, it will return nothing, 
+               so use the condition to give value to checkbox's request. */
             if (Request.Form["itemStatus"] != null)
             {
                 itemStatus = true;
@@ -108,12 +117,23 @@ namespace InspectSystem.Controllers
                 itemStatus = false;
 
             //Insert the values to create items
-            inspectItems.ACID = (areaID) * 100 + classID;
+            inspectItems.ACID = ACID;
             inspectItems.AreaID = areaID;
             inspectItems.ClassID = classID;
             inspectItems.ItemID = itemID;
             inspectItems.ItemName = Request.Form["itemName"];
             inspectItems.ItemStatus = itemStatus;
+
+            /* If can't find the data from ClassesOfAreas table, insert a new data in the table. */
+            ClassesOfAreas classesOfAreas = db.ClassesOfAreas.Find(ACID);
+            if(classesOfAreas == null)
+            {
+                classesOfAreas.ACID = ACID;
+                classesOfAreas.AreaID = areaID;
+                classesOfAreas.ClassID = classID;
+                db.ClassesOfAreas.Add(classesOfAreas);
+                db.SaveChanges();
+            }
 
             if (ModelState.IsValid)
             {
@@ -125,6 +145,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("ReloadPage");
         }
 
+        // POST: InspectItems/Edit
         [HttpPost]
         public ActionResult Edit()
         {
@@ -156,6 +177,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("ReloadPage");
         }
 
+        /* Unused code
         // GET: InspectItems/Delete/5
         public ActionResult Delete(int? id, int? Itemid)
         {
@@ -181,6 +203,7 @@ namespace InspectSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        */
 
         protected override void Dispose(bool disposing)
         {
