@@ -1,5 +1,7 @@
 ﻿@model InspectSystem.Models.InspectFields
 
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
 @{
     Layout = null;
     int ACID = Model.ACID;
@@ -28,8 +30,6 @@
 <body>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-
 
     @using (Ajax.BeginForm("Edit", new AjaxOptions { UpdateTargetId = fieldDivNo }))
     {
@@ -87,7 +87,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" id="submitBtnEdit"/>
+                    <input type="submit" value="Save" class="btn btn-default" id="submitBtnEdit" />
                 </div>
             </div>
         </div>

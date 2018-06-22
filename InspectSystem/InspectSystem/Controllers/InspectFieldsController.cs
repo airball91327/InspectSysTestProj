@@ -63,16 +63,19 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( InspectFields inspectFields)
+        public ActionResult Create(InspectFields inspectFields)
         {
+            var ACID = inspectFields.ACID;
+            var itemID = inspectFields.ItemID;
+
             if (ModelState.IsValid)
             {
+
                 db.InspectFields.Add(inspectFields);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
             }
-
-            return PartialView(inspectFields);
+            return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
         }
 
         // GET: InspectFields/Edit/5
