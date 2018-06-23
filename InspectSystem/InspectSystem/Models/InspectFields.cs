@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace InspectSystem.Models
 {
@@ -19,6 +20,7 @@ namespace InspectSystem.Models
         public int ItemID { get; set; }
         [Key, Column(Order = 3)]
         [Required]
+        [Remote("FieldID", "Validations")]
         [Display(Name = "欄位代碼")]
         public int FieldID { get; set; }
         [Display(Name = "欄位名稱")]

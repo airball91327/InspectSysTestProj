@@ -54,7 +54,9 @@ namespace InspectSystem.Controllers
         {
             ViewBag.CreateACID = acid;
             ViewBag.CreateItemID = itemid;
-
+            // Give ACID and ItemID to ValidationsController
+            TempData["CreateACID"] = acid;
+            TempData["CreateItemID"] = itemid;
             return PartialView();
         }
 
@@ -70,7 +72,6 @@ namespace InspectSystem.Controllers
 
             if (ModelState.IsValid)
             {
-
                 db.InspectFields.Add(inspectFields);
                 db.SaveChanges();
                 return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
