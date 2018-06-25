@@ -25,13 +25,12 @@ namespace InspectSystem.Controllers
 
             if( FindFieldID != null )
             {
-                message = "編號重複";
+                message = "欄位代碼重複";
                 return Json(message, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                message = "可用編號";
-                return Json(message, JsonRequestBehavior.AllowGet);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
 
         }

@@ -16,13 +16,15 @@
     $(document).ready(function () {
 
         /* Get the areaName and className that user selected. */
-        var areaName = $("#areaName").text();
-        var className = $("#className").text();
+        var aList = document.getElementById("areaDropDownList");
+        var areaName = aList.options[aList.selectedIndex].text;
+        var cList = document.getElementById("classDropDownList");
+        var className = cList.options[cList.selectedIndex].text;
 
         /* To create a table row for user to new a item. */
         function createItemForm() {
 
-            /* Create table row and data elements */ 
+            /* Create table row and data elements */
             var newRow = document.createElement("TR");
             var newCell1 = document.createElement("TD");
             newCell1.setAttribute("class", "col-md-2");
@@ -41,31 +43,33 @@
             var cName = document.createTextNode(className);
 
             /* input element, hidden areaID */
-            var inputAreaID = document.createElement("input");     
+            var inputAreaID = document.createElement("input");
             inputAreaID.setAttribute("type", "hidden");
             inputAreaID.setAttribute("name", "areaID");
             inputAreaID.setAttribute("value", "@TempData["AreaListValue"]");
 
             /* input element, hidden classID */
-            var inputClassID = document.createElement("input");    
+            var inputClassID = document.createElement("input");
             inputClassID.setAttribute("type", "hidden");
             inputClassID.setAttribute("name", "classID");
             inputClassID.setAttribute("value", "@TempData["ClassListValue"]");
 
             /* input element, itemID */
-            var inputitemID = document.createElement("input");     
-            inputitemID.setAttribute("type", "text");
+            var inputitemID = document.createElement("input");
+            inputitemID.setAttribute("type", "number");
             inputitemID.setAttribute("name", "itemID");
             inputitemID.setAttribute("class", "form-control");
+            inputitemID.setAttribute("Required", "Required");
 
             /* input element, itemName */
-            var inputitemName = document.createElement("input");   
+            var inputitemName = document.createElement("input");
             inputitemName.setAttribute("type", "text");
             inputitemName.setAttribute("name", "itemName");
             inputitemName.setAttribute("class", "form-control");
+            inputitemName.setAttribute("Required", "Required");
 
             /* input element, itemStatus */
-            var inputitemStatus = document.createElement("input"); 
+            var inputitemStatus = document.createElement("input");
             inputitemStatus.setAttribute("type", "checkbox");
             inputitemStatus.setAttribute("name", "itemStatus");
             inputitemStatus.setAttribute("id", "itemStatusCheck");
@@ -74,13 +78,13 @@
             inputitemStatus.setAttribute("checked", "true");  //set default value to true
 
             /* input element, submit button */
-            var submitBtn = document.createElement("input");       
+            var submitBtn = document.createElement("input");
             submitBtn.setAttribute("type", "submit");
             submitBtn.setAttribute("value", "儲存");
             submitBtn.setAttribute("class", "btn btn-primary");
 
             /* hyperlink element, Back to Index button */
-            var backBtn = document.createElement("a");             
+            var backBtn = document.createElement("a");
             backBtn.setAttribute("class", "btn btn-info");
             backBtn.setAttribute("href", "@Url.Action("Index")");
             var btnText = document.createTextNode("返回");
@@ -117,6 +121,7 @@
 
             createItemForm();
             /* When Creating new item, disable other edit buttons */
+            $("#createBtn").attr("disabled", true);
             $(".editBtn").attr("disabled", true);
         });
 
@@ -144,12 +149,12 @@
         <div class="form-group col-md-5">
             @Html.Label("選擇區域:", new { @for = "AreaList" })
             @Html.DropDownList("AreaList", null, "請選擇",
-                                new { @class = "form-control", name = "AreaList", required = "required" })
+                                new { @class = "form-control", name = "AreaList", required = "required", id = "areaDropDownList"})
         </div>
         <div class="form-group col-md-5">
             @Html.Label("選擇類別:", new { @for = "ClassList" })
             @Html.DropDownList("ClassList", null, "請選擇",
-                                new { @class = "form-control", name = "ClassList", required = "required" })
+                                new { @class = "form-control", name = "ClassList", required = "required", id = "classDropDownList" })
         </div>
         <div class="form-group col-md-2">
             <input type="submit" value="查詢項目" class="btn" />
@@ -211,10 +216,10 @@
                 {
                     @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
                     <td class="col-md-2">
-                        <span id="areaName">@Html.DisplayFor(modelItem => item.InspectAreas.AreaName)</span>
+                        @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
                     </td>
                     <td class="col-md-2">
-                        <span id="className">@Html.DisplayFor(modelItem => item.InspectClasses.ClassName)</span>
+                        @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
                     </td>
                     <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.ItemID)
@@ -235,7 +240,7 @@
                         <a href="@Url.Action("Index")" class="btn btn-info @editRow hideEditItems">返回</a>
                     </td>
                 }
-                <td class="col-md-1"> 
+                <td class="col-md-1">
                     <button class="btn fieldBtn" value="@row">欄位</button>
                 </td>
             </tr>

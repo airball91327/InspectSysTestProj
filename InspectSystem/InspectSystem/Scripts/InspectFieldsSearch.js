@@ -9,11 +9,12 @@
         var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
         var editModalNo = "editModalNo" + zoneNo;
         var editModalContentNo = "editModalContentNo" + zoneNo;
-
-        alert("number:" + rowNumber + "ACID:" + ACID + "itemID:" + itemID + "fieldID:" + fieldID +
-            "zoneNo:" + zoneNo + "editModalNo:" + editModalNo +
-            "editModalContentNo:" + editModalContentNo);//for debugger
-
+        /* For debug. */
+        /*
+        console.log("number:" + rowNumber + "ACID:" + ACID + "itemID:" + itemID + "fieldID:" + fieldID +
+                    "zoneNo:" + zoneNo + "editModalNo:" + editModalNo +
+                    "editModalContentNo:" + editModalContentNo);
+        */
         document.getElementById(editModalNo).style.display = "block";
 
         $.ajax({
@@ -21,7 +22,7 @@
             url: "/InspectFields/Edit",
             data: { acid: ACID, itemid: itemID, fieldid: fieldID },
             success: function (result) {
-                console.log(result); //For debugger
+                console.log(result); //For debug
                 $("#" + editModalContentNo).html(result);
             },
             error: function (msg) {
@@ -37,10 +38,11 @@
         var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
         var createModalNo = "createModalNo" + zoneNo;
         var createModalContentNo = "createModalContentNo" + zoneNo;
-
-        alert("ACID:" + ACID + "itemID:" + itemID + "zoneNo:" + zoneNo +
-            "createModalNo:" + createModalNo + "createModalContentNo:" + createModalContentNo);//for debugger
-
+        /* For debug. */
+        /*
+        console.log("ACID:" + ACID + "itemID:" + itemID + "zoneNo:" + zoneNo +
+            "createModalNo:" + createModalNo + "createModalContentNo:" + createModalContentNo);
+        */
         document.getElementById(createModalNo).style.display = "block";
 
         $.ajax({
@@ -48,7 +50,7 @@
             url: "/InspectFields/Create",
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
-                console.log(result); //For debugger
+                console.log(result); //For debug
                 $("#" + createModalContentNo).html(result);
             },
             error: function (msg) {
