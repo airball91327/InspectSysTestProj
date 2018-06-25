@@ -15,6 +15,7 @@
                     "zoneNo:" + zoneNo + "editModalNo:" + editModalNo +
                     "editModalContentNo:" + editModalContentNo);
         */
+
         document.getElementById(editModalNo).style.display = "block";
 
         $.ajax({
