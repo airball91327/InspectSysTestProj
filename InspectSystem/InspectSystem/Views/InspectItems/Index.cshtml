@@ -54,13 +54,6 @@
             inputClassID.setAttribute("name", "classID");
             inputClassID.setAttribute("value", "@TempData["ClassListValue"]");
 
-            /* input element, itemID */
-            var inputitemID = document.createElement("input");
-            inputitemID.setAttribute("type", "number");
-            inputitemID.setAttribute("name", "itemID");
-            inputitemID.setAttribute("class", "form-control");
-            inputitemID.setAttribute("Required", "Required");
-
             /* input element, itemName */
             var inputitemName = document.createElement("input");
             inputitemName.setAttribute("type", "text");
@@ -86,6 +79,7 @@
             /* hyperlink element, Back to Index button */
             var backBtn = document.createElement("a");
             backBtn.setAttribute("class", "btn btn-info");
+            backBtn.setAttribute("style", "margin-left:3px");
             backBtn.setAttribute("href", "@Url.Action("Index")");
             var btnText = document.createTextNode("返回");
             backBtn.appendChild(btnText);
@@ -95,11 +89,10 @@
             newCell1.appendChild(aName);
             newCell2.appendChild(inputClassID);
             newCell2.appendChild(cName);
-            newCell3.appendChild(inputitemID);
-            newCell4.appendChild(inputitemName);
-            newCell5.appendChild(inputitemStatus);
-            newCell6.appendChild(submitBtn);
-            newCell6.appendChild(backBtn);
+            newCell3.appendChild(inputitemName);
+            newCell4.appendChild(inputitemStatus);
+            newCell5.appendChild(submitBtn);
+            newCell5.appendChild(backBtn);
 
             /* Insert cells to the new row */
             newRow.appendChild(newCell1);
@@ -177,16 +170,13 @@
             @Html.DisplayNameFor(model => model.InspectClasses.ClassName)
         </th>
         <th class="col-md-2">
-            @Html.DisplayNameFor(model => model.ItemID)
-        </th>
-        <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemName)
         </th>
         <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemStatus)
         </th>
-        <th class="col-md-1"></th>
-        <th class="col-md-1"></th>
+        <th class="col-md-2"></th>
+        <th class="col-md-2"></th>
     </tr>
 
     @if (SearchResult == null)
@@ -215,15 +205,12 @@
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
                     @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
+                    @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
                     <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
                     </td>
                     <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.ItemID)
-                        @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
                     </td>
                     <td class="col-md-2">
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
@@ -234,13 +221,13 @@
                         <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
                         <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
                     </td>
-                    <td class="col-md-1">
+                    <td class="col-md-2">
                         <input type="button" class="btn editBtn" value="編輯" id="@row" />
                         <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
                         <a href="@Url.Action("Index")" class="btn btn-info @editRow hideEditItems">返回</a>
                     </td>
                 }
-                <td class="col-md-1">
+                <td class="col-md-2">
                     <button class="btn fieldBtn" value="@row">欄位</button>
                 </td>
             </tr>

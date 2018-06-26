@@ -25,14 +25,11 @@
 </script>
 
 <div class="container">
-    <button class="btn btn-success fieldCreateBtn">新增欄位</button>
+    <button class="btn btn-success fieldCreateBtn" onclick="alert(fieldCreateACID + '+' + fieldCreateItemID)">新增欄位</button>
 </div><br />
 
 <table class="table @zoneNo">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FieldID)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.FieldName)
         </th>
@@ -65,10 +62,7 @@
         <tr>
             @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
             @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
-            <td>
-                @Html.DisplayFor(modelItem => item.FieldID)
-                @Html.HiddenFor(modelItem => item.FieldID, new { id = hideFieldIDNo })
-            </td>
+            @Html.HiddenFor(modelItem => item.FieldID, new { id = hideFieldIDNo })
             <td>
                 @Html.DisplayFor(modelItem => item.FieldName)
             </td>

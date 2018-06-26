@@ -18,9 +18,12 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "項目代碼")]
         public int ItemID { get; set; }
+        [NotMapped]
+        [Display(Name = "項目名稱")]
+        public string ItemName { get; set; }
         [Key, Column(Order = 3)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
-        [Remote("FieldID", "Validations")]
         [Display(Name = "欄位代碼")]
         public int FieldID { get; set; }
         [Display(Name = "欄位名稱")]

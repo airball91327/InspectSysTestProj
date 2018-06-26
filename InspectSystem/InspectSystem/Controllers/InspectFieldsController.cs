@@ -54,6 +54,7 @@ namespace InspectSystem.Controllers
         {
             ViewBag.CreateACID = acid;
             ViewBag.CreateItemID = itemid;
+            ViewBag.ItemNameForCreate = db.InspectItems.Find(acid, itemid).ItemName;
             // Give ACID and ItemID to ValidationsController
             TempData["CreateACID"] = acid;
             TempData["CreateItemID"] = itemid;
@@ -67,8 +68,13 @@ namespace InspectSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(InspectFields inspectFields)
         {
-            var ACID = inspectFields.ACID;
-            var itemID = inspectFields.ItemID;
+            int ACID = inspectFields.ACID;
+            int itemID = inspectFields.ItemID;
+
+            int fieldCount = db.InspectFields.Count(fc => fc.ACID == ACID && fc.ItemID == itemID);
+            int fieldID = fieldCount + 1;
+
+            inspectFields.FieldID = fieldID;
 
             if (ModelState.IsValid)
             {

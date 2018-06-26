@@ -6,6 +6,7 @@
         $(this).hide();
         /* When Editing, disable other edit buttons */
         $(".editBtn").attr("disabled", true);
+        $("#createBtn").attr("disabled", true);
         /* Change the selected row to be edit */
         $(".displayRow" + $(this).attr("id")).hide();
         $(".editRow" + + $(this).attr("id")).show();

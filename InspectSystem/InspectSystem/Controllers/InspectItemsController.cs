@@ -105,7 +105,10 @@ namespace InspectSystem.Controllers
             int areaID = System.Convert.ToInt32(Request.Form["areaID"]);
             int classID = System.Convert.ToInt32(Request.Form["classID"]);
             int ACID = (areaID) * 100 + classID;
-            int itemID = System.Convert.ToInt32(Request.Form["itemID"]);
+
+            /* Use ACID to search the DB for existing items to declare the itemID for create. */
+            int itemCount = db.InspectItems.Count(ic => ic.ACID == ACID);
+            int itemID = itemCount + 1;
 
             /* If CheckBox is not selected, it will return nothing, 
                so use the condition to give value to checkbox's request. */
