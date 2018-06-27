@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
 
+    /* InspectFields/Search */
     $(".fieldEditBtn").click(function () {
 
         var rowNumber = $(this).attr("value");

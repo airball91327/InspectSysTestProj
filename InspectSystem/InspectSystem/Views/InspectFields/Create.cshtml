@@ -1,14 +1,11 @@
 ﻿@model InspectSystem.Models.InspectFields
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-
 @{
     Layout = null;
     int ACID = ViewBag.CreateACID;
     int itemID = ViewBag.CreateItemID;
     int zoneNo = ACID * 100 + itemID;
     string createModalNo = "createModalNo" + zoneNo;
-    string createModalContentNo = "createModalContentNo" + zoneNo;
     string fieldDivNo = "fieldDivNo" + zoneNo;
 }
 
@@ -18,7 +15,6 @@
     $(document).ready(function () {
         /* When submit, close the modal. */
         $("#submitBtnCreate").submit(function () {
-            $("#@createModalContentNo").remove();//未測試
             document.getElementById("@createModalNo").style.display = "none";
         });
     });
@@ -60,9 +56,9 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.DataType, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.DataType, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
+                <div class="col-md-10" style="margin-top : 7px">
+                    @Html.RadioButtonFor(model => model.DataType, "string")字串
+                    @Html.RadioButtonFor(model => model.DataType, "float")數字
                 </div>
             </div>
 

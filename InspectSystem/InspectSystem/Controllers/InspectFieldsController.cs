@@ -55,9 +55,7 @@ namespace InspectSystem.Controllers
             ViewBag.CreateACID = acid;
             ViewBag.CreateItemID = itemid;
             ViewBag.ItemNameForCreate = db.InspectItems.Find(acid, itemid).ItemName;
-            // Give ACID and ItemID to ValidationsController
-            TempData["CreateACID"] = acid;
-            TempData["CreateItemID"] = itemid;
+
             return PartialView();
         }
 
@@ -88,6 +86,9 @@ namespace InspectSystem.Controllers
         // GET: InspectFields/Edit/5
         public ActionResult Edit(int? ACID, int? itemID, int? fieldID)
         {
+
+            ViewBag.ItemNameForEdit = db.InspectItems.Find(ACID, itemID).ItemName;
+
             if (ACID == null || itemID == null || fieldID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
