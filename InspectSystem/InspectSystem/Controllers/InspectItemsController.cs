@@ -131,9 +131,12 @@ namespace InspectSystem.Controllers
             ClassesOfAreas classesOfAreas = db.ClassesOfAreas.Find(ACID);
             if(classesOfAreas == null)
             {
-                classesOfAreas.ACID = ACID;
-                classesOfAreas.AreaID = areaID;
-                classesOfAreas.ClassID = classID;
+                classesOfAreas = new ClassesOfAreas
+                {
+                    ACID = ACID,
+                    AreaID = areaID,
+                    ClassID = classID
+                };
                 db.ClassesOfAreas.Add(classesOfAreas);
                 db.SaveChanges();
             }

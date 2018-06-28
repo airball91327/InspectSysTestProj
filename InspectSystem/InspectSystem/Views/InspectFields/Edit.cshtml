@@ -62,6 +62,7 @@
                 <div class="col-md-10" style="margin-top : 7px">
                     @Html.RadioButtonFor(model => model.DataType, "string")字串
                     @Html.RadioButtonFor(model => model.DataType, "float")數字
+                    @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -91,7 +92,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" id="submitBtnEdit" />
+                    <input type="submit" value="儲存" class="btn btn-default" id="submitBtnEdit" />
                 </div>
             </div>
         </div>

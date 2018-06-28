@@ -52,11 +52,21 @@ namespace InspectSystem.Controllers
         // GET: InspectFields/Create
         public ActionResult Create(int acid, int itemid)
         {
+            /* Pass the ACID, ItemID, ItemName for View to print. */
             ViewBag.CreateACID = acid;
             ViewBag.CreateItemID = itemid;
             ViewBag.ItemNameForCreate = db.InspectItems.Find(acid, itemid).ItemName;
 
-            return PartialView();
+            /* Set the default values for create field. */
+            InspectFields inspectFields = new InspectFields
+            {
+                ACID = acid,
+                ItemID = itemid,
+                MaxValue = 0,
+                MinValue = 0
+            };
+
+            return PartialView(inspectFields);
         }
 
         // POST: InspectFields/Create
