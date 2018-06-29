@@ -7,7 +7,7 @@ namespace InspectSystem.Models
     [Table("InspectDocDetails")]
     public class InspectDocDetails
     {
-        [Key]
+        [Key, Column(Order = 1)]
         [Required]
         [Display(Name = "表單編號")]
         public int DocID { get; set; }
@@ -17,21 +17,21 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "區域名稱")]
         public string AreaName { get; set; }
-        [Key]
+        [Key, Column(Order = 2)]
         [Required]
         [Display(Name = "類別代碼")]
         public int ClassID { get; set; }
         [Required]
         [Display(Name = "區域名稱")]
         public string ClassName { get; set; }
-        [Key]
+        [Key, Column(Order = 3)]
         [Required]
         [Display(Name = "項目代碼")]
         public int ItemID { get; set; }
         [Required]
         [Display(Name = "項目名稱")]
         public string ItemName { get; set; }
-        [Key]
+        [Key, Column(Order = 4)]
         [Required]
         [Display(Name = "欄位代碼")]
         public int FieldID { get; set; }

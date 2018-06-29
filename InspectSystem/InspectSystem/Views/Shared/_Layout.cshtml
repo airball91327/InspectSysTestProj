@@ -39,8 +39,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("首頁", "Index", "Home")</li>
-                    <li>@Html.ActionLink("關於", "About", "Home")</li>
-                    <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>
                     <li class="dropdown">@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("新增", "Create", "InspectAreas")</li>
@@ -56,6 +54,7 @@
                         </ul>
                     </li>
                     <li>@Html.ActionLink("巡檢項目維護", "Index", "InspectItems")</li>
+                    <li>@Html.ActionLink("注意事項維護", "Index", "InspectPrecautions")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
