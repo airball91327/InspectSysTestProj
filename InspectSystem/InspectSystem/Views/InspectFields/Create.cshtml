@@ -1,5 +1,8 @@
 ﻿@model InspectSystem.Models.InspectFields
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/InspectFields.js"></script>
 @{
     Layout = null;
     int ACID = ViewBag.CreateACID;
@@ -26,8 +29,6 @@
     <title>Create</title>
 </head>
 <body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
 
     @using (Ajax.BeginForm("Create", new AjaxOptions { UpdateTargetId = fieldDivNo }))
     {

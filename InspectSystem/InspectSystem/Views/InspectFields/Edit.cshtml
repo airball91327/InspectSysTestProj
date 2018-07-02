@@ -1,5 +1,8 @@
 ﻿@model InspectSystem.Models.InspectFields
 
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/InspectFields.js"></script>
 @{
     Layout = null;
     int ACID = Model.ACID;
@@ -18,6 +21,7 @@
             document.getElementById("@editModalNo").style.display = "none";
         });
     });
+
 </script>
 
 <html>
@@ -26,8 +30,6 @@
     <title>欄位編輯</title>
 </head>
 <body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
 
     @using (Ajax.BeginForm("Edit", new AjaxOptions { UpdateTargetId = fieldDivNo }))
     {

@@ -8,6 +8,7 @@ namespace InspectSystem.Models
     public class ClassesOfAreas
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "ACID")]
         public int ACID { get; set; }

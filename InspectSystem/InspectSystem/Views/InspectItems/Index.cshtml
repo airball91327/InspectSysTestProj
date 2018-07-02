@@ -60,6 +60,7 @@
             var inputitemName = document.createElement("input");
             inputitemName.setAttribute("type", "text");
             inputitemName.setAttribute("name", "itemName");
+            inputitemName.setAttribute("id", "inputItemName")
             inputitemName.setAttribute("class", "form-control");
             inputitemName.setAttribute("Required", "Required");
 
@@ -118,6 +119,7 @@
             /* When Creating new item, disable other edit buttons */
             $("#createBtn").attr("disabled", true);
             $(".editBtn").attr("disabled", true);
+            document.getElementById("inputItemName").focus({ preventScroll: false });
         });
 
     });
