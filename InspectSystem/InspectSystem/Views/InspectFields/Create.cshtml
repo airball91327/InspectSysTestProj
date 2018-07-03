@@ -59,7 +59,7 @@
                 @Html.LabelFor(model => model.DataType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10" style="margin-top : 7px">
                     @Html.RadioButtonFor(model => model.DataType, "string")字串
-                    @Html.RadioButtonFor(model => model.DataType, "float")數字
+                    @Html.RadioButtonFor(model => model.DataType, "float", new { @checked = "checked" })數字
                     @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>
