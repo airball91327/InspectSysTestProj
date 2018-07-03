@@ -46,7 +46,7 @@
                 console.log(result); //For debug
                 $(".editModalContent").html("<p></p>");
                 var test = $(".editModalContent").html();
-                console.log(".............");
+                console.log("...............");
                 console.log(test);
                 $("#" + createModalContentNo).html(result);
             },
