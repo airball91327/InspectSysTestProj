@@ -19,7 +19,7 @@
             data: { acid: ACID, itemid: itemID, fieldid: fieldID },
             success: function (result) {
                 console.log(result); //For debug
-                $(".createModalContent").html("<p></p>");
+                $(".createModalContent").html("<p></p>"); //Clean other create modal's html content to prevent radio button's error.
                 $("#" + editModalContentNo).html(result);
             },
             error: function (msg) {
@@ -44,10 +44,7 @@
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
                 console.log(result); //For debug
-                $(".editModalContent").html("<p></p>");
-                var test = $(".editModalContent").html();
-                console.log("...............");
-                console.log(test);
+                $(".editModalContent").html("<p></p>");  //Clean other edit modal's html content to prevent radio button's error.
                 $("#" + createModalContentNo).html(result);
             },
             error: function (msg) {

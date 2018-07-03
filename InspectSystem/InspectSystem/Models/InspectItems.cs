@@ -25,7 +25,7 @@ namespace InspectSystem.Models
         [Display(Name = "項目名稱")]
         public string ItemName { get; set; }
         [Required]
-        [Display(Name = "項目狀態")]
+        [Display(Name = "顯示項目")]
         public Boolean ItemStatus { get; set; }
 
 

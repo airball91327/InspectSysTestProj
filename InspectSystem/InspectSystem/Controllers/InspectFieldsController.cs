@@ -63,7 +63,8 @@ namespace InspectSystem.Controllers
                 ACID = acid,
                 ItemID = itemid,
                 MaxValue = 0,
-                MinValue = 0
+                MinValue = 0,
+                FieldStatus = true
             };
 
             return PartialView(inspectFields);

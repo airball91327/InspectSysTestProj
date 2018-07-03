@@ -92,6 +92,18 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.FieldStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="margin-top : 7px">
+                    @Html.CheckBoxFor(model => model.FieldStatus)
+                    @Html.ValidationMessageFor(model => model.FieldStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div>
+                <p style="color : red">無須設定大小值時，請將數值設定為0</p>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="儲存" class="btn btn-default" id="submitBtnEdit" />
                 </div>

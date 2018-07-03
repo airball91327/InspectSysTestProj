@@ -37,6 +37,8 @@ namespace InspectSystem.Models
         public double MinValue { get; set; }
         [Display(Name = "最大值")]
         public double MaxValue { get; set; }
-
+        [Required]
+        [Display(Name = "顯示欄位")]
+        public Boolean FieldStatus { get; set; }
     }
 }
