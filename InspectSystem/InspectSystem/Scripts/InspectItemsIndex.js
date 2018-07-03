@@ -29,6 +29,7 @@
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
                 console.log(result); //For debug
+                $(".fieldDiv").not("#fieldDivNo" + zoneNo).html("<p></p>");
                 $("#fieldDivNo" + zoneNo).html(result);              
             },
             error: function (msg) {

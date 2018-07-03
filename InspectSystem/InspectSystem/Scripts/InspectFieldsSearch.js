@@ -10,12 +10,6 @@
         var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
         var editModalNo = "editModalNo" + zoneNo;
         var editModalContentNo = "editModalContentNo" + zoneNo;
-        /* For debug. */
-        /*
-        console.log("number:" + rowNumber + "ACID:" + ACID + "itemID:" + itemID + "fieldID:" + fieldID +
-                    "zoneNo:" + zoneNo + "editModalNo:" + editModalNo +
-                    "editModalContentNo:" + editModalContentNo);
-        */
 
         document.getElementById(editModalNo).style.display = "block";
 
@@ -25,6 +19,7 @@
             data: { acid: ACID, itemid: itemID, fieldid: fieldID },
             success: function (result) {
                 console.log(result); //For debug
+                $(".createModalContent").html("<p></p>");
                 $("#" + editModalContentNo).html(result);
             },
             error: function (msg) {
@@ -40,11 +35,7 @@
         var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
         var createModalNo = "createModalNo" + zoneNo;
         var createModalContentNo = "createModalContentNo" + zoneNo;
-        /* For debug. */
-        /*
-        console.log("ACID:" + ACID + "itemID:" + itemID + "zoneNo:" + zoneNo +
-            "createModalNo:" + createModalNo + "createModalContentNo:" + createModalContentNo);
-        */
+
         document.getElementById(createModalNo).style.display = "block";
 
         $.ajax({
@@ -53,6 +44,10 @@
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
                 console.log(result); //For debug
+                $(".editModalContent").html("<p></p>");
+                var test = $(".editModalContent").html();
+                console.log(".............");
+                console.log(test);
                 $("#" + createModalContentNo).html(result);
             },
             error: function (msg) {
