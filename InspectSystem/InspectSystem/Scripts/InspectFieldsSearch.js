@@ -26,6 +26,7 @@
                 alert(msg);
             }
         });
+
     });
 
     $(".fieldCreateBtn").click(function () {

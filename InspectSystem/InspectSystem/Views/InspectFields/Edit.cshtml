@@ -16,6 +16,8 @@
 
 <script>   
     $(document).ready(function () {
+
+        $("#FieldName").focus();
         /* When submit, close the modal. */
         $("#submitBtnEdit").submit(function () {
             document.getElementById("@editModalNo").style.display = "none";
@@ -99,7 +101,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="col-md-offset-2">
                 <p style="color : red">無須設定大小值時，請將數值設定為0</p>
             </div>
 
