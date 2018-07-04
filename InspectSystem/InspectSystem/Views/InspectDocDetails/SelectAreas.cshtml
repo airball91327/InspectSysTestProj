@@ -1,0 +1,22 @@
+﻿@model IEnumerable<InspectSystem.Models.InspectAreas>
+
+@Scripts.Render("~/bundles//jquery")
+
+@{
+    ViewBag.Title = "選擇區域";
+}
+
+<h2>選擇區域</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            @Html.HiddenFor(modelItem => item.AreaID)
+            @Html.DisplayFor(modelItem => item.AreaName)
+            <img src="~/Content/TestPic.jpg" class="img-responsive" alt="TestPic">
+        </div>
+    }
+</div>
+
+

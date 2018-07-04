@@ -195,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
     <Compile Include="Controllers\InspectClassesController.cs" />
+    <Compile Include="Controllers\InspectDocDetailsController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
     <Compile Include="Controllers\InspectPrecautionsController.cs" />
@@ -221,6 +222,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\TestPic.jpg" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -312,6 +314,12 @@
     <Content Include="Views\InspectPrecautions\Details.cshtml" />
     <Content Include="Views\InspectPrecautions\Edit.cshtml" />
     <Content Include="Views\InspectPrecautions\Index.cshtml" />
+    <Content Include="Views\InspectDocDetails\Create.cshtml" />
+    <Content Include="Views\InspectDocDetails\Delete.cshtml" />
+    <Content Include="Views\InspectDocDetails\Details.cshtml" />
+    <Content Include="Views\InspectDocDetails\Edit.cshtml" />
+    <Content Include="Views\InspectDocDetails\Index.cshtml" />
+    <Content Include="Views\InspectDocDetails\SelectAreas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
