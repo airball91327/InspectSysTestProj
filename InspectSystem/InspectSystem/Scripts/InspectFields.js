@@ -19,7 +19,7 @@ function ChangeAttrByRaioBtn() {
         }
     }
 
-    if (checkValue == "string") {
+    if (checkValue == "string" || checkValue == "boolean") {
         $("#UnitOfData").attr("disabled", true); /* If a element set disabled, it won't return values.*/
         $("#MinValue").attr("disabled", true);
         $("#MaxValue").attr("disabled", true);

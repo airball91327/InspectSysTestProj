@@ -10,6 +10,7 @@ namespace InspectSystem.Models
     {
         [Key, Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [ForeignKey("ClassesOfAreas")]
         [Required]
         [Display(Name = "ACID")]
         public int ACID { get; set; }         //對應ClassesOfAreas的ID、程式產生
@@ -40,5 +41,7 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "顯示欄位")]
         public Boolean FieldStatus { get; set; }
+
+        public virtual ClassesOfAreas ClassesOfAreas { get; set; }
     }
 }

@@ -15,9 +15,20 @@ namespace InspectSystem.Controllers
         private BMEDcontext db = new BMEDcontext();
 
         // GET: InspectDocDetails
-        public ActionResult Index()
+        public ActionResult Index(int? areaID)
         {
-            return View(db.InspectDocDetails.ToList());
+            int classID = 1; //Default value
+            var findACID = db.ClassesOfAreas.Where(c => c.AreaID == areaID &&
+                                                    c.ClassID == classID);
+            int ACID = 0;
+            foreach (var item in findACID) {
+                ACID = item.ACID;
+            }
+            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectClasses);
+            var fieldsForAreaID = inspectFields.Where(i => i.ACID == ACID);
+            return View(fieldsForAreaID.ToList());
         }
 
         // GET: InspectDocDetails/SelectAreas

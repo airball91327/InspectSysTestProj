@@ -62,6 +62,7 @@
                 <div class="col-md-10" style="margin-top : 7px">
                     @Html.RadioButtonFor(model => model.DataType, "string")字串
                     @Html.RadioButtonFor(model => model.DataType, "float", new { @checked = "checked" })數字
+                    @Html.RadioButtonFor(model => model.DataType, "boolean")正常/不正常
                     @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>

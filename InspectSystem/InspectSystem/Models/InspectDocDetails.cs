@@ -35,7 +35,6 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "欄位代碼")]
         public int FieldID { get; set; }
-        [Required]
         [Display(Name = "欄位名稱")]
         public string FieldName { get; set; }
         [Display(Name = "單位")]
