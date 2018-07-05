@@ -27,8 +27,13 @@ namespace InspectSystem.Controllers
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectClasses);
-            var fieldsForAreaID = inspectFields.Where(i => i.ACID == ACID);
-            return View(fieldsForAreaID.ToList());
+            var fieldsForACID = inspectFields.Where(i => i.ACID == ACID).ToList();
+            var itemsForACID = db.InspectItems.Where(i => i.ACID == ACID).ToList();
+
+            return View(new InspectDocDetailsViewModels() {
+                InspectFields = fieldsForACID,
+                InspectItems = itemsForACID
+            });
         }
 
         // GET: InspectDocDetails/SelectAreas

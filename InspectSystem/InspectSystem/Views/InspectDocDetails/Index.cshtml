@@ -1,96 +1,49 @@
-﻿@model IEnumerable<InspectSystem.Models.InspectFields>
+﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassesOfAreas.InspectAreas.AreaID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassesOfAreas.InspectAreas.AreaName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassesOfAreas.InspectClasses.ClassID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassesOfAreas.InspectClasses.ClassName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FieldID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FieldName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FieldStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MaxValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MinValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitOfData)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataType)
-        </th>
-    </tr>
+    var currentItemName = "0";
+    <div class="form-horizontal">
+        @foreach (var item in Model.InspectItems)
+        {
+            <!--Check the ItemStatus to decide to display or not.-->
+            if(item.ItemStatus == true)
+            {
+                <!--Display the ItemName when ItemName is not the same.-->
+                if (item.ItemName != currentItemName)
+                {
+                    @Html.DisplayFor(modelItem => item.ItemName);
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassesOfAreas.InspectAreas.AreaID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassesOfAreas.InspectAreas.AreaName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassesOfAreas.InspectClasses.ClassID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassesOfAreas.InspectClasses.ClassName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FieldID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FieldName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FieldStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxValue)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MinValue)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnitOfData)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataType)
-        </td>
-    </tr>
+                    foreach(var itemf in Model.InspectFields)
+                    {
+                        <!--Check the FieldStatus to decide to display or not.-->
+                        if(itemf.FieldStatus == true)
+                        {
+                            <!--Display all the FieldName belong the current Item-->
+                            if (item.ItemID == itemf.ItemID)
+                            {
+                                @Html.DisplayFor(modelItem => itemf.FieldName);
+                                <input type="text" />
+                                @Html.DisplayFor(modelItem => itemf.UnitOfData);
+                            }
+                        }
+                    }
+                    <br />
+                }
+                else
+                {
+                    currentItemName = item.ItemName;
+                }
+            }
+        }
+    </div>
 }
 
-</table>
+

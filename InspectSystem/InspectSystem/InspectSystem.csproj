@@ -211,6 +211,7 @@
     <Compile Include="Models\InspectAreas.cs" />
     <Compile Include="Models\InspectClasses.cs" />
     <Compile Include="Models\InspectDocDetails.cs" />
+    <Compile Include="Models\InspectDocDetailsViewModels.cs" />
     <Compile Include="Models\InspectDocs.cs" />
     <Compile Include="Models\InspectFields.cs" />
     <Compile Include="Models\InspectItems.cs" />
