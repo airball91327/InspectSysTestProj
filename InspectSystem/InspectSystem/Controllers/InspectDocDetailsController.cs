@@ -19,20 +19,41 @@ namespace InspectSystem.Controllers
         {
             int classID = 1; //Default value
             var findACID = db.ClassesOfAreas.Where(c => c.AreaID == areaID &&
-                                                    c.ClassID == classID);
-            int ACID = 0;
-            foreach (var item in findACID) {
-                ACID = item.ACID;
-            }
+                                                    c.ClassID == classID).First();
+            /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectClasses);
-            var fieldsForACID = inspectFields.Where(i => i.ACID == ACID).ToList();
-            var itemsForACID = db.InspectItems.Where(i => i.ACID == ACID).ToList();
+            var itemsByACID = db.InspectItems.Where(i => i.ACID == findACID.ACID &&
+                                                          i.ItemStatus == true).ToList();
+            var fieldsByACID = inspectFields.Where(i => i.ACID == findACID.ACID && 
+                                                         i.FieldStatus == true).ToList();
+
+            /* Create a list for user to insert values, and add some known value first. */
+            var inspectDocDetails = new List<InspectDocDetails>();
+
+            foreach(var item in fieldsByACID)
+            {
+                var itemName = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
+                                                          i.ACID == item.ACID).First();
+                inspectDocDetails.Add(new InspectDocDetails()
+                {
+                    AreaID = item.ClassesOfAreas.InspectAreas.AreaID,
+                    AreaName = item.ClassesOfAreas.InspectAreas.AreaName,
+                    ClassID = item.ClassesOfAreas.InspectClasses.ClassID,
+                    ClassName = item.ClassesOfAreas.InspectClasses.ClassName,
+                    ItemID = item.ItemID,
+                    ItemName = itemName.ItemName,
+                    FieldID = item.FieldID,
+                    FieldName = item.FieldName,
+                    UnitOfData = item.UnitOfData
+                });
+            }
 
             return View(new InspectDocDetailsViewModels() {
-                InspectFields = fieldsForACID,
-                InspectItems = itemsForACID
+                InspectDocDetails = inspectDocDetails,
+                InspectFields = fieldsByACID,
+                InspectItems = itemsByACID
             });
         }
 

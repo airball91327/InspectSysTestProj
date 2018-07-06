@@ -41,7 +41,6 @@ namespace InspectSystem.Models
         public string UnitOfData { get; set; }
         [Display(Name = "數值")]
         public string Value { get; set; }
-        [Required]
         [Display(Name = "是否正常")]
         public Boolean IsFunctional { get; set; }
         [Display(Name = "錯誤描述")]
