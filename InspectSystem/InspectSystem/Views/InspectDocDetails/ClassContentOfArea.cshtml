@@ -1,0 +1,73 @@
+﻿@model InspectSystem.Models.InspectDocDetailsViewModels
+
+@{
+    ViewBag.Title = "ClassContentOfArea";
+}
+
+<h2>ClassContentOfArea</h2>
+@using (Html.BeginForm("Create","InspectDocDetails", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    var currentItemName = "0";
+    <div class="form-horizontal">
+        @foreach (var item in Model.InspectItems)
+        {
+            <!--Display the ItemName when ItemName is not the same.-->
+            if (item.ItemName != currentItemName)
+            {
+                @Html.DisplayFor(modelItem => item.ItemName);
+
+                foreach(var fieldItem in Model.InspectFields)
+                {
+                    <!--Display all the FieldName belong the current Item-->
+                    if (item.ItemID == fieldItem.ItemID)
+                    {
+                        @Html.DisplayFor(modelItem => fieldItem.FieldName);
+
+                        foreach(var docItem in Model.InspectDocDetails)
+                        {
+                            <!--Display textbox or checkbox for all fields. -->
+                            if ( docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID )
+                            {
+                                switch (fieldItem.DataType)
+                                {
+                                    case "string" :
+                                        @Html.EditorFor(modelItem => docItem.Value);
+                                        @Html.ValidationMessageFor(modelItem => docItem.Value);
+                                        break;
+
+                                    case "float" :
+                                        @Html.EditorFor(modelItem => docItem.Value);
+                                        @Html.DisplayFor(modelItem => fieldItem.UnitOfData);
+                                        @Html.ValidationMessageFor(modelItem => docItem.Value);
+                                        break;
+
+                                    case "boolean" :
+                                        @Html.CheckBoxFor(modelItem => docItem.IsFunctional);
+                                        @Html.ValidationMessageFor(modelItem => docItem.IsFunctional);
+
+                                        @Html.LabelFor(modelItem => docItem.ErrorDescription);
+                                        @Html.EditorFor(modelItem => docItem.ErrorDescription);
+                                        @Html.ValidationMessageFor(modelItem => docItem.ErrorDescription);
+                                        break;
+                                }
+                            }
+                        }                
+                    }
+                }
+                <br />
+            }
+            else
+            {
+                currentItemName = item.ItemName;
+            }
+        }
+    </div>
+    <div>
+        <input type="submit" value="save" />
+    </div>
+}
+
+
+

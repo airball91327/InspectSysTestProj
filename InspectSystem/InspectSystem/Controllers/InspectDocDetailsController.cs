@@ -17,6 +17,15 @@ namespace InspectSystem.Controllers
         // GET: InspectDocDetails
         public ActionResult Index(int? areaID)
         {
+            ViewBag.AreaID = areaID;
+            var AreaPrecautions = db.InspectPrecautions.Where(i => i.AreaID == areaID);
+
+            return View(AreaPrecautions.ToList());
+        }
+
+        // GET:InspectDocDetails/ClassContentOfArea
+        public ActionResult ClassContentOfArea(int areaID)
+        {
             int classID = 1; //Default value
             var findACID = db.ClassesOfAreas.Where(c => c.AreaID == areaID &&
                                                     c.ClassID == classID).First();
@@ -50,7 +59,7 @@ namespace InspectSystem.Controllers
                 });
             }
 
-            return View(new InspectDocDetailsViewModels() {
+            return PartialView(new InspectDocDetailsViewModels() {
                 InspectDocDetails = inspectDocDetails,
                 InspectFields = fieldsByACID,
                 InspectItems = itemsByACID
