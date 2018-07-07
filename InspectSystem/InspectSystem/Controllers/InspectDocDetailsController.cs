@@ -15,12 +15,10 @@ namespace InspectSystem.Controllers
         private BMEDcontext db = new BMEDcontext();
 
         // GET: InspectDocDetails
-        public ActionResult Index(int? areaID)
+        public ActionResult Index(int areaID)
         {
             ViewBag.AreaID = areaID;
-            var AreaPrecautions = db.InspectPrecautions.Where(i => i.AreaID == areaID);
-
-            return View(AreaPrecautions.ToList());
+            return View();
         }
 
         // GET:InspectDocDetails/ClassContentOfArea
@@ -64,6 +62,13 @@ namespace InspectSystem.Controllers
                 InspectFields = fieldsByACID,
                 InspectItems = itemsByACID
             });
+        }
+
+        // GET:InspectDocDetails/AreaPrecautions
+        public ActionResult AreaPrecautions(int areaID)
+        {
+            var areaPrecautions = db.InspectPrecautions.Where(i => i.AreaID == areaID);
+            return PartialView(areaPrecautions.ToList());
         }
 
         // GET: InspectDocDetails/SelectAreas

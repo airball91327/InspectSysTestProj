@@ -5,30 +5,12 @@
 
 <div class="container">
     <div id="classContent">
-        @Html.Action("ClassContentOfArea", new { areaID = ViewBag.AreaID})
+        @Html.Action("ClassContentOfArea", new { areaID = ViewBag.AreaID })
     </div>
 </div>
 
 <!--Modal for precautions of area.-->
 <hr />
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AreaID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-    </tr>
-    @foreach(var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-        </tr>
-    }
-</table>
+<div class="container">
+    @Html.Action("AreaPrecautions", new { areaID = ViewBag.AreaID })
+</div>
