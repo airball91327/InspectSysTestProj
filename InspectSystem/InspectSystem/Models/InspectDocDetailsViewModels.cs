@@ -8,6 +8,7 @@ namespace InspectSystem.Models
     public class InspectDocDetailsViewModels
     {
         public IEnumerable<InspectDocDetails> InspectDocDetails { get; set; }
+        public IEnumerable<InspectDocDetailsTemporary> InspectDocDetailsTemporary { get; set; }
         public IEnumerable<InspectFields> InspectFields { get; set; }
         public IEnumerable<InspectItems> InspectItems { get; set; }
     }

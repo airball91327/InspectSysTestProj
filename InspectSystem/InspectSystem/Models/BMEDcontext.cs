@@ -21,6 +21,7 @@ namespace InspectSystem.Models
         public DbSet<InspectPrecautions> InspectPrecautions { get; set; }
         public DbSet<InspectDocs> InspectDocs { get; set; }
         public DbSet<InspectDocDetails> InspectDocDetails { get; set; }
+        public DbSet<InspectDocDetailsTemporary> InspectDocDetailsTemporary { get; set; }
 
     }
 }

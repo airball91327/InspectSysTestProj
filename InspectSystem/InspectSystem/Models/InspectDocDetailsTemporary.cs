@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InspectSystem.Models
 {
-    [Table("InspectDocDetails")]
-    public class InspectDocDetails
+    [Table("InspectDocDetailsTemporary")]
+    public class InspectDocDetailsTemporary
     {
         [Key, Column(Order = 1)]
         [Required]

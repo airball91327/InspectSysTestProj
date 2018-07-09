@@ -211,6 +211,7 @@
     <Compile Include="Models\InspectAreas.cs" />
     <Compile Include="Models\InspectClasses.cs" />
     <Compile Include="Models\InspectDocDetails.cs" />
+    <Compile Include="Models\InspectDocDetailsTemporary.cs" />
     <Compile Include="Models\InspectDocDetailsViewModels.cs" />
     <Compile Include="Models\InspectDocs.cs" />
     <Compile Include="Models\InspectFields.cs" />
@@ -236,6 +237,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\ClassContentOfArea.js" />
     <Content Include="Scripts\InspectDocDetailsIndex.js" />
     <Content Include="Scripts\InspectFields.js" />
     <Content Include="Scripts\InspectFieldsSearch.js" />

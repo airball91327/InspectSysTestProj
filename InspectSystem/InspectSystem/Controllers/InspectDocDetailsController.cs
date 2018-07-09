@@ -17,34 +17,50 @@ namespace InspectSystem.Controllers
         // GET: InspectDocDetails
         public ActionResult Index(int areaID)
         {
+
             ViewBag.AreaID = areaID;
-            return View();
+            ViewBag.AreaName = db.InspectAreas.Find(areaID).AreaName;
+
+            var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
+                                                  .OrderBy(c => c.ClassID);
+            return View(ClassesOfAreas.ToList());
+        }
+
+        // GET: InspectDocDetails/SelectAreas
+        public ActionResult SelectAreas()
+        {
+            return View(db.InspectAreas.ToList());
         }
 
         // GET:InspectDocDetails/ClassContentOfArea
-        public ActionResult ClassContentOfArea(int areaID)
+        public ActionResult ClassContentOfArea(int ACID)
         {
-            int classID = 1; //Default value
-            var findACID = db.ClassesOfAreas.Where(c => c.AreaID == areaID &&
-                                                    c.ClassID == classID).First();
+            ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+
             /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == findACID.ACID &&
-                                                          i.ItemStatus == true).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == findACID.ACID && 
-                                                         i.FieldStatus == true).ToList();
-
+            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
+                                                         i.ItemStatus == true).ToList();
+            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID && 
+                                                        i.FieldStatus == true).ToList();
+ 
             /* Create a list for user to insert values, and add some known value first. */
-            var inspectDocDetails = new List<InspectDocDetails>();
+            var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
 
-            foreach(var item in fieldsByACID)
+            /* Set the DocID to year + month + date + areaID, for example: 2018/10/11 area 1, the docID is 2018101101*/
+            string date = DateTime.Now.ToString("yyyyMMdd");
+            int docID = System.Convert.ToInt32(date) * 100 + db.ClassesOfAreas.Find(ACID).AreaID;
+
+            foreach (var item in fieldsByACID)
             {
+
                 var itemName = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
                                                           i.ACID == item.ACID).First();
-                inspectDocDetails.Add(new InspectDocDetails()
+                inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                 {
+                    DocID = docID,
                     AreaID = item.ClassesOfAreas.InspectAreas.AreaID,
                     AreaName = item.ClassesOfAreas.InspectAreas.AreaName,
                     ClassID = item.ClassesOfAreas.InspectClasses.ClassID,
@@ -58,11 +74,28 @@ namespace InspectSystem.Controllers
             }
 
             return PartialView(new InspectDocDetailsViewModels() {
-                InspectDocDetails = inspectDocDetails,
+                InspectDocDetailsTemporary = inspectDocDetailsTemporary,
                 InspectFields = fieldsByACID,
                 InspectItems = itemsByACID
             });
         }
+
+        // POST:InspectDocDetails/TempSave
+        [HttpPost]
+        public ActionResult TempSave(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach(var item in inspectDocDetailsTemporary)
+                {
+                    db.InspectDocDetailsTemporary.Add(item);
+                }
+                db.SaveChanges();
+                return RedirectToAction("SelectAreas");
+            }
+            return RedirectToAction("SelectAreas");
+        }
+
 
         // GET:InspectDocDetails/AreaPrecautions
         public ActionResult AreaPrecautions(int areaID)
@@ -71,106 +104,9 @@ namespace InspectSystem.Controllers
             return PartialView(areaPrecautions.ToList());
         }
 
-        // GET: InspectDocDetails/SelectAreas
-        public ActionResult SelectAreas()
-        {
-            return View(db.InspectAreas.ToList());
-        }
 
-        // GET: InspectDocDetails/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InspectDocDetails inspectDocDetails = db.InspectDocDetails.Find(id);
-            if (inspectDocDetails == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inspectDocDetails);
-        }
 
-        // GET: InspectDocDetails/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: InspectDocDetails/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DocID,ClassID,ItemID,FieldID,AreaID,AreaName,ClassName,ItemName,FieldName,UnitOfData,Value,IsFunctional,ErrorDescription,RepairDocID")] InspectDocDetails inspectDocDetails)
-        {
-            if (ModelState.IsValid)
-            {
-                db.InspectDocDetails.Add(inspectDocDetails);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(inspectDocDetails);
-        }
-
-        // GET: InspectDocDetails/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InspectDocDetails inspectDocDetails = db.InspectDocDetails.Find(id);
-            if (inspectDocDetails == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inspectDocDetails);
-        }
-
-        // POST: InspectDocDetails/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DocID,ClassID,ItemID,FieldID,AreaID,AreaName,ClassName,ItemName,FieldName,UnitOfData,Value,IsFunctional,ErrorDescription,RepairDocID")] InspectDocDetails inspectDocDetails)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(inspectDocDetails).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(inspectDocDetails);
-        }
-
-        // GET: InspectDocDetails/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InspectDocDetails inspectDocDetails = db.InspectDocDetails.Find(id);
-            if (inspectDocDetails == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inspectDocDetails);
-        }
-
-        // POST: InspectDocDetails/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            InspectDocDetails inspectDocDetails = db.InspectDocDetails.Find(id);
-            db.InspectDocDetails.Remove(inspectDocDetails);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        
 
         protected override void Dispose(bool disposing)
         {
