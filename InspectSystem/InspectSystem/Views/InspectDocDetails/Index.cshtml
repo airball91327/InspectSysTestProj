@@ -1,66 +1,76 @@
 ﻿@model IEnumerable<InspectSystem.Models.ClassesOfAreas>
 
+@Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script src="~/Scripts/InspectDocDetailsIndex.js"></script>
+
 @{
     ViewBag.Title = "Index";
+
+    if (TempData["SaveMsg"] != null)
+    {
+        <script>
+            var message = @Html.Raw(Json.Encode(TempData["SaveMsg"]));
+            alert(message);
+        </script>
+    }
 }
+
 
 <style>
-/* Style background-color for modal header and footer. */
-.modal-header, .modal-footer {
+    /* Style background-color for modal header and footer. */
+    .modal-header, .modal-footer {
         background-color: darksalmon;
-}
+    }
 
-/* Style the modal title. */
-.modal-title {
-    text-align: center;
-    font-weight: bold;
-}
+    /* Style the modal title. */
+    .modal-title {
+        text-align: center;
+        font-weight: bold;
+    }
 
-/* Style the tab */
-.tab {
-    float: left;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-    width: 15%;
-    height: 100%;
-}
+    /* Style the tab */
+    .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: 15%;
+        height: 100%;
+    }
 
-/* Style the buttons inside the tab */
-.tab button {
-    display: block;
-    background-color: inherit;
-    color: black;
-    padding: 22px 16px;
-    width: 100%;
-    border: none;
-    outline: none;
-    text-align: left;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 17px;
-}
+        /* Style the buttons inside the tab */
+        .tab button {
+            display: block;
+            background-color: inherit;
+            color: black;
+            padding: 22px 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 17px;
+        }
 
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
-}
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
 
-/* Create an active/current "tab button" class */
-.tab button.active {
-    background-color: #ccc;
-}
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: #ccc;
+            }
 
-/* Style the tab content */
-.tabcontent {
-    float: left;
-    padding: 0px 12px;
-    border: 1px solid #ccc;
-    width: 70%;
-    border-left: none;
-    height: 100%;
-}
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #ccc;
+        width: 80%;
+        height: 100%;
+    }
 </style>
 
 <h3>@ViewBag.AreaName</h3>
@@ -69,7 +79,7 @@
     <div class="tab">
         @foreach (var item in Model)
         {
-            <button class="tablinks" onclick="openClassContent(event, '@item.ACID')" id="@item.ClassID">@item.InspectClasses.ClassName</button>
+            <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">@item.InspectClasses.ClassName</button>
         }
     </div>
 
@@ -80,26 +90,26 @@
 <hr />
 <div class="container">
     <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#precautionModal">注意事項</button>
+    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#precautionModal">注意事項</button>
 
     <!-- Modal -->
-  <div class="modal fade" id="precautionModal">
-      <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h2 class="modal-title">注意事項</h2>
-              </div>
-              <div class="modal-body">
-                  @Html.Action("AreaPrecautions", new { areaID = ViewBag.AreaID })
-              </div>
-              <div class="modal-footer">
-                  <div style="text-align:center">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="modal fade" id="precautionModal">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">注意事項</h2>
+                </div>
+                <div class="modal-body">
+                    @Html.Action("AreaPrecautions", new { areaID = ViewBag.AreaID })
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

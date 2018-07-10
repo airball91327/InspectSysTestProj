@@ -1,76 +1,99 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
+@Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/ClassContentOfArea.js"></script>
+
 @{
     ViewBag.Title = "ClassContentOfArea";
 }
 
+<script>
+    $("#saveToDBbtn").click(function () {
+        document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveToDataBase");
+        alert("Test");
+    });
+</script>
+
 <h3>@ViewBag.ClassName</h3>
-@using (Html.BeginForm("TempSave","InspectDocDetails", FormMethod.Post))
+<hr />
+@using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()
 
     var currentItemName = "0";
     int i = 0;
-    <div class="form-horizontal">
+    <div class="form-inline">
         @foreach (var item in Model.InspectItems)
         {
             <!--Display the ItemName when ItemName is not the same.-->
             if (item.ItemName != currentItemName)
             {
-                @Html.DisplayFor(modelItem => item.ItemName);
-
-                foreach(var fieldItem in Model.InspectFields)
-                {
-                    <!--Display all the FieldName belong the current Item-->
-                    if (item.ItemID == fieldItem.ItemID)
+                <div class="container">
+                    <span class="col-md-2">
+                        @Html.DisplayFor(modelItem => item.ItemName)
+                    </span>
+                    @foreach (var fieldItem in Model.InspectFields)
                     {
-                        @Html.DisplayFor(modelItem => fieldItem.FieldName);
-
-                        foreach(var docItem in Model.InspectDocDetailsTemporary)
+                        <!--Display all the FieldName belong the current Item-->
+                        if (item.ItemID == fieldItem.ItemID)
                         {
-                            <!--Display textbox or checkbox for all fields. -->
-                            if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
+
+                            <span class="col-md-1">
+                                @Html.DisplayFor(modelItem => fieldItem.FieldName)
+                            </span>
+
+                            foreach (var docItem in Model.InspectDocDetailsTemporary)
                             {
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassName", docItem.ClassName)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID)
-                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)            
-
-                                <!-- display case with field datatype. -->
-                                switch (fieldItem.DataType)
+                                <!--Display textbox or checkbox for all fields. -->
+                                if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
                                 {
-                                    case "string" :
-                                        @Html.Editor("InspectDocDetailsTemporary[" + i + "].Value", docItem.Value)  
-                                        @Html.ValidationMessageFor(modelItem => docItem.Value)
-                                        break;
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassName", docItem.ClassName)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
 
-                                    case "float" :
-                                        @Html.Editor("InspectDocDetailsTemporary[" + i + "].Value", docItem.Value)    
-                                        @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
-                                        @Html.ValidationMessageFor(modelItem => docItem.Value)
-                                        break;
+                                    switch (fieldItem.DataType)
+                                    {
+                                        case "string":
+                                            <span class="col-md-2">
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
+                                                @Html.ValidationMessageFor(modelItem => docItem.Value)
+                                            </span>
+                                            break;
 
-                                    case "boolean" :
-                                        @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
-                                        @Html.ValidationMessageFor(modelItem => docItem.IsFunctional)
+                                        case "float":
+                                            <span class="col-md-2">
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
+                                                @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
+                                                @Html.ValidationMessageFor(modelItem => docItem.Value)
+                                            </span>
+                                            break;
 
-                                        @Html.LabelFor(modelItem => docItem.ErrorDescription)
-                                        @Html.Editor("InspectDocDetailsTemporary[" + i + "].ErrorDescription", docItem.ErrorDescription)
-                                        @Html.ValidationMessageFor(modelItem => docItem.ErrorDescription);
-                                        <hr />
-                                        break;
+                                        case "boolean":
+                                            <span class="col-md-2">
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
+                                                @Html.ValidationMessageFor(modelItem => docItem.IsFunctional)
+                                            </span>
+                                            <span class="col-md-2">
+                                                @Html.LabelFor(modelItem => docItem.ErrorDescription)
+                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription" } })
+                                                @Html.ValidationMessageFor(modelItem => docItem.ErrorDescription)
+                                            </span>
+                                            <hr />
+                                            break;
+                                    }
                                 }
                             }
+                            i++;
                         }
-                        i++;
                     }
-                }
+                </div>
                 <br />
             }
             else
@@ -80,7 +103,8 @@
         }
     </div>
     <div>
-        <input type="submit" value="暫時儲存" />
+        <input class="btn-primary" type="submit" value="暫時儲存" />
+        <button type="button" class="btn-primary" id="saveToDBbtn">送出紀錄</button>
     </div>
 }
 
