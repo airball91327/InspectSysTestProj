@@ -4,12 +4,12 @@
 <script src="~/Scripts/ClassContentOfArea.js"></script>
 
 @{
-    ViewBag.Title = "ClassContentOfArea";
+    ViewBag.Title = "ViewOfMedicalGas";
 }
-
 
 <h3>@ViewBag.ClassName</h3>
 <hr />
+
 @using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()
@@ -22,23 +22,23 @@
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
             {
-                <div class="row">
-                    <span class="col-md-2" style="font-weight: bold">
-                        @Html.DisplayFor(modelItem => item.ItemName)
-                    </span>
-                    @foreach (var fieldItem in Model.InspectFields)
+                <div class="row col-md-12" style="font-weight: bold">
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </div>
+                foreach (var fieldItem in Model.InspectFields)
+                {
+                    /* Display all the FieldName belong the current Item. */
+                    if (item.ItemID == fieldItem.ItemID)
                     {
-                        /* Display all the FieldName belong the current Item. */
-                        if (item.ItemID == fieldItem.ItemID)
-                        {
-                            if(fieldItem.FieldName != null)
+                            <div class="row col-md-12">
+                            @if (fieldItem.FieldName != null)
                             {
-                                <span class="col-md-1">
+                                <span class="col-md-3">
                                     @Html.DisplayFor(modelItem => fieldItem.FieldName)
                                 </span>
                             }
 
-                            foreach (var docItem in Model.InspectDocDetailsTemporary)
+                            @foreach (var docItem in Model.InspectDocDetailsTemporary)
                             {
                                 /* Display textbox or checkbox for all fields. */
                                 if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
@@ -58,19 +58,41 @@
                                         case "string":
                                             <span class="col-md-2">
                                                 @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @style = "width: 45%" } })
+                                                @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                            </span>
+                                            <span class="col-md-2">
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
+                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].IsFunctional", "", new { @class = "text-danger" })
+                                            </span>
+                                            <span class="col-md-4">
+                                                @Html.LabelFor(modelItem => docItem.ErrorDescription)
+                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", @style = "width: 70%" } })
+                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].ErrorDescription", "", new { @class = "text-danger" })
                                             </span>
                                             break;
 
                                         case "float":
                                             <span class="col-md-2">
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @style = "width: 45%"} })
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @style = "width: 45%" } })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                            </span>
+                                            <span class="col-md-2">
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
+                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].IsFunctional", "", new { @class = "text-danger" })
+                                            </span>
+                                            <span class="col-md-4">
+                                                @Html.LabelFor(modelItem => docItem.ErrorDescription)
+                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", @style = "width: 70%" } })
+                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].ErrorDescription", "", new { @class = "text-danger" })
                                             </span>
                                             break;
 
                                         case "boolean":
+                                            <span class="col-md-2"></span>
                                             <span class="col-md-2">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
@@ -85,10 +107,12 @@
                                     }
                                 }
                             }
-                            i++;
+                            @{
+                                i++;
+                            }
+                            </div>
                         }
                     }
-                </div>
                 <hr />
             }
             else
@@ -96,10 +120,10 @@
                 currentItemName = item.ItemName;
             }
         }
-    <div>
-        <input class="btn btn-primary" type="submit" value="暫時儲存" />
-        <button type="button" class="btn btn-primary" id="saveToDBbtn">送出紀錄</button>
-    </div>
-    <hr />
+        <div>
+            <input class="btn btn-primary" type="submit" value="暫時儲存" />
+            <button type="button" class="btn btn-primary" id="saveToDBbtn">送出紀錄</button>
+        </div>
+        <hr />
     </div>
 }

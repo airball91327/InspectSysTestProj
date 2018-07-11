@@ -62,7 +62,7 @@ namespace InspectSystem.Controllers
             {
                 foreach (var item in fieldsByACID)
                 {
-
+                    Boolean isFunctional = true; // Set default value.
                     var itemName = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
                                                               i.ACID == item.ACID).First();
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
@@ -76,7 +76,8 @@ namespace InspectSystem.Controllers
                         ItemName = itemName.ItemName,
                         FieldID = item.FieldID,
                         FieldName = item.FieldName,
-                        UnitOfData = item.UnitOfData
+                        UnitOfData = item.UnitOfData,
+                        IsFunctional = isFunctional
                     });
                 }
             }
@@ -84,12 +85,35 @@ namespace InspectSystem.Controllers
             {
                 inspectDocDetailsTemporary = inspectDocDetailsTemp.ToList();
             }
-
-            return PartialView(new InspectDocDetailsViewModels() {
-                InspectDocDetailsTemporary = inspectDocDetailsTemporary,
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID
-            });
+            
+            /* Return other views for class MedicalGas and UPS with different layout. */
+            if(classID == 5)
+            {
+                return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", new InspectDocDetailsViewModels()
+                {
+                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
+                    InspectFields = fieldsByACID,
+                    InspectItems = itemsByACID
+                });
+            }
+            else if(classID == 7)
+            {
+                return PartialView("~/Views/InspectDocDetails/ViewOfUPS.cshtml", new InspectDocDetailsViewModels()
+                {
+                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
+                    InspectFields = fieldsByACID,
+                    InspectItems = itemsByACID
+                });
+            }
+            else
+            {
+                return PartialView(new InspectDocDetailsViewModels()
+                {
+                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
+                    InspectFields = fieldsByACID,
+                    InspectItems = itemsByACID
+                });
+            }
         }
 
         // POST:InspectDocDetails/TempSave
@@ -128,6 +152,41 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
+        // POST:InspectDocDetails/SaveToDataBase
+        [HttpPost]
+        public ActionResult SaveToDataBase(List<InspectDocDetails> inspectDocDetailsTemporary)
+        {
+            var areaID = inspectDocDetailsTemporary.First().AreaID;
+            var docID = inspectDocDetailsTemporary.First().DocID;
+            var classID = inspectDocDetailsTemporary.First().ClassID;
+
+            if (ModelState.IsValid)
+            {
+                var findDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
+                                                                        i.ClassID == classID);
+                /* If can't find temp data, insert data to database. */
+                if (findDetails.Any() == false)
+                {
+                    foreach (var item in inspectDocDetailsTemporary)
+                    {
+                        db.InspectDocDetails.Add(item);
+                    }
+                }
+                else
+                {
+                    foreach (var item in inspectDocDetailsTemporary)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                    }
+                }
+
+                db.SaveChanges();
+                TempData["SaveMsg"] = "儲存資料完成";
+                return RedirectToAction("Index", new { AreaID = areaID });
+            }
+            TempData["SaveMsg"] = "儲存資料失敗";
+            return RedirectToAction("Index", new { AreaID = areaID });
+        }
 
         // GET:InspectDocDetails/AreaPrecautions
         public ActionResult AreaPrecautions(int areaID)

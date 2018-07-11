@@ -326,6 +326,8 @@
     <Content Include="Views\InspectDocDetails\SelectAreas.cshtml" />
     <Content Include="Views\InspectDocDetails\ClassContentOfArea.cshtml" />
     <Content Include="Views\InspectDocDetails\AreaPrecautions.cshtml" />
+    <Content Include="Views\InspectDocDetails\ViewOfMedicalGas.cshtml" />
+    <Content Include="Views\InspectDocDetails\ViewOfUPS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
