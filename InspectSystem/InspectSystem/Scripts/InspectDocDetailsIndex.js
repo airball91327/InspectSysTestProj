@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
     //Default class content is class 1.
     document.getElementById("1").click();
-
 });
 
 function openClassContent(evt, acid, docID) {
@@ -21,12 +20,21 @@ function openClassContent(evt, acid, docID) {
         type: "GET",
         url: "/InspectDocDetails/ClassContentOfArea",
         data: { ACID: acid, DocID: docID },
+        beforeSend: function () {
+            //$("#loadingBtn").click();
+            $("#loadingModal").modal("show");
+            console.log("show");
+        },
+        complete: function () {
+            $("#loadingModal").modal("hide");
+            console.log("hide");
+        },
         success: function (result) {
             console.log(result); //For debug
             $("#tabContent").html(result);
         },
         error: function (msg) {
-            alert(msg);
+            alert("讀取錯誤");
         }
     });
 }

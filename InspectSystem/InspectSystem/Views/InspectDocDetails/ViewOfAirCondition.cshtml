@@ -3,26 +3,36 @@
 <script src="~/Scripts/ClassContentOfArea.js"></script>
 
 @{
-    ViewBag.Title = "ViewOfUPS";
+    ViewBag.Title = "ViewOfAirCondition";
+    List<InspectSystem.Models.InspectDocDetailsTemporary> FieldsOfFirstItem = ViewBag.FieldsOfFirstItem;
 }
 
 <style>
-input[type="text"] {
-    width: 70%;
-}
+    th, td {
+        text-align: center;
+    }
 
-th {
-    font-weight: bold;
-    text-align: center;
-}
-td {
-    text-align: center;
-}
+    .valueTextBox {
+        text-align: left;
+        padding: 15px;
+    }
+
+    .inputTextOfValue {
+        width: 45%;
+    }
+
+    .inputTextOfError {
+        width: 70%;
+    }
+
+    table {
+        table-layout: fixed;
+        word-break: break-all;
+    }
 </style>
 
 <h3>@ViewBag.ClassName</h3>
 <hr />
-
 @using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()
@@ -30,26 +40,21 @@ td {
     var currentItemName = "0";
     int i = 0;
     <div class="container col-md-12">
-    <table class="table-bordered" style="table-layout: fixed">
+    <table class="table-bordered">
         <tr class="row">
             <th>
-                <p>編號(容量)</p>
+                <p>運轉機號</p>
             </th>
-            <th>
-                <p>容量%</p>
-            </th>
-            <th>
-                <p>IR</p>
-            </th>
-            <th>
-                <p>IS</p>
-            </th>
-            <th>
-                <p>IT</p>
-            </th>
-            <th>
-                <p>機房溫度</p>
-            </th>
+            @{/* Use foreach to display <th> names. */}
+            @foreach (var item in FieldsOfFirstItem)
+            {
+                if (item.FieldName != null)
+                {
+                    <th>
+                        <p>@item.FieldName</p>
+                    </th>
+                }
+            }
             <th>
                 <p>是否正常</p>
             </th>
@@ -77,6 +82,7 @@ td {
                                 /* Display textbox or checkbox for all fields. */
                                 if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
                                 {
+                                    countFields = countFields + 1;
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID)
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
@@ -87,19 +93,18 @@ td {
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID)
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
 
-                                    countFields = countFields + 1;
                                     switch (fieldItem.DataType)
                                     {
                                         case "string":
-                                            <td>
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
+                                            <td class="valueTextBox">
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue" } })
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
                                             </td>
                                             break;
 
                                         case "float":
-                                            <td>
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
+                                            <td class="valueTextBox">
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue" } })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
                                             </td>
@@ -110,18 +115,21 @@ td {
                                             break;
 
                                         case "boolean":
-                                            /* If there is no temperature field,jump over a field. */
-                                            if (countFields == 5)
+
+                                            if(countFields == 1)
                                             {
-                                                <td></td>
+                                                for( int j = 1; j< FieldsOfFirstItem.Count(); j++)
+                                                {
+                                                    <td></td>
+                                                }
                                             }
-                                            <td>
+                                            <td style="width:10%">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })是
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })否
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].IsFunctional", "", new { @class = "text-danger" })
                                             </td>
                                             <td>
-                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription" } })
+                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", @class = "inputTextOfError" } })
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].ErrorDescription", "", new { @class = "text-danger" })
                                             </td>
                                             break;
@@ -147,3 +155,4 @@ td {
     <hr />
     </div>
 }
+

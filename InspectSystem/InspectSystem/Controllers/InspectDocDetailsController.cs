@@ -86,33 +86,28 @@ namespace InspectSystem.Controllers
                 inspectDocDetailsTemporary = inspectDocDetailsTemp.ToList();
             }
             
-            /* Return other views for class MedicalGas and UPS with different layout. */
-            if(classID == 5)
-            {
-                return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", new InspectDocDetailsViewModels()
-                {
+            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels(){
                     InspectDocDetailsTemporary = inspectDocDetailsTemporary,
                     InspectFields = fieldsByACID,
                     InspectItems = itemsByACID
-                });
+                };
+            /* Return other views for class MedicalGas and UPS with different layout. */
+            if(classID == 4 || classID == 5)
+            {
+                return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else if(classID == 7)
             {
-                return PartialView("~/Views/InspectDocDetails/ViewOfUPS.cshtml", new InspectDocDetailsViewModels()
-                {
-                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
-                    InspectFields = fieldsByACID,
-                    InspectItems = itemsByACID
-                });
+                return PartialView("~/Views/InspectDocDetails/ViewOfUPS.cshtml", inspectDocDetailsViewModels);
+            }
+            else if(classID == 8)
+            {
+                ViewBag.FieldsOfFirstItem = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(j => j.ItemID == 1).ToList();
+                return PartialView("~/Views/InspectDocDetails/ViewOfAirCondition.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
-                return PartialView(new InspectDocDetailsViewModels()
-                {
-                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
-                    InspectFields = fieldsByACID,
-                    InspectItems = itemsByACID
-                });
+                return PartialView(inspectDocDetailsViewModels);
             }
         }
 
