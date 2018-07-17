@@ -13,20 +13,7 @@ namespace InspectSystem.Controllers
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Contact(string name)
-        {
-            ViewBag.Message = name;
-
-            return PartialView();
-        }
+        
 
         
     }

@@ -8,14 +8,17 @@
 }
 
 <style>
-.w3-display-container {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    text-shadow: 3px 2px gray;
-    text-align: center;
-}
+    .w3-display-container {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        text-align: center;
+    }
+    .imgText {
+        font-size: 28px;
+        font-weight: bold;
+        color: orange;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 2px 2px 2px black;
+    }
 </style>
 
 <h2>選擇區域</h2>
@@ -26,8 +29,21 @@
         <div class="col-md-4">
             <div class="w3-display-container">
                 <a href="@Url.Action("Index", new { areaID = item.AreaID})" class="w3-button w3-round-large w3-opacity w3-hover-opacity-off">
-                    <img src="~/Content/TestPic.jpg" class="img-responsive w3-round" />
-                    <p class="w3-display-middle">@Html.DisplayFor(modelItem => item.AreaName)</p>
+                    @if (item.AreaID == 4)
+                    {
+                        <img src="~/Content/Building4.jpg" class="img-responsive w3-round" />
+                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
+                    }
+                    else if (item.AreaID == 5)
+                    {
+                        <img src="~/Content/Building5.jpg" class="img-responsive w3-round" />
+                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
+                    }
+                    else
+                    {
+                        <img src="~/Content/Building1.jpg" class="img-responsive w3-round" />
+                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
+                    }
                 </a>
             </div>
         </div>

@@ -7,7 +7,7 @@
 }
 
 
-<h3>@ViewBag.ClassName</h3>
+<h3 style="font-weight: bold">@ViewBag.ClassName</h3>
 <hr />
 @using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
 {
@@ -63,9 +63,10 @@
 
                                         case "float":
                                             <span class="col-md-2">
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @style = "width: 45%"} })
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @style = "width: 45%", @class = "inputValue", id = i} })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                                <p class="@i"></p>
                                             </span>
                                             break;
 
@@ -75,9 +76,9 @@
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].IsFunctional", "", new { @class = "text-danger" })
                                             </span>
-                                            <span class="col-md-4">
+                                            <span class="col-md-3">
                                                 @Html.LabelFor(modelItem => docItem.ErrorDescription)
-                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", @style = "width: 70%" } })
+                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", @style = "width: 60%" } })
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].ErrorDescription", "", new { @class = "text-danger" })
                                             </span>
                                             break;

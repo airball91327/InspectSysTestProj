@@ -20,7 +20,7 @@ td {
 }
 </style>
 
-<h3>@ViewBag.ClassName</h3>
+<h3 style="font-weight: bold">@ViewBag.ClassName</h3>
 <hr />
 
 @using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
@@ -141,8 +141,8 @@ td {
     </table>
     <hr />
     <div>
-        <input class="btn-primary" type="submit" value="暫時儲存" />
-        <button type="button" class="btn-primary" id="saveToDBbtn">送出紀錄</button>
+        <input class="btn btn-primary" type="submit" value="暫時儲存" />
+        <button type="button" class="btn btn-primary" id="saveToDBbtn">送出紀錄</button>
     </div>
     <hr />
     </div>

@@ -225,6 +225,9 @@
     <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Building1.JPG" />
+    <Content Include="Content\Building4.jpg" />
+    <Content Include="Content\Building5.JPG" />
     <Content Include="Content\TestPic.jpg" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
