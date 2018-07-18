@@ -84,13 +84,13 @@
                                 {
                                     countFields = countFields + 1;
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + i + "].AreaID" })
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetailsTemporary[" + i + "].ClassID" })
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassName", docItem.ClassName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID, new { id = "InspectDocDetailsTemporary[" + i + "].ItemID" })
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + i + "].FieldID" })
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
 
                                     switch (fieldItem.DataType)
@@ -104,9 +104,10 @@
 
                                         case "float":
                                             <td class="valueTextBox">
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue" } })
+                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue inputValue", id = i } })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                                <br /><span class="@i"></span>
                                             </td>
                                             break;
 

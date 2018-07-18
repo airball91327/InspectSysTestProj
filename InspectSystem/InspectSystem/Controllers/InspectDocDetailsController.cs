@@ -199,9 +199,45 @@ namespace InspectSystem.Controllers
             return PartialView(areaPrecautions.ToList());
         }
 
+        //GET:InspectDocDetails/CheckValue
+        /* Use ajax to check the min and max value for fields. */
+        public ActionResult CheckValue(int AreaID, int ClassID, int ItemID, int FieldID, string Value)
+        {
+            /* Get the min and max value for the check field. */
+            int ACID = db.ClassesOfAreas.Where(i => i.AreaID == AreaID &&
+                                                    i.ClassID == ClassID).First().ACID;
+            var SearchField = db.InspectFields.Find(ACID, ItemID, FieldID);
+            var FieldDataType = SearchField.DataType;
+            float MaxValue = System.Convert.ToSingle(SearchField.MaxValue);
+            float MinValue = System.Convert.ToSingle(SearchField.MinValue);
 
-
-        
+            string msg = "";
+            if (FieldDataType == "float")
+            {
+                // Check max and min value, and if doesn't set the min or max value, return nothing.
+                if (System.Convert.ToSingle(Value) >= MaxValue && MaxValue != 0)
+                {
+                    msg = "<span style='color:red'>大於正常數值</span>";
+                }
+                else if (System.Convert.ToSingle(Value) <= MinValue && MinValue != 0)
+                {
+                    msg = "<span style='color:red'>小於正常數值</span>";
+                }
+                else if (MinValue == 0 && MaxValue == 0)
+                {
+                    msg = "";
+                }
+                else
+                {
+                    msg = "<span style='color:green'>數值正常</span>";
+                }
+            }
+            else
+            {
+                msg = "";
+            }
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {
