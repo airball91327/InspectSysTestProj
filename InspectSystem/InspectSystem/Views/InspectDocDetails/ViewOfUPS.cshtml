@@ -51,9 +51,7 @@ td {
                 <p>機房溫度</p>
             </th>
             <th>
-                <p>是否正常</p>
-            </th>
-            <th>
+                <p>是否正常/</p>
                 <p>錯誤描述</p>
             </th>
         </tr>
@@ -116,14 +114,10 @@ td {
                                             {
                                                 <td></td>
                                             }
-                                            <td>
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })是
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })否
-                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].IsFunctional", "", new { @class = "text-danger" })
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(modelItem => docItem.ErrorDescription, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription" } })
-                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].ErrorDescription", "", new { @class = "text-danger" })
+                                            <td >
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + i + "].IsFunctional" })不正常
+                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", rows = "3" })
                                             </td>
                                             break;
                                     }

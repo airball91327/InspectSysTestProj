@@ -211,6 +211,7 @@ namespace InspectSystem.Controllers
             float MaxValue = System.Convert.ToSingle(SearchField.MaxValue);
             float MinValue = System.Convert.ToSingle(SearchField.MinValue);
 
+            /* Only float type will check. */
             string msg = "";
             if (FieldDataType == "float")
             {
@@ -229,7 +230,7 @@ namespace InspectSystem.Controllers
                 }
                 else
                 {
-                    msg = "<span style='color:green'>數值正常</span>";
+                    msg = ""; 
                 }
             }
             else
