@@ -8,6 +8,7 @@ namespace InspectSystem.Models
     public class InspectDocDetailsTemporary
     {
         [Key, Column(Order = 1)]
+        [ForeignKey("InspectDocs")]
         [Required]
         [Display(Name = "表單編號")]
         public int DocID { get; set; }
@@ -47,5 +48,7 @@ namespace InspectSystem.Models
         public string ErrorDescription { get; set; }
         [Display(Name = "維修單號")]
         public string RepairDocID { get; set; }
+
+        public virtual InspectDocs InspectDocs { get; set; }
     }
 }

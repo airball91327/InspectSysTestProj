@@ -8,6 +8,7 @@ namespace InspectSystem.Models
     public class InspectDocs
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "表單編號")]
         public int DocID { get; set; }
@@ -16,11 +17,11 @@ namespace InspectSystem.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime Date { get; set; }
-        [Required]
         [Display(Name = "完成時間")]
         [DataType(DataType.Time)]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         [Required]
+        [ForeignKey("InspectAreas")]
         [Display(Name = "區域代碼")]
         public int AreaID { get; set; }
         [NotMapped]
@@ -38,6 +39,7 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "簽核主管名稱")]
         public string CheckerName { get; set; }
-                
+
+        public virtual InspectAreas InspectAreas { get; set; }
     }
 }

@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-md-6">
                     @foreach (var fieldItem in Model.InspectFields)
-                    {
+                     {
                         /* Display all the FieldName belong the current Item. */
                         if (item.ItemID == fieldItem.ItemID)
                         {
@@ -55,8 +55,9 @@
 
                             foreach (var docItem in Model.InspectDocDetailsTemporary)
                             {
-                                /* Display textbox or checkbox for all fields. */
-                                if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
+                                /* Display textbox or checkbox for all fields, except boolean type. */
+                                if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                    fieldItem.DataType != "boolean")
                                 {
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + i + "].AreaID" })
@@ -98,13 +99,15 @@
                                                 }
                                             </div>
                                             break;
-
-                                        case "boolean":
-                                            break;
                                     }
+                                    i++;
+                                }
+                                else if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                         fieldItem.DataType == "boolean")
+                                {
+                                    i++; // Skip an array space to let the boolean type insert later.
                                 }
                             }
-                            i++;
                         }
                     }
                     </div>
@@ -120,18 +123,17 @@
                                      /* Display textbox or checkbox for all fields. */
                                      if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
                                      {
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DocID", docItem.DocID)
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + j + "].AreaID" })
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].AreaName", docItem.AreaName)
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ClassID", docItem.ClassID, new { id = "InspectDocDetailsTemporary[" + j + "].ClassID" })
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ClassName", docItem.ClassName)
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemID", docItem.ItemID, new { id = "InspectDocDetailsTemporary[" + j + "].ItemID" })
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemName", docItem.ItemName)
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + j + "].FieldID" })
-                                         @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldName", docItem.FieldName)
-
                                          if(fieldItem.DataType == "boolean")
                                          {
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DocID", docItem.DocID)
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + j + "].AreaID" })
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].AreaName", docItem.AreaName)
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ClassID", docItem.ClassID, new { id = "InspectDocDetailsTemporary[" + j + "].ClassID" })
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ClassName", docItem.ClassName)
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemID", docItem.ItemID, new { id = "InspectDocDetailsTemporary[" + j + "].ItemID" })
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemName", docItem.ItemName)
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + j + "].FieldID" })
+                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldName", docItem.FieldName)
                                              <div class="col">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
@@ -140,15 +142,14 @@
                                              <div class="w-100"></div>
                                              <div class="col">
                                                 @Html.LabelFor(modelItem => docItem.ErrorDescription)
-                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + i + "].ErrorDescription", rows = "3" })
+                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + j + "].ErrorDescription", rows = "3" })
                                              </div>
-                                             break;
+                                         }
+                                         j++;
                                      }
                                 }
-                            }
-                            j++;
-                        }
-                    }
+                             }
+                         }
                     </div>
                 </div>
                 <hr />

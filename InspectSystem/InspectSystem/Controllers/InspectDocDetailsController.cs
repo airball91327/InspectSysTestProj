@@ -27,6 +27,30 @@ namespace InspectSystem.Controllers
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID);
+
+            /* Find the InspectDoc according to the docID, if can't find, new a doc. */
+            var FindDoc = db.InspectDocs.Find(docID);
+            if (FindDoc == null)
+            {
+                int userID = 123456;
+                string userName = "測試工人";
+                int checkerID = 654321;
+                string checkerName = "測試主管";
+
+                var inspectDocs = new InspectDocs(){
+                    DocID = docID,
+                    Date = DateTime.Now,
+                    AreaID = areaID,
+                    AreaName = db.InspectAreas.Find(areaID).AreaName,
+                    UserID = userID,
+                    UserName = userName,
+                    CheckerID = checkerID,
+                    CheckerName = checkerName
+                };
+
+                db.InspectDocs.Add(inspectDocs);
+                db.SaveChanges();
+            }
             return View(ClassesOfAreas.ToList());
         }
 
