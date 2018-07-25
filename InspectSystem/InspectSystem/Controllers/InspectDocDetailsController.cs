@@ -37,7 +37,7 @@ namespace InspectSystem.Controllers
                 int checkerID = 654321;
                 string checkerName = "測試主管";
 
-                var inspectDocs = new InspectDocs(){
+                var inspectDocs = new InspectDocs() {
                     DocID = docID,
                     Date = DateTime.Now,
                     AreaID = areaID,
@@ -45,7 +45,8 @@ namespace InspectSystem.Controllers
                     UserID = userID,
                     UserName = userName,
                     CheckerID = checkerID,
-                    CheckerName = checkerName
+                    CheckerName = checkerName,
+                    FlowStatusID = 0
                 };
 
                 db.InspectDocs.Add(inspectDocs);

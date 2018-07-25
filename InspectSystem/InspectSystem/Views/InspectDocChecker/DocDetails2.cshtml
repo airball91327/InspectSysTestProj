@@ -3,18 +3,10 @@
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script src="~/Scripts/InspectDocDetailsIndex.js"></script>
-<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css"> 
+<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
-    ViewBag.Title = "巡檢系統";
-
-    if (TempData["SaveMsg"] != null)
-    {
-        <script>
-            var message = @Html.Raw(Json.Encode(TempData["SaveMsg"]));
-            alert(message);
-        </script>
-    }
+    ViewBag.Title = "DocDetails";
 }
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
@@ -28,34 +20,6 @@
     </div>
 
     <div class="tabcontent" id="tabContent">
-    </div>
-</div>
-
-<!--Modal for precautions of area.-->
-<hr />
-<div class="container">
-    <!-- Trigger the modal with a button -->
-    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#precautionModal">注意事項</button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="precautionModal">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h2 class="modal-title">注意事項</h2>
-                </div>
-                <div class="modal-body">
-                    @Html.Action("AreaPrecautions", new { areaID = ViewBag.AreaID })
-                </div>
-                <div class="modal-footer">
-                    <div style="text-align:center">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -79,3 +43,4 @@
         </div>
     </div>
 </div>
+

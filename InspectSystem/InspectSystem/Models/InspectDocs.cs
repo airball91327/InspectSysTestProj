@@ -39,7 +39,12 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "簽核主管名稱")]
         public string CheckerName { get; set; }
+        [Required]
+        [ForeignKey("InspectFlowStatusTable")]
+        [Display(Name = "流程狀態編號")]
+        public int FlowStatusID { get; set; }
 
         public virtual InspectAreas InspectAreas { get; set; }
+        public virtual InspectFlowStatusTable InspectFlowStatusTable { get; set; }
     }
 }

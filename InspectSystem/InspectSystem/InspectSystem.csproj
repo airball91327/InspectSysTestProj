@@ -210,6 +210,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
     <Compile Include="Controllers\InspectClassesController.cs" />
+    <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\InspectDocs.cs" />
     <Compile Include="Models\InspectFields.cs" />
     <Compile Include="Models\InspectItems.cs" />
+    <Compile Include="Models\InspectFlowStatusTable.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\InspectPrecautions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,6 +247,7 @@
     <Content Include="Content\Building1.JPG" />
     <Content Include="Content\Building4.jpg" />
     <Content Include="Content\Building5.JPG" />
+    <Content Include="Content\MyStyleForDocDetail.css" />
     <Content Include="Content\TestPic.jpg" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
@@ -358,10 +361,6 @@
     <Content Include="Views\InspectPrecautions\Details.cshtml" />
     <Content Include="Views\InspectPrecautions\Edit.cshtml" />
     <Content Include="Views\InspectPrecautions\Index.cshtml" />
-    <Content Include="Views\InspectDocDetails\Create.cshtml" />
-    <Content Include="Views\InspectDocDetails\Delete.cshtml" />
-    <Content Include="Views\InspectDocDetails\Details.cshtml" />
-    <Content Include="Views\InspectDocDetails\Edit.cshtml" />
     <Content Include="Views\InspectDocDetails\Index.cshtml" />
     <Content Include="Views\InspectDocDetails\SelectAreas.cshtml" />
     <Content Include="Views\InspectDocDetails\ClassContentOfArea.cshtml" />
@@ -378,6 +377,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\InspectDocChecker\Index.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocDetails.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocDetails2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

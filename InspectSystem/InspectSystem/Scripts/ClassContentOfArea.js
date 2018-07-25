@@ -1,10 +1,12 @@
 ﻿$(document).ready(function () {
 
+    /* Save inspect data to database. */
     $("#saveToDBbtn").click(function () {
         document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveToDataBase");
         document.getElementById("detailsForm").submit();
     });
 
+    /* Check the min and max value, when user inputs. */
     $(".inputValue").change(function () {
 
         var id = $(this).attr("id");
@@ -28,5 +30,4 @@
         });
 
     });
-    
 });

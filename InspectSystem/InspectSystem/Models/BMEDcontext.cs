@@ -22,6 +22,7 @@ namespace InspectSystem.Models
         public DbSet<InspectDocs> InspectDocs { get; set; }
         public DbSet<InspectDocDetails> InspectDocDetails { get; set; }
         public DbSet<InspectDocDetailsTemporary> InspectDocDetailsTemporary { get; set; }
+        public DbSet<InspectFlowStatusTable> InspectFlowStatusTable { get; set; }
 
     }
 }
