@@ -6,9 +6,6 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -65,9 +62,7 @@
             @Html.DisplayFor(modelItem => item.CheckerName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DocID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DocID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DocID })
+            <a class="btn btn-primary" href="@Url.Action("DocDetails", new { docID = item.DocID })">詳細內容</a>
         </td>
     </tr>
 }

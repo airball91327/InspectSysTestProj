@@ -2,7 +2,7 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script src="~/Scripts/InspectDocDetailsIndex.js"></script>
+<script src="~/Scripts/DocCheckerDocDetails.js"></script>
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
@@ -11,6 +11,9 @@
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
+<a class="btn btn-primary" href="@Url.Action("Index")">回到列表</a>
+<hr />
+
 <div class="container">
     <div class="tab">
         @foreach (var item in Model)
@@ -43,4 +46,6 @@
         </div>
     </div>
 </div>
+
+
 

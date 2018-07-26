@@ -259,6 +259,7 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\DocCheckerDocDetails.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -379,7 +380,11 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\InspectDocChecker\Index.cshtml" />
     <Content Include="Views\InspectDocChecker\DocDetails.cshtml" />
-    <Content Include="Views\InspectDocChecker\DocDetails2.cshtml" />
+    <Content Include="Views\InspectDocDetails\DocDetails.cshtml" />
+    <Content Include="Views\InspectDocChecker\ClassContentOfArea.cshtml" />
+    <Content Include="Views\InspectDocChecker\ViewOfAirCondition.cshtml" />
+    <Content Include="Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
+    <Content Include="Views\InspectDocChecker\ViewOfUPS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

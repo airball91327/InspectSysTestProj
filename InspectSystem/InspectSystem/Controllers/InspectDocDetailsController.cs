@@ -265,6 +265,51 @@ namespace InspectSystem.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: InspectDocDetails/DocDetails
+        public ActionResult DocDetails(int docID)
+        {
+            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
+            int length = docID.ToString().Length;
+            int areaID = System.Convert.ToInt32(docID.ToString().Substring(length - 2));
+
+            if (DocDetailList.Count == 0)
+            {
+                TempData["SaveMsg"] = "尚未有資料儲存";
+                return RedirectToAction("Index", new { AreaID = areaID });
+            }
+            else
+            {
+                ViewBag.AreaID = DocDetailList.First().AreaID;
+                ViewBag.AreaName = DocDetailList.First().AreaName;
+                ViewBag.DocID = docID;
+
+                var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
+                                                      .OrderBy(c => c.ClassID);
+
+                return View(ClassesOfAreas.ToList());
+            }
+        }
+
+        //POST: InspectDocDetails/SendDocToChecker
+        public ActionResult SendDocToChecker(int docID)
+        {
+            /* Change flow status to "Checking". */
+            var findDoc = db.InspectDocs.Find(docID);
+            findDoc.FlowStatusID = 1;
+            if (ModelState.IsValid)
+            {
+                db.Entry(findDoc).State = EntityState.Modified;
+                db.SaveChanges();
+                var msg = "資料已傳送";
+                return Json(msg);
+            }
+            else
+            {
+                var msg = "資料傳送失敗";
+                return Json(msg);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
