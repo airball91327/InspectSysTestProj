@@ -27,13 +27,14 @@
     @Html.AntiForgeryToken()
 
     var currentItemName = "0";
-    int i = 0, j = 0;
+    int i = 0;
     <div class="container col-md-12">
         @foreach (var item in Model.InspectItems)
         {
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
             {
+                int row = 1;
                 <div class="row col-md-12" style="font-weight: bold">
                     @Html.DisplayFor(modelItem => item.ItemName)
                 </div>
@@ -42,9 +43,23 @@
                     /* Display all the FieldName belong the current Item. */
                     if (item.ItemID == fieldItem.ItemID)
                     {
-                            <div class="row col-md-12">
+
+                        var singleRow = "single-row" + row;
+                        <div class="row col-md-12 @singleRow">
                             @if (fieldItem.FieldName != null)
                             {
+                                if(row % 2 == 1)
+                                {
+                                    <script>
+                                        $("." + "@singleRow").attr("style", "background-color: AliceBlue");
+                                    </script>
+                                }
+                                else
+                                {
+                                    <script>
+                                        $("." + "@singleRow").attr("style", "background-color: white");
+                                    </script>
+                                }
                                 <div class="col-md-3">
                                     @Html.DisplayFor(modelItem => fieldItem.FieldName)
                                 </div>
@@ -126,6 +141,7 @@
                             }
                             @{
                                 i++;
+                                row++;
                             }
                             </div>
                         }

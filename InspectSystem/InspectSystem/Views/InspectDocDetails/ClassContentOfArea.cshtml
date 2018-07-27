@@ -23,6 +23,9 @@
         position: absolute;
         right: 12px;
     }
+    .radioBtn {
+        padding-bottom: 15px;
+    }
 </style>
 
 
@@ -138,7 +141,7 @@
                                              @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemName", docItem.ItemName)
                                              @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + j + "].FieldID" })
                                              @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldName", docItem.FieldName)
-                                             <div class="col">
+                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + j + "].IsFunctional", "", new { @class = "text-danger" })
@@ -146,6 +149,7 @@
                                              <div class="w-100"></div>
                                              <div class="col">
                                                 @Html.LabelFor(modelItem => docItem.ErrorDescription)
+                                                 <br />
                                                 @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + j + "].ErrorDescription", rows = "3" })
                                              </div>
                                          }
