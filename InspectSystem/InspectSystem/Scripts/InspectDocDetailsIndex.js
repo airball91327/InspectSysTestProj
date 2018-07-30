@@ -21,13 +21,10 @@ function openClassContent(evt, acid, docID) {
         url: "/InspectDocDetails/ClassContentOfArea",
         data: { ACID: acid, DocID: docID },
         beforeSend: function () {
-            //$("#loadingBtn").click();
             $("#loadingModal").modal("show");
-            console.log("show");
         },
         complete: function () {
             $("#loadingModal").modal("hide");
-            console.log("hide");
         },
         success: function (result) {
             console.log(result); //For debug

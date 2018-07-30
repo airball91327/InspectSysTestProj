@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
 
     /* Save inspect data to database. */
-    $("#saveToDBbtn").click(function () {
-        document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveToDataBase");
+    $("#sendToChecker").click(function () {
+        document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveBeforeSend");
         document.getElementById("detailsForm").submit();
     });
 

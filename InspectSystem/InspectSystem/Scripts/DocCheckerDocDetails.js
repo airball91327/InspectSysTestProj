@@ -21,13 +21,10 @@ function openClassContent(evt, acid, docID) {
         url: "/InspectDocChecker/ClassContentOfArea",
         data: { ACID: acid, DocID: docID },
         beforeSend: function () {
-            //$("#loadingBtn").click();
             $("#loadingModal").modal("show");
-            console.log("show");
         },
         complete: function () {
             $("#loadingModal").modal("hide");
-            console.log("hide");
         },
         success: function (result) {
             console.log(result); //For debug
@@ -56,7 +53,7 @@ function SendDocToChecker(docID) {
         },
         success: function (result) {
             console.log(result); //For debug
-            alert(result)
+            alert(result);
         },
         error: function (msg) {
             alert("傳送失敗");

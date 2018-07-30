@@ -181,9 +181,9 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
-        // POST:InspectDocDetails/SaveToDataBase
+        // POST:InspectDocDetails/SaveBeforeSend
         [HttpPost]
-        public ActionResult SaveToDataBase(List<InspectDocDetails> inspectDocDetailsTemporary)
+        public ActionResult SaveBeforeSend(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
         {
             var areaID = inspectDocDetailsTemporary.First().AreaID;
             var docID = inspectDocDetailsTemporary.First().DocID;
@@ -191,14 +191,14 @@ namespace InspectSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                var findDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
+                var findTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                         i.ClassID == classID);
                 /* If can't find temp data, insert data to database. */
-                if (findDetails.Any() == false)
+                if (findTemp.Any() == false)
                 {
                     foreach (var item in inspectDocDetailsTemporary)
                     {
-                        db.InspectDocDetails.Add(item);
+                        db.InspectDocDetailsTemporary.Add(item);
                     }
                 }
                 else
@@ -210,10 +210,9 @@ namespace InspectSystem.Controllers
                 }
 
                 db.SaveChanges();
-                TempData["SaveMsg"] = "儲存資料完成";
-                return RedirectToAction("Index", new { AreaID = areaID });
+                return RedirectToAction("DocDetails", new { DocID = docID });
             }
-            TempData["SaveMsg"] = "儲存資料失敗";
+            TempData["SaveMsg"] = "傳送失敗";
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
@@ -268,7 +267,7 @@ namespace InspectSystem.Controllers
         // GET: InspectDocDetails/DocDetails
         public ActionResult DocDetails(int docID)
         {
-            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
+            var DocDetailList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
             int length = docID.ToString().Length;
             int areaID = System.Convert.ToInt32(docID.ToString().Substring(length - 2));
 
@@ -293,6 +292,45 @@ namespace InspectSystem.Controllers
         //POST: InspectDocDetails/SendDocToChecker
         public ActionResult SendDocToChecker(int docID)
         {
+            /* Save all temp details to database. */
+            var DocDetailTempList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
+            var areaID = DocDetailTempList.First().AreaID;
+            var classID = DocDetailTempList.First().ClassID;
+            List<InspectDocDetails> inspectDocDetails = new List<InspectDocDetails>();
+
+            for (int i=0; i<DocDetailTempList.Count(); i++)
+            {
+                inspectDocDetails[i].DocID = DocDetailTempList[i].DocID;
+                inspectDocDetails[i].AreaID = DocDetailTempList[i].AreaID;
+                inspectDocDetails[i].AreaName = DocDetailTempList[i].AreaName;
+                inspectDocDetails[i].ClassID = DocDetailTempList[i].ClassID;
+                inspectDocDetails[i].ClassName = DocDetailTempList[i].ClassName;
+                inspectDocDetails[i].ItemID = DocDetailTempList[i].ItemID;
+                inspectDocDetails[i].ItemName = DocDetailTempList[i].ItemName;
+                inspectDocDetails[i].FieldID = DocDetailTempList[i].FieldID;
+                inspectDocDetails[i].FieldName = DocDetailTempList[i].FieldName;
+                inspectDocDetails[i].UnitOfData = DocDetailTempList[i].UnitOfData;
+                inspectDocDetails[i].Value = DocDetailTempList[i].Value;
+                inspectDocDetails[i].IsFunctional = DocDetailTempList[i].IsFunctional;
+                inspectDocDetails[i].ErrorDescription = DocDetailTempList[i].ErrorDescription;
+                inspectDocDetails[i].RepairDocID = DocDetailTempList[i].RepairDocID;
+            }
+
+            if (ModelState.IsValid)
+            {
+                foreach (var item in inspectDocDetails)
+                {
+                    db.InspectDocDetails.Add(item);
+                }
+
+                db.SaveChanges();
+            }
+            else
+            {
+                TempData["SaveMsg"] = "資料儲存失敗";
+                return RedirectToAction("Index", new { AreaID = areaID });
+            }
+
             /* Change flow status to "Checking". */
             var findDoc = db.InspectDocs.Find(docID);
             findDoc.FlowStatusID = 1;

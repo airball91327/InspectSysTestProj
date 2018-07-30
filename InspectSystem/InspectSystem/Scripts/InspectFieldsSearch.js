@@ -32,7 +32,7 @@
     $(".fieldCreateBtn").click(function () {
 
         var ACID = fieldCreateACID;
-        var itemID = fieldCreateItemID
+        var itemID = fieldCreateItemID;
         var zoneNo = parseInt(ACID) * 100 + parseInt(itemID);
         var createModalNo = "createModalNo" + zoneNo;
         var createModalContentNo = "createModalContentNo" + zoneNo;
