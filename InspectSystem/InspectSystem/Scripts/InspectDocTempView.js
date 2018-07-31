@@ -18,7 +18,7 @@ function openClassContent(evt, acid, docID) {
 
     $.ajax({
         type: "GET",
-        url: "/InspectDocChecker/ClassContentOfArea",
+        url: "/InspectDocTempView/ClassContentOfArea",
         data: { ACID: acid, DocID: docID },
         beforeSend: function () {
             $("#loadingModal").modal("show");
@@ -32,6 +32,28 @@ function openClassContent(evt, acid, docID) {
         },
         error: function (msg) {
             alert("讀取錯誤");
+        }
+    });
+}
+
+function SendDocToChecker(docID) {
+
+    $.ajax({
+        type: "POST",
+        url: "/InspectDocDetails/SendDocToChecker",
+        data: { DocID: docID },
+        beforeSend: function () {
+            $("#loadingModal").modal("show");
+        },
+        complete: function () {
+            $("#loadingModal").modal("hide");
+        },
+        success: function (result) {
+            console.log(result); //For debug
+            alert(result);
+        },
+        error: function (msg) {
+            alert("傳送失敗");
         }
     });
 }

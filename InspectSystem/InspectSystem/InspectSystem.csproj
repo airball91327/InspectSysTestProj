@@ -212,6 +212,7 @@
     <Compile Include="Controllers\InspectClassesController.cs" />
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
+    <Compile Include="Controllers\InspectDocTempViewController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
     <Compile Include="Controllers\InspectPrecautionsController.cs" />
@@ -276,6 +277,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ClassContentOfArea.js" />
     <Content Include="Scripts\InspectDocDetailsIndex.js" />
+    <Content Include="Scripts\InspectDocTempView.js" />
     <Content Include="Scripts\InspectFields.js" />
     <Content Include="Scripts\InspectFieldsSearch.js" />
     <Content Include="Scripts\InspectItemsIndex.js" />
@@ -386,6 +388,11 @@
     <Content Include="Views\InspectDocChecker\ViewOfAirCondition.cshtml" />
     <Content Include="Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocChecker\ViewOfUPS.cshtml" />
+    <Content Include="Views\InspectDocTempView\ClassContentOfArea.cshtml" />
+    <Content Include="Views\InspectDocTempView\ViewOfMedicalGas.cshtml" />
+    <Content Include="Views\InspectDocTempView\ViewOfUPS.cshtml" />
+    <Content Include="Views\InspectDocTempView\ViewOfAirCondition.cshtml" />
+    <Content Include="Views\InspectDocDetails\AfterSendDoc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

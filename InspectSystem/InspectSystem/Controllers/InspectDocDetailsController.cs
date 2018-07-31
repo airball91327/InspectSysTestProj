@@ -290,7 +290,7 @@ namespace InspectSystem.Controllers
         }
 
         //POST: InspectDocDetails/SendDocToChecker
-        public ActionResult SendDocToChecker(int docID)
+        public ActionResult SendDocToChecker(int docID,string checkerList, string opinionsTextArea)
         {
             /* Save all temp details to database. */
             var DocDetailTempList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
@@ -298,32 +298,47 @@ namespace InspectSystem.Controllers
             var classID = DocDetailTempList.First().ClassID;
             List<InspectDocDetails> inspectDocDetails = new List<InspectDocDetails>();
 
-            for (int i=0; i<DocDetailTempList.Count(); i++)
+            /* Copy temp data to DocDetail table. */
+            foreach(var item in DocDetailTempList)
             {
-                inspectDocDetails[i].DocID = DocDetailTempList[i].DocID;
-                inspectDocDetails[i].AreaID = DocDetailTempList[i].AreaID;
-                inspectDocDetails[i].AreaName = DocDetailTempList[i].AreaName;
-                inspectDocDetails[i].ClassID = DocDetailTempList[i].ClassID;
-                inspectDocDetails[i].ClassName = DocDetailTempList[i].ClassName;
-                inspectDocDetails[i].ItemID = DocDetailTempList[i].ItemID;
-                inspectDocDetails[i].ItemName = DocDetailTempList[i].ItemName;
-                inspectDocDetails[i].FieldID = DocDetailTempList[i].FieldID;
-                inspectDocDetails[i].FieldName = DocDetailTempList[i].FieldName;
-                inspectDocDetails[i].UnitOfData = DocDetailTempList[i].UnitOfData;
-                inspectDocDetails[i].Value = DocDetailTempList[i].Value;
-                inspectDocDetails[i].IsFunctional = DocDetailTempList[i].IsFunctional;
-                inspectDocDetails[i].ErrorDescription = DocDetailTempList[i].ErrorDescription;
-                inspectDocDetails[i].RepairDocID = DocDetailTempList[i].RepairDocID;
+                inspectDocDetails.Add(new InspectDocDetails()
+                {
+                    DocID = item.DocID,
+                    AreaID = item.AreaID,
+                    AreaName = item.AreaName,
+                    ClassID = item.ClassID,
+                    ClassName = item.ClassName,
+                    ItemID = item.ItemID,
+                    ItemName = item.ItemName,
+                    FieldID = item.FieldID,
+                    FieldName = item.FieldName,
+                    UnitOfData = item.UnitOfData,
+                    Value = item.Value,
+                    IsFunctional = item.IsFunctional,
+                    ErrorDescription = item.ErrorDescription,
+                    RepairDocID = item.RepairDocID
+                });
             }
 
+            var findDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID);
             if (ModelState.IsValid)
             {
-                foreach (var item in inspectDocDetails)
+                if(findDocDetails == null)
                 {
-                    db.InspectDocDetails.Add(item);
+                    foreach (var item in inspectDocDetails)
+                    {
+                        db.InspectDocDetails.Add(item);
+                    }
+                    db.SaveChanges();
                 }
-
-                db.SaveChanges();
+                else
+                {
+                    foreach (var item in inspectDocDetails)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
             }
             else
             {
@@ -331,21 +346,45 @@ namespace InspectSystem.Controllers
                 return RedirectToAction("Index", new { AreaID = areaID });
             }
 
-            /* Change flow status to "Checking". */
+            /* Change flow status to "Checking" for this doc. */
             var findDoc = db.InspectDocs.Find(docID);
             findDoc.FlowStatusID = 1;
+            findDoc.EndTime = DateTime.Now;
+
+            /* Add new DocFlow. */
+            InspectDocFlow DocFlow = new InspectDocFlow()
+            {
+                DocID = docID,
+                StepID = 1,
+                UserID = findDoc.UserID,
+                UserName = findDoc.UserName,
+                Opinions = opinionsTextArea,
+                FlowStatusID = 1,
+                EditorID = findDoc.UserID,
+                EditorName = findDoc.UserName,
+                EditTime = DateTime.Now
+            };
+
             if (ModelState.IsValid)
             {
+                db.InspectDocFlows.Add(DocFlow);
                 db.Entry(findDoc).State = EntityState.Modified;
                 db.SaveChanges();
                 var msg = "資料已傳送";
-                return Json(msg);
+                return RedirectToAction("AfterSendDoc", new { Msg = msg, AreaID = areaID });
             }
             else
             {
                 var msg = "資料傳送失敗";
-                return Json(msg);
+                return RedirectToAction("AfterSendDoc", new { Msg = msg, AreaID = areaID });
             }
+        }
+
+        public ActionResult AfterSendDoc(string Msg, int AreaID)
+        {
+            ViewBag.msg = Msg;
+            ViewBag.AreaID = AreaID;
+            return View();
         }
 
         protected override void Dispose(bool disposing)
