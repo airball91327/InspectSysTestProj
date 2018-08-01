@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
     //Default class content is class 1.
     document.getElementById("1").click();
-
 });
 
 function openClassContent(evt, acid, docID) {

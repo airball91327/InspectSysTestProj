@@ -1,11 +1,8 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectDocs>
-
 @{
     ViewBag.Title = "主管審核頁面";
 }
-
 <h2>主管審核頁面</h2>
-
 <table class="table">
     <tr>
         <th>
@@ -34,7 +31,6 @@
         </th>
         <th></th>
     </tr>
-
     @foreach (var item in Model)
     {
         <tr>
@@ -67,5 +63,4 @@
             </td>
         </tr>
     }
-
 </table>

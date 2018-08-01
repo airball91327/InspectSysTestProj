@@ -393,6 +393,8 @@
     <Content Include="Views\InspectDocTempView\ViewOfUPS.cshtml" />
     <Content Include="Views\InspectDocTempView\ViewOfAirCondition.cshtml" />
     <Content Include="Views\InspectDocDetails\AfterSendDoc.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocListForChecker.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocListForWorker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

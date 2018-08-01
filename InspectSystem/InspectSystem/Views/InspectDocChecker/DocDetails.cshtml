@@ -6,15 +6,14 @@
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
-    ViewBag.Title = "DocDetails";
+    ViewBag.Title = "詳細內容";
     TempData.Keep();
-
     string backToList = "";
-    if(TempData["Role"].ToString() == "Checker")
+    if (TempData["Role"].ToString() == "Checker")
     {
         backToList = Url.Action("DocListForChecker", new { userID = TempData["UserID"] }).ToString();
     }
-    else if(TempData["Role"].ToString() == "Worker")
+    else if (TempData["Role"].ToString() == "Worker")
     {
         backToList = Url.Action("DocListForWorker", new { userID = TempData["UserID"] }).ToString();
     }
