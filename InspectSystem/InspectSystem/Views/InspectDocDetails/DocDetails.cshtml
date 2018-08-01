@@ -2,7 +2,7 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script src="~/Scripts/DocCheckerDocDetails.js"></script>
+<script src="~/Scripts/InspectDocTempView.js"></script>
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
@@ -11,8 +11,32 @@
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-<a class="btn btn-primary" href="@Url.Action("Index", new { areaID = ViewBag.AreaID })">回到編輯畫面</a>
-<button type="button" class="btn btn-success" onclick="SendDocToChecker(@ViewBag.DocID)">確認送出審核</button>
+@using (Html.BeginForm("SendDocToChecker", "InspectDocDetails", FormMethod.Post, new { id = "sendDocForm", @class = "form-inline" }))
+{
+    <div class="container">
+        
+        <input type="hidden" value="@ViewBag.DocID" name="docID" />
+        <div class="form-group col-md-3">
+            @Html.Label("選擇審核人員:", new { @for = "checkerList" })<br />
+            @{/*
+               * Html.DropDownList("checkerList", null, "請選擇",
+               *                    new { @class = "form-control", name = "checkerList", required = "required", id = "checkerDropDownList"})
+               */
+            }
+            @Html.TextBox("checkerList")
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.Label("意見描述:", new { @for = "opinionsTextArea" })<br />
+            @Html.TextArea("opinionsTextArea", new { cols = "30", rows = "2"})
+        </div>
+
+        <div class="form-group" style="padding-top: 20px">
+            <a class="btn btn-primary" href="@Url.Action("Index", new { areaID = ViewBag.AreaID })">回到編輯畫面</a>
+            <button type="submit" class="btn btn-success" style="margin-left: 12px">確認送出審核</button>
+        </div>
+    </div>
+}
 <hr />
 
 <div class="container">

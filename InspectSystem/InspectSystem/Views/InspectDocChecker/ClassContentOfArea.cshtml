@@ -72,11 +72,11 @@
                                                 <div class="col-md-1">
                                                     @if (docItem.Value == "true")
                                                     {
-                                                        @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", true, new { disabled = "disabled" })
+                                                        @Html.CheckBox("InspectDocDetails[" + i + "].Value", true, new { disabled = "disabled" })
                                                     }
                                                     else
                                                     {
-                                                        @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", false, new { disabled = "disabled" })
+                                                        @Html.CheckBox("InspectDocDetails[" + i + "].Value", false, new { disabled = "disabled" })
                                                     }
                                                 </div>
                                                 break;
