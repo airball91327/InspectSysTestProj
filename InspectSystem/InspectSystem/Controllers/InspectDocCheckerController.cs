@@ -15,11 +15,32 @@ namespace InspectSystem.Controllers
         private BMEDcontext db = new BMEDcontext();
 
         // GET: InspectDocChecker
-        public ActionResult Index(/*int checkerID*/)
+        public ActionResult Index()
         {
-            int checkerID = 654321;
-            var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == checkerID &&
-                                                        i.FlowStatusID == 1);
+            return View();
+        }
+
+        // GET: InspectDocChecker/DocListForChecker
+        public ActionResult DocListForChecker(string userID)
+        {
+            int UserID = System.Convert.ToInt32(userID);
+            var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
+                                                         i.FlowStatusID == 1);
+
+            TempData["UserID"] = UserID;
+            TempData["Role"] = "Checker";
+            return View(CheckingDocs.ToList());
+        }
+
+        // GET: InspectDocChecker/DocListForWorker
+        public ActionResult DocListForWorker(string userID)
+        {
+            int UserID = System.Convert.ToInt32(userID);
+            var CheckingDocs = db.InspectDocs.Where(i => i.UserID == UserID &&
+                                                         i.FlowStatusID == 0);
+
+            TempData["UserID"] = UserID;
+            TempData["Role"] = "Worker";
             return View(CheckingDocs.ToList());
         }
 

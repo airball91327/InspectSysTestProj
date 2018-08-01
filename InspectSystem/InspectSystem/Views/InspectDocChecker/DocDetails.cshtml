@@ -7,11 +7,22 @@
 
 @{
     ViewBag.Title = "DocDetails";
+    TempData.Keep();
+
+    string backToList = "";
+    if(TempData["Role"].ToString() == "Checker")
+    {
+        backToList = Url.Action("DocListForChecker", new { userID = TempData["UserID"] }).ToString();
+    }
+    else if(TempData["Role"].ToString() == "Worker")
+    {
+        backToList = Url.Action("DocListForWorker", new { userID = TempData["UserID"] }).ToString();
+    }
 }
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-<a class="btn btn-primary" href="@Url.Action("Index")">回到列表</a>
+<a class="btn btn-primary" href="@backToList">回到列表</a>
 <hr />
 
 <div class="container">
@@ -20,6 +31,8 @@
         {
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">@item.InspectClasses.ClassName</button>
         }
+        <button class="tablinks">流程狀態</button>
+        <button class="tablinks" style="margin-top: 50px;background-color: lawngreen">表單審核</button>
     </div>
 
     <div class="tabcontent" id="tabContent">

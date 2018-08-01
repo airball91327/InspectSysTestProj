@@ -386,6 +386,8 @@
     <Content Include="Views\InspectDocChecker\ViewOfAirCondition.cshtml" />
     <Content Include="Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocChecker\ViewOfUPS.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocListForChecker.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocListForWorker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

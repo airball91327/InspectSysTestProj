@@ -39,7 +39,7 @@
 }
 
 /* Create an active/current "tab button" class */
-    .tab button.active {
+.tab button.active {
     background-color: coral;
     font-weight: bold;
     color: white;
@@ -54,3 +54,4 @@
     width: 85%;
     height: 100%;
 }
+
