@@ -1,0 +1,78 @@
+﻿@model IEnumerable<InspectSystem.Models.InspectDocFlow>
+
+<style>
+    th {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    table {
+        table-layout: fixed;
+        width: 100%;
+    }
+</style>
+
+<h3 style="font-weight: bold; padding-left: 10px">文件審核流程</h3>
+<hr />
+
+<div class="container col-md-12">
+    <table class="table-bordered">
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectDocs.WorkerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectDocs.CheckerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opinions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditTime)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectDocs.WorkerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectFlowStatusTable.FlowStatusName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InspectDocs.CheckerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opinions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditorID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EditTime)
+                </td>
+            </tr>
+        }
+
+    </table>
+    <hr />
+</div>

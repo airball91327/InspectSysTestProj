@@ -1,6 +1,15 @@
-﻿/* Style background-color for modal header and footer. */
+﻿/* Hide the header and footer's background color over flow from the modal. */
+.modal-content {
+    overflow: hidden;
+}
+
+/* Style background-color for modal header and footer. */
 .modal-header, .modal-footer {
     background-color: darksalmon;
+}
+
+#flowDocModal .modal-header, #flowDocModal .modal-footer {
+    background-color: lightblue;
 }
 
 /* Style the modal title. */
@@ -18,7 +27,7 @@
     height: 100%;
 }
 
-    /* Style the buttons inside the tab */
+/* Style the buttons inside the tab */
 .tab button {
     display: block;
     background-color: inherit;
@@ -39,7 +48,7 @@
 }
 
 /* Create an active/current "tab button" class */
-.tab button.active {
+.tab .active {
     background-color: coral;
     font-weight: bold;
     color: white;
@@ -49,8 +58,22 @@
 /* Style the tab content */
 .tabcontent {
     float: left;
-    padding: 0px 12px;
+    padding-right: 12px;
     border: 1px solid #ccc;
     width: 85%;
     height: 100%;
+}
+
+#flowListBtn {
+    margin-top: 50px;
+}
+
+#flowDocBtn {
+    background-color: lightblue;
+    border: 1px solid #ccc;
+}
+
+#flowDocBtn:hover {
+    font-weight: bold;
+    box-shadow:4px 4px 12px 4px rgba(20%,20%,40%,0.5);
 }

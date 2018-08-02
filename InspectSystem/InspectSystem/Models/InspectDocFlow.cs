@@ -8,6 +8,7 @@ namespace InspectSystem.Models
     public class InspectDocFlow
     {
         [Key, Column(Order = 1)]
+        [ForeignKey("InspectDocs")]
         [Display(Name = "表單編號")]
         public int DocID { get; set; }
         [Key, Column(Order = 2)]
@@ -15,10 +16,10 @@ namespace InspectSystem.Models
         public int StepID { get; set; }
         [Required]
         [Display(Name = "巡檢人員ID")]
-        public int UserID { get; set; }
-        [NotMapped]
-        [Display(Name = "巡檢人員")]
-        public string UserName { get; set; }
+        public int WorkerID { get; set; }
+        [Required]
+        [Display(Name = "簽核主管ID")]
+        public int CheckerID { get; set; }
         [Display(Name = "意見描述")]
         public string Opinions { get; set; }
         [Required]
@@ -34,5 +35,6 @@ namespace InspectSystem.Models
         public DateTime? EditTime { get; set; }
 
         public virtual InspectFlowStatusTable InspectFlowStatusTable { get; set; }
+        public virtual InspectDocs InspectDocs { get; set; }
     }
 }

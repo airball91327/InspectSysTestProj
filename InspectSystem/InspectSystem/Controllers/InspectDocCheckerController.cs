@@ -34,7 +34,7 @@ namespace InspectSystem.Controllers
         public ActionResult DocListForWorker(string userID)
         {
             int UserID = System.Convert.ToInt32(userID);
-            var CheckingDocs = db.InspectDocs.Where(i => i.UserID == UserID &&
+            var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
                                                          i.FlowStatusID == 0);
             TempData["UserID"] = UserID;
             TempData["Role"] = "Worker";
@@ -44,6 +44,7 @@ namespace InspectSystem.Controllers
         // GET: InspectDocChecker/DocDetails
         public ActionResult DocDetails(int docID)
         {
+            /* Set variables from DB. */
             var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
             int length = docID.ToString().Length;
             int areaID = System.Convert.ToInt32(docID.ToString().Substring(length - 2));
@@ -110,6 +111,52 @@ namespace InspectSystem.Controllers
             {
                 return PartialView(inspectDocDetailsViewModels);
             }
+        }
+
+        // GET:InspectDocChecker/GetFlowList
+        public ActionResult GetFlowList(int docID)
+        {
+            var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderBy(i => i.StepID);
+
+            return PartialView(flowList.ToList());
+        }
+
+        // GET:InspectDocChecker/FlowDoc
+        public ActionResult FlowDoc(int docID, int userID, string role)
+        {
+            /* Find FlowDoc and set step to next. */
+            var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
+                                            .OrderByDescending(i => i.StepID).First();
+            flowDoc.StepID++;
+
+            /* Use userID to find the user details. (Not Implement)*/
+            flowDoc.EditorID = userID;
+            flowDoc.EditorName = "資料庫撈userName";
+            flowDoc.Opinions = "";
+
+            /* According user role to retrun views. */
+            if( role == "Checker" )
+            {
+                return PartialView("FlowDocEditForChecker", flowDoc);
+            }
+            else 
+            {
+                return PartialView("FlowDocEditForWorker", flowDoc);
+            }
+        }
+
+        // POST:InspectDocChecker/FlowDocEditForChecker
+        public ActionResult FlowDocEditForChecker(InspectDocFlow inspectDocFlow)
+        {
+            //not implement
+            return View();
+        }
+
+        // POST:InspectDocChecker/FlowDocEditForWorker
+        public ActionResult FlowDocEditForWorker(InspectDocFlow inspectDocFlow)
+        {
+            //not implement
+            return View();
         }
     }
 }

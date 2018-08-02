@@ -32,8 +32,8 @@ namespace InspectSystem.Controllers
             var FindDoc = db.InspectDocs.Find(docID);
             if (FindDoc == null)
             {
-                int userID = 123456;
-                string userName = "測試工人";
+                int workerID = 123456;
+                string workerName = "測試工人";
                 int checkerID = 654321;
                 string checkerName = "測試主管";
 
@@ -42,8 +42,8 @@ namespace InspectSystem.Controllers
                     Date = DateTime.Now,
                     AreaID = areaID,
                     AreaName = db.InspectAreas.Find(areaID).AreaName,
-                    UserID = userID,
-                    UserName = userName,
+                    WorkerID = workerID,
+                    WorkerName = workerName,
                     CheckerID = checkerID,
                     CheckerName = checkerName,
                     FlowStatusID = 0
@@ -356,12 +356,12 @@ namespace InspectSystem.Controllers
             {
                 DocID = docID,
                 StepID = 1,
-                UserID = findDoc.UserID,
-                UserName = findDoc.UserName,
+                WorkerID = findDoc.WorkerID,
+                CheckerID = findDoc.CheckerID,
                 Opinions = opinionsTextArea,
                 FlowStatusID = 1,
-                EditorID = findDoc.UserID,
-                EditorName = findDoc.UserName,
+                EditorID = findDoc.WorkerID,
+                EditorName = findDoc.WorkerName,
                 EditTime = DateTime.Now
             };
 

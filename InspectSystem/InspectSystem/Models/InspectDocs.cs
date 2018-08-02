@@ -29,15 +29,15 @@ namespace InspectSystem.Models
         public string AreaName { get; set; }
         [Required]
         [Display(Name = "巡檢人員ID")]
-        public int UserID { get; set; }
+        public int WorkerID { get; set; }
         [Required]
-        [Display(Name = "巡檢人員名稱")]
-        public string UserName { get; set; }
+        [Display(Name = "巡檢人員")]
+        public string WorkerName { get; set; }
         [Required]
         [Display(Name = "簽核主管ID")]
         public int CheckerID { get; set; }
         [Required]
-        [Display(Name = "簽核主管名稱")]
+        [Display(Name = "簽核主管")]
         public string CheckerName { get; set; }
         [Required]
         [ForeignKey("InspectFlowStatusTable")]
