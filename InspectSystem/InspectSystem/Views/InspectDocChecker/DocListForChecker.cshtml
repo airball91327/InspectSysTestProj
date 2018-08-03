@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectDocs>
 @{
     ViewBag.Title = "主管審核頁面";
+
+    if (TempData["SendMsg"] != null)
+    {
+        <script>
+            var message = @Html.Raw(Json.Encode(TempData["SendMsg"]));
+            alert(message);
+        </script>
+    }
 }
 <h2>主管審核頁面</h2>
 <table class="table">

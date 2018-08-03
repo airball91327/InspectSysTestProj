@@ -208,6 +208,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InspectAreaCheckersController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
     <Compile Include="Controllers\InspectClassesController.cs" />
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Models\BMEDcontext.cs" />
     <Compile Include="Models\ClassesOfAreas.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InspectAreaChecker.cs" />
     <Compile Include="Models\InspectAreas.cs" />
     <Compile Include="Models\InspectClasses.cs" />
     <Compile Include="Models\InspectDocDetails.cs" />
@@ -403,6 +405,8 @@
     <Content Include="Views\InspectDocChecker\FlowDocEditForChecker.cshtml" />
     <Content Include="Views\InspectDocChecker\FlowDocEditForWorker.cshtml" />
     <Content Include="Views\InspectDocChecker\GetFlowList.cshtml" />
+    <Content Include="Views\InspectAreaCheckers\Edit.cshtml" />
+    <Content Include="Views\InspectAreaCheckers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

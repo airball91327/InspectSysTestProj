@@ -146,17 +146,70 @@ namespace InspectSystem.Controllers
         }
 
         // POST:InspectDocChecker/FlowDocEditForChecker
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult FlowDocEditForChecker(InspectDocFlow inspectDocFlow)
         {
-            //not implement
-            return View();
+            int userID = inspectDocFlow.EditorID;
+            int docID = inspectDocFlow.DocID;
+            var inspectDoc = db.InspectDocs.Find(docID);
+            /* Insert edit time, and change flow status for inspect doc. */
+            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDoc.FlowStatusID = inspectDocFlow.FlowStatusID;
+
+            if(ModelState.IsValid)
+            {
+                /* Add new data to doc flow, and modefiy doc. */
+                db.InspectDocFlows.Add(inspectDocFlow);
+                db.Entry(inspectDoc).State = EntityState.Modified;
+                db.SaveChanges();
+
+                /* return save success message. */
+                if(inspectDocFlow.FlowStatusID == 2)
+                {
+                    TempData["SendMsg"] = "文件已結案";
+                }
+                else if(inspectDocFlow.FlowStatusID == 0)
+                {
+                    TempData["SendMsg"] = "文件已退回";
+                }
+                return RedirectToAction("DocListForChecker", userID);
+            }
+            else
+            {
+                TempData["SendMsg"] = "文件傳送失敗";
+                return RedirectToAction("DocListForChecker", userID);
+            }
         }
 
         // POST:InspectDocChecker/FlowDocEditForWorker
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult FlowDocEditForWorker(InspectDocFlow inspectDocFlow)
         {
-            //not implement
-            return View();
+            int userID = inspectDocFlow.EditorID;
+            int docID = inspectDocFlow.DocID;
+            var inspectDoc = db.InspectDocs.Find(docID);
+            /* Insert edit time, and change flow status to "checking" for docflow and doc. */
+            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.FlowStatusID = 1;
+            inspectDoc.FlowStatusID = inspectDocFlow.FlowStatusID;
+
+            if (ModelState.IsValid)
+            {
+                db.InspectDocFlows.Add(inspectDocFlow);
+                db.Entry(inspectDoc).State = EntityState.Modified;
+                db.SaveChanges();
+
+                /* return save success message. */
+                TempData["SendMsg"] = "文件傳送成功";
+                return RedirectToAction("DocListForWorker", userID);
+            }
+            else
+            {
+                TempData["SendMsg"] = "文件傳送失敗";
+                return RedirectToAction("DocListForWorker", userID);
+            }
         }
     }
 }

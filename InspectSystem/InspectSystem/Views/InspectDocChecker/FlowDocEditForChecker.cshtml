@@ -8,7 +8,23 @@
     }
 </style>
 
-@using (Html.BeginForm())
+<script>
+    $(document).ready(function () {
+
+        $("#submitBtn").click(function () {
+            /* Check the radio button is selected or not. */
+            if ($(":radio:checked").length == 0) {
+                $("#errorMsg").html("請選擇審核結果");
+            }
+            else {
+                $("#errorMsg").html("");
+                $("form").submit();
+            }
+        });
+    });
+</script>
+
+@using (Html.BeginForm("FlowDocEditForChecker", "InspectDocChecker"))
 {
     @Html.AntiForgeryToken()
 
@@ -16,6 +32,7 @@
         <h3>審核文件</h3>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CheckerID)
 
         <div class="form-group">
             @Html.LabelFor(model => model.DocID, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -78,13 +95,14 @@
                 @Html.RadioButtonFor(model => model.FlowStatusID, "0")退回文件
                 @Html.RadioButtonFor(model => model.FlowStatusID, "2")結案
                 @Html.ValidationMessageFor(model => model.FlowStatusID, "", new { @class = "text-danger" })
+                <p id="errorMsg" style="color: red"></p>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-3 col-md-9">
                 <br />
-                <input type="submit" value="送出" class="btn btn-primary btn-lg" />
+                <button type="button" class="btn btn-primary btn-lg" id="submitBtn">送出</button>
             </div>
         </div>
     </div>

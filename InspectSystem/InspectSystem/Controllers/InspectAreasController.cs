@@ -48,9 +48,14 @@ namespace InspectSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AreaID,AreaName")] InspectAreas inspectAreas)
         {
+            InspectAreaChecker inspectAreaChecker = new InspectAreaChecker()
+            {
+                AreaID = inspectAreas.AreaID
+            };
             if (ModelState.IsValid)
             {
                 db.InspectAreas.Add(inspectAreas);
+                db.inspectAreaCheckers.Add(inspectAreaChecker);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
