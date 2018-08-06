@@ -52,6 +52,7 @@ namespace InspectSystem.Controllers
                 db.InspectDocs.Add(inspectDocs);
                 db.SaveChanges();
             }
+            TempData["UserID"] = db.InspectDocs.Find(docID).WorkerID;
             return View(ClassesOfAreas.ToList());
         }
 
@@ -287,6 +288,33 @@ namespace InspectSystem.Controllers
 
                 return View(ClassesOfAreas.ToList());
             }
+        }
+
+        //GET: InspectDocDetails/FlowDocEdit
+        public ActionResult FlowDocEdit(int docID, int userID)
+        {
+
+            var findDoc = db.InspectDocs.Find(docID);
+            var areaCheckers = db.inspectAreaCheckers.ToList();
+            var areaCheckerNames = areaCheckers.GroupBy(a => a.CheckerName).Select(g => g.First()).ToList();
+            ViewBag.AreaCheckerNames = areaCheckerNames;
+
+            /* Set value to new a DocFlow. */
+            InspectDocFlow DocFlow = new InspectDocFlow()
+            {
+                DocID = docID,
+                StepID = 1,
+                WorkerID = findDoc.WorkerID,
+                CheckerID = findDoc.CheckerID,
+                Opinions = "",
+                FlowStatusID = 1,
+                EditorID = findDoc.WorkerID,
+                EditorName = findDoc.WorkerName,
+                EditTime = null,
+                InspectDocs = db.InspectDocs.Find(docID)
+            };
+
+            return PartialView(DocFlow);
         }
 
         //POST: InspectDocDetails/SendDocToChecker

@@ -35,25 +35,3 @@ function openClassContent(evt, acid, docID) {
         }
     });
 }
-
-function SendDocToChecker(docID) {
-
-    $.ajax({
-        type: "POST",
-        url: "/InspectDocDetails/SendDocToChecker",
-        data: { DocID: docID },
-        beforeSend: function () {
-            $("#loadingModal").modal("show");
-        },
-        complete: function () {
-            $("#loadingModal").modal("hide");
-        },
-        success: function (result) {
-            console.log(result); //For debug
-            alert(result);
-        },
-        error: function (msg) {
-            alert("傳送失敗");
-        }
-    });
-}
