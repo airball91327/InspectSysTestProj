@@ -1,5 +1,4 @@
-﻿@Scripts.Render("~/bundles//jquery")
-
+﻿
 @{
     ViewBag.Title = "Home Page";
 }
@@ -27,21 +26,17 @@
     </div><!-- /.col-md-6 -->
 </div><!-- /.row -->
 
- <div class="col-md-3">
-        <div class="input-group">
-            <input type="text" class="form-control" aria-label="..." />
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="width: 256px;">
-                    @{ 
-                        for (int i = 0; i <= 5; i++)
-                        {
-                            string name = "第" + i + "行123123123";
-                            <li value ="@i">@name</li>
-                        }
-                    }
-                </ul>
-            </div><!-- /btn-group -->
-        </div><!-- /input-group -->
-</div><!-- /.col-md-6 -->
+<br />
+
+<select class="selectpicker" data-live-search="true">
+    <option value="1">Hot Dog, Fries and a Soda</option>
+    <option value="2">Burger, Shake and a Smile</option>
+    <option value="3">Sugar, Spice and all things nice</option>
+</select>
+
+<select >
+    <option value="1">Hot Dog, Fries and a Soda</option>
+    <option value="2">Burger, Shake and a Smile</option>
+    <option value="3">Sugar, Spice and all things nice</option>
+</select>
 

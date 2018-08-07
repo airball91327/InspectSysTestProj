@@ -318,9 +318,11 @@ namespace InspectSystem.Controllers
         }
 
         //POST: InspectDocDetails/SendDocToChecker
-        public ActionResult SendDocToChecker(int docID,string checkerList, string opinionsTextArea)
+        public ActionResult SendDocToChecker(InspectDocFlow inspectDocFlow)
         {
+
             /* Save all temp details to database. */
+            int docID = inspectDocFlow.DocID;
             var DocDetailTempList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
             var areaID = DocDetailTempList.First().AreaID;
             var classID = DocDetailTempList.First().ClassID;
@@ -379,23 +381,9 @@ namespace InspectSystem.Controllers
             findDoc.FlowStatusID = 1;
             findDoc.EndTime = DateTime.Now;
 
-            /* Add new DocFlow. */
-            InspectDocFlow DocFlow = new InspectDocFlow()
-            {
-                DocID = docID,
-                StepID = 1,
-                WorkerID = findDoc.WorkerID,
-                CheckerID = findDoc.CheckerID,
-                Opinions = opinionsTextArea,
-                FlowStatusID = 1,
-                EditorID = findDoc.WorkerID,
-                EditorName = findDoc.WorkerName,
-                EditTime = DateTime.Now
-            };
-
             if (ModelState.IsValid)
             {
-                db.InspectDocFlows.Add(DocFlow);
+                db.InspectDocFlows.Add(inspectDocFlow);
                 db.Entry(findDoc).State = EntityState.Modified;
                 db.SaveChanges();
                 var msg = "資料已傳送";
