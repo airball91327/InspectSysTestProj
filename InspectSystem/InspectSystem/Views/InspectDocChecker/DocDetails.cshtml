@@ -7,16 +7,7 @@
 
 @{
     ViewBag.Title = "詳細內容";
-    TempData.Keep();
-    string backToList = "";
-    if (TempData["Role"].ToString() == "Checker")
-    {
-        backToList = Url.Action("DocListForChecker", new { userID = TempData["UserID"] }).ToString();
-    }
-    else if (TempData["Role"].ToString() == "Worker")
-    {
-        backToList = Url.Action("DocListForWorker", new { userID = TempData["UserID"] }).ToString();
-    }
+    string backToList = Url.Action("DocListForChecker", new { userID = TempData["UserID"] }).ToString();
 }
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>

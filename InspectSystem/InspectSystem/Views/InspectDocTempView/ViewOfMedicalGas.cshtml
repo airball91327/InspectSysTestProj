@@ -30,24 +30,21 @@
                 {
                     var singleRow = "single-row" + row;
                     <div class="row col-md-12 @singleRow">
-                        @if (fieldItem.FieldName != null)
-                        {
-                            if (row % 2 == 1)
+                            @if (row % 2 == 1)
                             {
                                 <script>
-                                        $("." + "@singleRow").attr("style", "background-color: AliceBlue");
+                                    $("." + "@singleRow").attr("style", "background-color: AliceBlue");
                                 </script>
                             }
                             else
                             {
                                 <script>
-                                        $("." + "@singleRow").attr("style", "background-color: white");
+                                    $("." + "@singleRow").attr("style", "background-color: white");
                                 </script>
                             }
                             <div class="col-md-3">
                                 @Html.DisplayFor(modelItem => fieldItem.FieldName)
                             </div>
-                        }
 
                         @foreach (var docItem in Model.InspectDocDetailsTemporary)
                         {

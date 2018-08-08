@@ -34,8 +34,16 @@ namespace InspectSystem.Controllers
             {
                 int workerID = 123456;
                 string workerName = "測試工人";
-                int checkerID = 654321;
-                string checkerName = "測試主管";
+
+                /* Find the checker of the area. */
+                int checkerID = 0;
+                string checkerName = "";
+                var findAreaChecker = db.inspectAreaCheckers.Find(areaID);
+                if(findAreaChecker != null)
+                {
+                    checkerID = findAreaChecker.CheckerID;
+                    checkerName = findAreaChecker.CheckerName;
+                }
 
                 var inspectDocs = new InspectDocs() {
                     DocID = docID,
@@ -117,7 +125,7 @@ namespace InspectSystem.Controllers
                     InspectFields = fieldsByACID,
                     InspectItems = itemsByACID
                 };
-            /* Return other views for class MedicalGas and UPS with different layout. */
+            /* Return views with different layout. */
             if(classID == 4 || classID == 5)
             {
                 return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
@@ -217,14 +225,14 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
-        // GET:InspectDocDetails/AreaPrecautions
+        // GET: InspectDocDetails/AreaPrecautions
         public ActionResult AreaPrecautions(int areaID)
         {
             var areaPrecautions = db.InspectPrecautions.Where(i => i.AreaID == areaID);
             return PartialView(areaPrecautions.ToList());
         }
 
-        //GET:InspectDocDetails/CheckValue
+        //GET: InspectDocDetails/CheckValue
         /* Use ajax to check the min and max value for fields. */
         public ActionResult CheckValue(int AreaID, int ClassID, int ItemID, int FieldID, string Value)
         {
@@ -240,22 +248,30 @@ namespace InspectSystem.Controllers
             string msg = "";
             if (FieldDataType == "float")
             {
-                // Check max and min value, and if doesn't set the min or max value, return nothing.
-                if (System.Convert.ToSingle(Value) >= MaxValue && MaxValue != 0)
+                /* Check the input string can be convert to float. */
+                if (Single.TryParse(Value, out float inputValue))
                 {
-                    msg = "<span style='color:red'>大於正常數值</span>";
-                }
-                else if (System.Convert.ToSingle(Value) <= MinValue && MinValue != 0)
-                {
-                    msg = "<span style='color:red'>小於正常數值</span>";
-                }
-                else if (MinValue == 0 && MaxValue == 0)
-                {
-                    msg = "";
+                    // Check max and min value, and if doesn't set the min or max value, return nothing.
+                    if (inputValue >= MaxValue && MaxValue != 0)
+                    {
+                        msg = "<span style='color:red'>大於正常數值</span>";
+                    }
+                    else if (inputValue <= MinValue && MinValue != 0)
+                    {
+                        msg = "<span style='color:red'>小於正常數值</span>";
+                    }
+                    else if (MinValue == 0 && MaxValue == 0)
+                    {
+                        msg = "";
+                    }
+                    else
+                    {
+                        msg = "";
+                    }
                 }
                 else
                 {
-                    msg = ""; 
+                    msg = "<span style='color:red'>請輸入數字</span>";
                 }
             }
             else
@@ -290,7 +306,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        //GET: InspectDocDetails/FlowDocEdit
+        // GET: InspectDocDetails/FlowDocEdit
         public ActionResult FlowDocEdit(int docID, int userID)
         {
 
@@ -317,7 +333,7 @@ namespace InspectSystem.Controllers
             return PartialView(DocFlow);
         }
 
-        //POST: InspectDocDetails/SendDocToChecker
+        // POST: InspectDocDetails/SendDocToChecker
         public ActionResult SendDocToChecker(InspectDocFlow inspectDocFlow)
         {
 
@@ -328,8 +344,8 @@ namespace InspectSystem.Controllers
             var classID = DocDetailTempList.First().ClassID;
             List<InspectDocDetails> inspectDocDetails = new List<InspectDocDetails>();
 
-            /* Copy temp data to DocDetail table. */
-            foreach(var item in DocDetailTempList)
+            /* Copy temp data to inspectDocDetails list. */
+            foreach (var item in DocDetailTempList)
             {
                 inspectDocDetails.Add(new InspectDocDetails()
                 {
@@ -353,7 +369,7 @@ namespace InspectSystem.Controllers
             var findDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID);
             if (ModelState.IsValid)
             {
-                if(findDocDetails == null)
+                if(findDocDetails.Count() == 0)
                 {
                     foreach (var item in inspectDocDetails)
                     {
@@ -380,6 +396,7 @@ namespace InspectSystem.Controllers
             var findDoc = db.InspectDocs.Find(docID);
             findDoc.FlowStatusID = 1;
             findDoc.EndTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.Now;
 
             if (ModelState.IsValid)
             {
@@ -387,19 +404,19 @@ namespace InspectSystem.Controllers
                 db.Entry(findDoc).State = EntityState.Modified;
                 db.SaveChanges();
                 var msg = "資料已傳送";
-                return RedirectToAction("AfterSendDoc", new { Msg = msg, AreaID = areaID });
+                return RedirectToAction("AfterSendDoc", new { Msg = msg });
             }
             else
             {
-                var msg = "資料傳送失敗";
-                return RedirectToAction("AfterSendDoc", new { Msg = msg, AreaID = areaID });
+                TempData["SaveMsg"] = "資料傳送失敗";
+                return RedirectToAction("Index", new { AreaID = areaID });
             }
         }
 
-        public ActionResult AfterSendDoc(string Msg, int AreaID)
+        // GET: InspectDocDetails/AfterSendDoc
+        public ActionResult AfterSendDoc(string Msg)
         {
             ViewBag.msg = Msg;
-            ViewBag.AreaID = AreaID;
             return View();
         }
 

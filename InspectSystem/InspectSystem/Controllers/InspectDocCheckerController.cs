@@ -20,24 +20,26 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectDocChecker/DocListForChecker
-        public ActionResult DocListForChecker(string userID)
+        public ActionResult DocListForChecker(int UserID)
         {
-            int UserID = System.Convert.ToInt32(userID);
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
                                                          i.FlowStatusID == 1);
             TempData["UserID"] = UserID;
             TempData["Role"] = "Checker";
+            TempData.Keep("UserID");
+            TempData.Keep("Role");
             return View(CheckingDocs.ToList());
         }
 
         // GET: InspectDocChecker/DocListForWorker
-        public ActionResult DocListForWorker(string userID)
+        public ActionResult DocListForWorker(int UserID)
         {
-            int UserID = System.Convert.ToInt32(userID);
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
                                                          i.FlowStatusID == 0);
             TempData["UserID"] = UserID;
             TempData["Role"] = "Worker";
+            TempData.Keep("UserID");
+            TempData.Keep("Role");
             return View(CheckingDocs.ToList());
         }
 
@@ -173,12 +175,12 @@ namespace InspectSystem.Controllers
                 {
                     TempData["SendMsg"] = "文件已退回";
                 }
-                return RedirectToAction("DocListForChecker", userID);
+                return RedirectToAction("DocListForChecker", new { UserID = userID });
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForChecker", userID);
+                return RedirectToAction("DocListForChecker", new { UserID = userID });
             }
         }
 
@@ -203,12 +205,12 @@ namespace InspectSystem.Controllers
 
                 /* return save success message. */
                 TempData["SendMsg"] = "文件傳送成功";
-                return RedirectToAction("DocListForWorker", userID);
+                return RedirectToAction("DocListForWorker", new { UserID = userID });
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForWorker", userID);
+                return RedirectToAction("DocListForWorker", new { UserID = userID });
             }
         }
     }

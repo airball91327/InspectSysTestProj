@@ -213,6 +213,7 @@
     <Compile Include="Controllers\InspectClassesController.cs" />
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
+    <Compile Include="Controllers\InspectDocEditController.cs" />
     <Compile Include="Controllers\InspectDocTempViewController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
@@ -267,6 +268,7 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\ClassContentOfAreaDocEdit.js" />
     <Content Include="Scripts\DocCheckerDocDetails.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -362,6 +364,7 @@
     <Content Include="Scripts\i18n\defaults-zh_TW.js" />
     <Content Include="Scripts\i18n\defaults-zh_TW.min.js" />
     <Content Include="Scripts\InspectDocDetailsIndex.js" />
+    <Content Include="Scripts\InspectDocEditIndex.js" />
     <Content Include="Scripts\InspectDocTempView.js" />
     <Content Include="Scripts\InspectFields.js" />
     <Content Include="Scripts\InspectFieldsSearch.js" />
@@ -487,6 +490,12 @@
     <Content Include="Views\InspectAreaCheckers\Edit.cshtml" />
     <Content Include="Views\InspectAreaCheckers\Index.cshtml" />
     <Content Include="Views\InspectDocDetails\FlowDocEdit.cshtml" />
+    <Content Include="Views\InspectDocEdit\Index.cshtml" />
+    <Content Include="Views\InspectDocEdit\ClassContentOfArea.cshtml" />
+    <Content Include="Views\InspectDocEdit\ViewOfAirCondition.cshtml" />
+    <Content Include="Views\InspectDocEdit\ViewOfMedicalGas.cshtml" />
+    <Content Include="Views\InspectDocEdit\ViewOfUPS.cshtml" />
+    <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

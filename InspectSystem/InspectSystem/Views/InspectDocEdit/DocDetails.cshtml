@@ -2,18 +2,17 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script src="~/Scripts/InspectDocTempView.js"></script>
-<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
+<script src="~/Scripts/DocCheckerDocDetails.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/MyStyleForDocDetail.css">
 
 @{
     ViewBag.Title = "詳細內容";
+    string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { userID = TempData["UserID"] }).ToString();
 }
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-    <div style="padding-top: 20px">
-        <a class="btn btn-primary" href="@Url.Action("Index", new { areaID = ViewBag.AreaID })">回到編輯畫面</a>
-    </div>
+<a class="btn btn-primary" href="@backToList">回到列表</a>
 <hr />
 
 <div class="container">
@@ -22,8 +21,9 @@
         {
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">@item.InspectClasses.ClassName</button>
         }
+        <button class="tablinks" id="flowListBtn" onclick="getFlowList(event, '@ViewBag.DocID')">文件審核流程</button>
         <!-- Trigger the flowDoc modal with a button -->
-        <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn" style="margin-top: 50px">表單審核</button>
+        <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn">表單審核</button>
     </div>
 
     <div class="tabcontent" id="tabContent">
@@ -63,7 +63,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @Html.Action("FlowDocEdit", new { docID = ViewBag.DocID, userID = TempData["UserID"] })
+                    @Html.Action("FlowDoc", "InspectDocChecker", new { docID = ViewBag.DocID, userID = TempData["UserID"], role = TempData["Role"] })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">關閉視窗</button>
@@ -72,5 +72,7 @@
         </div>
     </div>
 </div>
+
+
 
 

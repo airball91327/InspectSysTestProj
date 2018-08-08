@@ -57,7 +57,15 @@
                 {
                     int value = modelItem.CheckerID;
                     string checkerName = modelItem.CheckerName;
-                    <option value=@value>@checkerName</option>
+                    /* If there is a default checker, set the checker to selected by default. */
+                    if (Model.CheckerID == value)
+                    {
+                        <option value=@value selected>@checkerName</option>
+                    }
+                    else
+                    {
+                        <option value=@value>@checkerName</option>
+                    }
                 }
             </select>
         </div>

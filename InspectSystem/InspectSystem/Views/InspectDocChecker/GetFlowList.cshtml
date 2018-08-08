@@ -24,6 +24,9 @@
 
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.StepID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.InspectDocs.WorkerName)
             </th>
             <th>
@@ -49,6 +52,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StepID)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.InspectDocs.WorkerName)
                 </td>
