@@ -1,70 +1,160 @@
-﻿$(document).ready(function () {
-    //Default class content is class 1.
+﻿// Global variable for check the form has been modified or not.
+var hasChanged = false;
+
+$(document).ready(function () {
+    // Default class content is class 1.
     document.getElementById("1").click();
+
+    // Show alert before change page.
+    window.onbeforeunload = function (event) {
+        event.returnValue = "Write something clever here..";
+    };
+
+    // When the form has been modified, set value to "changed".
+    $(document).on("change", "#detailsForm", function () {
+        hasChanged = true;
+    });
 });
 
 function openClassContent(evt, acid, docID) {
+
     // Declare all variables
     var i, tablinks;
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    // If form is modified and user want to change page, alert user.
+    if (hasChanged == true) {
 
-    // Add an "active" class to the link button clicked.
-    evt.currentTarget.className += " active";
+        if (confirm("有資料尚未儲存，是否離開?")) {
 
-    $.ajax({
-        type: "GET",
-        url: "/InspectDocEdit/ClassContentOfArea",
-        data: { ACID: acid, DocID: docID },
-        beforeSend: function () {
-            $("#loadingModal").modal("show");
-        },
-        complete: function () {
-            $("#loadingModal").modal("hide");
-        },
-        success: function (result) {
-            console.log(result); //For debug
-            $("#tabContent").html(result);
-        },
-        error: function (msg) {
-            alert("讀取錯誤");
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Add an "active" class to the link button clicked.
+            evt.currentTarget.className += " active";
+
+            $.ajax({
+                type: "GET",
+                url: "/InspectDocDetails/ClassContentOfArea",
+                data: { ACID: acid, DocID: docID },
+                beforeSend: function () {
+                    $("#loadingModal").modal("show");
+                },
+                complete: function () {
+                    $("#loadingModal").modal("hide");
+                },
+                success: function (result) {
+                    console.log(result); //For debug
+                    $("#tabContent").html(result);
+                },
+                error: function (msg) {
+                    alert("讀取錯誤");
+                }
+            });
+            hasChanged = false;
         }
-    });
+    }
+    else {
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Add an "active" class to the link button clicked.
+        evt.currentTarget.className += " active";
+
+        $.ajax({
+            type: "GET",
+            url: "/InspectDocDetails/ClassContentOfArea",
+            data: { ACID: acid, DocID: docID },
+            beforeSend: function () {
+                $("#loadingModal").modal("show");
+            },
+            complete: function () {
+                $("#loadingModal").modal("hide");
+            },
+            success: function (result) {
+                console.log(result); //For debug
+                $("#tabContent").html(result);
+            },
+            error: function (msg) {
+                alert("讀取錯誤");
+            }
+        });
+        hasChanged = false;
+    }
 }
 
 function getFlowList(evt, docID) {
     // Declare all variables
     var i, tablinks;
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
 
-    // Add an "active" class to the link button clicked.
-    evt.currentTarget.className += " active";
+    if (hasChanged == true) {
 
-    $.ajax({
-        type: "GET",
-        url: "/InspectDocChecker/GetFlowList",
-        data: { DocID: docID },
-        beforeSend: function () {
-            $("#loadingModal").modal("show");
-        },
-        complete: function () {
-            $("#loadingModal").modal("hide");
-        },
-        success: function (result) {
-            console.log(result); //For debug
-            $("#tabContent").html(result);
-        },
-        error: function (msg) {
-            alert("讀取錯誤");
+        if (confirm("有資料尚未儲存，是否離開?")) {
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Add an "active" class to the link button clicked.
+            evt.currentTarget.className += " active";
+
+            $.ajax({
+                type: "GET",
+                url: "/InspectDocChecker/GetFlowList",
+                data: { DocID: docID },
+                beforeSend: function () {
+                    $("#loadingModal").modal("show");
+                },
+                complete: function () {
+                    $("#loadingModal").modal("hide");
+                },
+                success: function (result) {
+                    console.log(result); //For debug
+                    $("#tabContent").html(result);
+                },
+                error: function (msg) {
+                    alert("讀取錯誤");
+                }
+            });
+            hasChanged = false;
         }
-    });
+    }
+    else {
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Add an "active" class to the link button clicked.
+        evt.currentTarget.className += " active";
+
+        $.ajax({
+            type: "GET",
+            url: "/InspectDocChecker/GetFlowList",
+            data: { DocID: docID },
+            beforeSend: function () {
+                $("#loadingModal").modal("show");
+            },
+            complete: function () {
+                $("#loadingModal").modal("hide");
+            },
+            success: function (result) {
+                console.log(result); //For debug
+                $("#tabContent").html(result);
+            },
+            error: function (msg) {
+                alert("讀取錯誤");
+            }
+        });
+        hasChanged = false;
+    }
 }

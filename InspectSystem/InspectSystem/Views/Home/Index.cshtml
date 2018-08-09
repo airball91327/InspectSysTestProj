@@ -1,9 +1,19 @@
-﻿
+﻿@Scripts.Render("~/bundles//jquery")
 @{
     ViewBag.Title = "Home Page";
 }
-
 <hr />
+測試頁面
+<hr />
+
+<script>
+    $(document).ready(function () {
+
+        $(":input").change(function () {
+            alert("The text has been changed.");
+        });
+    });
+</script>
 
 <div class="row">
     <div class="col-md-3">
@@ -38,3 +48,7 @@
         </select>
     </div><!-- /.col-md-6 -->
 </div><!-- /.row -->
+
+<input type="text" value="Text" />
+
+
