@@ -2,6 +2,13 @@
 
 @Scripts.Render("~/bundles/jqueryval")
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.combobox').combobox();
+    });
+</script>
+
 <style>
     .myDisplayStyle {
         margin-top: 7px;
@@ -13,34 +20,15 @@
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h3>送出審核</h3>
+    <h3>審核</h3>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.FlowStatusID)
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DocID, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9 myDisplayStyle">
-            @Html.DisplayFor(model => model.DocID)
-            @Html.HiddenFor(model => model.DocID)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.StepID, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9 myDisplayStyle">
-            @Html.DisplayFor(model => model.StepID)
-            @Html.HiddenFor(model => model.StepID)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.WorkerID, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9 myDisplayStyle">
-            @Html.DisplayFor(model => model.WorkerID)
-            @Html.HiddenFor(model => model.WorkerID)
-        </div>
-    </div>
+    @Html.HiddenFor(model => model.DocID)
+    @Html.HiddenFor(model => model.StepID)
+    @Html.HiddenFor(model => model.WorkerID)
+    @Html.HiddenFor(model => model.EditorID)
+    @Html.HiddenFor(model => model.EditorName)
 
     <div class="form-group">
         @Html.LabelFor(model => model.InspectDocs.WorkerName, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -49,41 +37,11 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-inline">
         @Html.LabelFor(model => model.InspectDocs.CheckerName, htmlAttributes: new { @class = "control-label col-md-3" })
         <div class="col-md-9">
-            <select class="selectpicker" data-live-search="true" name="CheckerID">
-                @foreach (var modelItem in ViewBag.AreaCheckerNames)
-                {
-                    int value = modelItem.CheckerID;
-                    string checkerName = modelItem.CheckerName;
-                    /* If there is a default checker, set the checker to selected by default. */
-                    if (Model.CheckerID == value)
-                    {
-                        <option value=@value selected>@checkerName</option>
-                    }
-                    else
-                    {
-                        <option value=@value>@checkerName</option>
-                    }
-                }
-            </select>
-        </div>
-    </div>
+            @Html.DropDownList("AreaCheckerNames", null, new { @class = "form-control combobox" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.EditorID, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9 myDisplayStyle">
-            @Html.DisplayFor(model => model.EditorID)
-            @Html.HiddenFor(model => model.EditorID)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.EditorName, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9 myDisplayStyle">
-            @Html.DisplayFor(model => model.EditorName)
-            @Html.HiddenFor(model => model.EditorName)
         </div>
     </div>
 

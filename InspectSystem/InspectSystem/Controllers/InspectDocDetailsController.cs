@@ -311,9 +311,14 @@ namespace InspectSystem.Controllers
         {
 
             var findDoc = db.InspectDocs.Find(docID);
+            int areaID = findDoc.AreaID;
+            int checkerID = db.inspectAreaCheckers.Find(areaID).CheckerID;
             var areaCheckers = db.inspectAreaCheckers.ToList();
             var areaCheckerNames = areaCheckers.GroupBy(a => a.CheckerName).Select(g => g.First()).ToList();
-            ViewBag.AreaCheckerNames = areaCheckerNames;
+            //ViewBag.AreaCheckerNames = areaCheckerNames;
+
+            SelectList selectList = new SelectList(areaCheckerNames, "CheckerID", "CheckerName", checkerID);
+            ViewBag.AreaCheckerNames = selectList;
 
             /* Set value to new a DocFlow. */
             InspectDocFlow DocFlow = new InspectDocFlow()
