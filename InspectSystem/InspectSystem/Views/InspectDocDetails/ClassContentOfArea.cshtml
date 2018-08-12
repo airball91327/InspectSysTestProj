@@ -49,13 +49,21 @@
                     </div>
                     <div class="col-md-6">
                     @foreach (var fieldItem in Model.InspectFields)
-                     {
+                    {
                         /* Display all the FieldName belong the current Item. */
                         if (item.ItemID == fieldItem.ItemID)
                         {
                             if(fieldItem.FieldName != null)
                             {
-                                <div class="col-md-1">
+                                var lengthOfFieldName = fieldItem.FieldName.Length;
+                                int cols = (lengthOfFieldName / 2);
+                                if (cols < 1)
+                                {
+                                    cols = cols + 1;
+                                }
+                                string setCols = "col-md-" + cols.ToString();
+
+                                <div class="@setCols">
                                     @Html.DisplayFor(modelItem => fieldItem.FieldName)
                                 </div>
                             }

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
-    ViewBag.Title = "巡檢系統";
+    ViewBag.Title = "內容編輯";
 
     if (TempData["SaveMsg"] != null)
     {
@@ -17,8 +17,18 @@
     }
 }
 
+<style>
+    /* Style background-color for modal header and footer. */
+    .modal-header, .modal-footer {
+        background-color: cornflowerblue;
+    }
+</style>
+
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
+    <a class="btn btn-primary" href="@Url.Action("DocDetails", "InspectDocEdit", new { docID = ViewBag.DocID })">回詳細內容</a>
+<hr />
+
 <div class="container">
     <div class="tab">
         @foreach (var item in Model)
@@ -95,7 +105,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @Html.Action("FlowDoc","InspectDocChecker", new { docID = ViewBag.DocID, userID = TempData["UserID"], role = TempData["Role"] })
+                    @Html.Action("FlowDoc", "InspectDocChecker", new { docID = ViewBag.DocID, userID = TempData["UserID"], role = TempData["Role"] })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">關閉視窗</button>

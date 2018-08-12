@@ -59,7 +59,15 @@
                             {
                                 if (fieldItem.FieldName != null)
                                 {
-                                    <div class="col-md-1">
+                                    var lengthOfFieldName = fieldItem.FieldName.Length;
+                                    int cols = (lengthOfFieldName / 2);
+                                    if(cols < 1)
+                                    {
+                                        cols = cols + 1;
+                                    }
+                                    string setCols = "col-md-" + cols.ToString();
+
+                                    <div class="@setCols">
                                         @Html.DisplayFor(modelItem => fieldItem.FieldName)
                                     </div>
                                 }
@@ -173,7 +181,6 @@
         }
         <div>
             <input class="btn btn-primary" type="submit" value="儲存修改資料" />
-            <button type="button" class="btn btn-success" id="sendToChecker">送出審核</button>
         </div>
         <hr />
     </div>

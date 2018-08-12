@@ -1,11 +1,5 @@
 ﻿$(document).ready(function () {
 
-    /* Save inspect data to database. */
-    $("#sendToChecker").click(function () {
-        document.getElementById("detailsForm").setAttribute("action", "/InspectDocEdit/SaveBeforeSend");
-        document.getElementById("detailsForm").submit();
-    });
-
     /* Check the min and max value, when user inputs. */
     $(".inputValue").change(function () {
 

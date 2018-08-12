@@ -106,6 +106,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { DocID = docID });
         }
 
+        /*
         // POST: InspectDocEdit/SaveBeforeSend
         [HttpPost]
         public ActionResult SaveBeforeSend(List<InspectDocDetails> inspectDocDetails)
@@ -126,18 +127,23 @@ namespace InspectSystem.Controllers
             TempData["SaveMsg"] = "傳送失敗";
             return RedirectToAction("Index", new { DocID = docID });
         }
+        */
 
         // GET: InspectDocDetails/DocDetails
-        public ActionResult DocDetails(int docID, int areaID)
+        public ActionResult DocDetails(int docID)
         {
+            var theEditDoc = db.InspectDocs.Find(docID);
             var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
+            int areaID = theEditDoc.AreaID;
 
-            ViewBag.AreaID = DocDetailList.First().AreaID;
+            ViewBag.AreaID = areaID;
             ViewBag.AreaName = DocDetailList.First().AreaName;
             ViewBag.DocID = docID;
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID);
+
+            TempData["UserID"] = theEditDoc.WorkerID;
 
             return View(ClassesOfAreas.ToList());
         }

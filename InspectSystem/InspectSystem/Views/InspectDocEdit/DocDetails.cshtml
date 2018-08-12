@@ -10,9 +10,17 @@
     string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { userID = TempData["UserID"] }).ToString();
 }
 
+<style>
+    /* Style background-color for modal header and footer. */
+    .modal-header, .modal-footer {
+        background-color: cornflowerblue;
+    }
+</style>
+
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
 <a class="btn btn-primary" href="@backToList">回到列表</a>
+<a class="btn btn-primary" href="@Url.Action("Index", "InspectDocEdit", new { docID = ViewBag.DocID })">編輯</a>
 <hr />
 
 <div class="container">
