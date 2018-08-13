@@ -441,12 +441,8 @@
     <Content Include="Views\InspectAreas\Edit.cshtml" />
     <Content Include="Views\InspectAreas\Index.cshtml" />
     <Content Include="Views\InspectItems\Create.cshtml" />
-    <Content Include="Views\InspectItems\Delete.cshtml" />
-    <Content Include="Views\InspectItems\Details.cshtml" />
-    <Content Include="Views\InspectItems\Edit.cshtml" />
     <Content Include="Views\InspectItems\Index.cshtml" />
     <Content Include="Views\InspectFields\Create.cshtml" />
-    <Content Include="Views\InspectFields\Delete.cshtml" />
     <Content Include="Views\InspectFields\Details.cshtml" />
     <Content Include="Views\InspectFields\Edit.cshtml" />
     <Content Include="Views\InspectFields\Index.cshtml" />
