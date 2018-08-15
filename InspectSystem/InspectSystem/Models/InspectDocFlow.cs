@@ -15,6 +15,12 @@ namespace InspectSystem.Models
         [Display(Name = "關卡號")]
         public int StepID { get; set; }
         [Required]
+        [Display(Name = "關卡人員ID")]
+        public int StepOwnerID { get; set; }
+        [NotMapped]
+        [Display(Name = "關卡人員")]
+        public string StepOwnerName { get; set; }
+        [Required]
         [Display(Name = "巡檢人員ID")]
         public int WorkerID { get; set; }
         [Required]

@@ -34,10 +34,12 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.CheckerID)
         @Html.HiddenFor(model => model.DocID)
-        @Html.HiddenFor(model => model.StepID) 
+        @Html.HiddenFor(model => model.StepID)
+        @Html.HiddenFor(model => model.StepOwnerID)
         @Html.HiddenFor(model => model.WorkerID)
         @Html.HiddenFor(model => model.EditorID)
         @Html.HiddenFor(model => model.EditorName)
+        @Html.HiddenFor(model => model.FlowStatusID)
 
         <div class="form-group">
             @Html.LabelFor(model => model.InspectDocs.WorkerName, htmlAttributes: new { @class = "control-label col-md-3" })
@@ -57,9 +59,8 @@
         <div class="form-group">
             <label class="control-label col-md-3">審核結果</label>
             <div class="col-md-9" style="margin-top : 7px">
-                @Html.RadioButtonFor(model => model.FlowStatusID, "0")退回文件
-                @Html.RadioButtonFor(model => model.FlowStatusID, "2")結案
-                @Html.ValidationMessageFor(model => model.FlowStatusID, "", new { @class = "text-danger" })
+                @Html.RadioButton("NextFlowStatusID", "0")退回文件
+                @Html.RadioButton("NextFlowStatusID", "2")結案
                 <p id="errorMsg" style="color: red"></p>
             </div>
         </div>

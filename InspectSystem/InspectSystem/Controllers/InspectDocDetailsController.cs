@@ -54,7 +54,7 @@ namespace InspectSystem.Controllers
                     WorkerName = workerName,
                     CheckerID = checkerID,
                     CheckerName = checkerName,
-                    FlowStatusID = 0
+                    FlowStatusID = 3        // Default flow status:"編輯中"
                 };
 
                 db.InspectDocs.Add(inspectDocs);
@@ -325,10 +325,11 @@ namespace InspectSystem.Controllers
             {
                 DocID = docID,
                 StepID = 1,
+                StepOwnerID = findDoc.WorkerID,
                 WorkerID = findDoc.WorkerID,
                 CheckerID = findDoc.CheckerID,
                 Opinions = "",
-                FlowStatusID = 1,
+                FlowStatusID = 0,
                 EditorID = findDoc.WorkerID,
                 EditorName = findDoc.WorkerName,
                 EditTime = null,
@@ -401,11 +402,29 @@ namespace InspectSystem.Controllers
             var findDoc = db.InspectDocs.Find(docID);
             findDoc.FlowStatusID = 1;
             findDoc.EndTime = DateTime.Now;
+
+            /* Set edit time for doc flow. */
             inspectDocFlow.EditTime = DateTime.Now;
+
+            /* The next flow for checker. */
+            InspectDocFlow NextDocFlow = new InspectDocFlow()
+            {
+                DocID = docID,
+                StepID = inspectDocFlow.StepID + 1,
+                StepOwnerID = findDoc.CheckerID,
+                WorkerID = findDoc.WorkerID,
+                CheckerID = findDoc.CheckerID,
+                Opinions = "",
+                FlowStatusID = 1,
+                EditorID = 0,
+                EditorName = "",
+                EditTime = null,
+            };
 
             if (ModelState.IsValid)
             {
                 db.InspectDocFlows.Add(inspectDocFlow);
+                db.InspectDocFlows.Add(NextDocFlow);
                 db.Entry(findDoc).State = EntityState.Modified;
                 db.SaveChanges();
                 var msg = "資料已傳送";

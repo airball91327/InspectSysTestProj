@@ -119,6 +119,19 @@ namespace InspectSystem.Controllers
         public ActionResult GetFlowList(int docID)
         {
             var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderBy(i => i.StepID);
+            var findDoc = db.InspectDocs.Find(docID);
+
+            foreach( var item in flowList)
+            {
+                if(item.StepOwnerID == item.WorkerID)
+                {
+                    item.StepOwnerName = findDoc.WorkerName;
+                }
+                else if(item.StepOwnerID == item.CheckerID)
+                {
+                    item.StepOwnerName = findDoc.CheckerName;
+                }
+            }
 
             return PartialView(flowList.ToList());
         }
@@ -129,7 +142,6 @@ namespace InspectSystem.Controllers
             /* Find FlowDoc and set step to next. */
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
                                             .OrderByDescending(i => i.StepID).First();
-            flowDoc.StepID++;
 
             /* Use userID to find the user details. (Not Implement)*/
             flowDoc.EditorID = userID;
@@ -155,14 +167,41 @@ namespace InspectSystem.Controllers
             int userID = inspectDocFlow.EditorID;
             int docID = inspectDocFlow.DocID;
             var inspectDoc = db.InspectDocs.Find(docID);
+            int nextFlowStatusID = System.Convert.ToInt32(Request.Form["NextFlowStatusID"]);
+
             /* Insert edit time, and change flow status for inspect doc. */
             inspectDocFlow.EditTime = DateTime.Now;
-            inspectDoc.FlowStatusID = inspectDocFlow.FlowStatusID;
+            inspectDoc.FlowStatusID = nextFlowStatusID;
+
+            /* If doc is send back to worker. */
+            if(nextFlowStatusID == 0)
+            {
+                /* New next flow for worker. */
+                InspectDocFlow nextDocFlow = new InspectDocFlow()
+                {
+                    DocID = docID,
+                    StepID = inspectDocFlow.StepID + 1,
+                    StepOwnerID = inspectDocFlow.WorkerID,
+                    WorkerID = inspectDocFlow.WorkerID,
+                    CheckerID = inspectDocFlow.CheckerID,
+                    Opinions = "",
+                    FlowStatusID = nextFlowStatusID,
+                    EditorID = 0,
+                    EditorName = "",
+                    EditTime = null,
+                };
+
+                if (ModelState.IsValid)
+                {
+                    db.InspectDocFlows.Add(nextDocFlow);
+                    db.SaveChanges();
+                }
+            }
 
             if(ModelState.IsValid)
             {
                 /* Add new data to doc flow, and modefiy doc. */
-                db.InspectDocFlows.Add(inspectDocFlow);
+                db.Entry(inspectDocFlow).State = EntityState.Modified;
                 db.Entry(inspectDoc).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -192,14 +231,30 @@ namespace InspectSystem.Controllers
             int userID = inspectDocFlow.EditorID;
             int docID = inspectDocFlow.DocID;
             var inspectDoc = db.InspectDocs.Find(docID);
-            /* Insert edit time, and change flow status to "checking" for docflow and doc. */
+
+            /* Insert edit time, and change flow status to "checking" for doc. */
             inspectDocFlow.EditTime = DateTime.Now;
-            inspectDocFlow.FlowStatusID = 1;
-            inspectDoc.FlowStatusID = inspectDocFlow.FlowStatusID;
+            inspectDoc.FlowStatusID = 1;
+
+            /* New next flow for checker. */
+            InspectDocFlow nextDocFlow = new InspectDocFlow()
+            {
+                DocID = docID,
+                StepID = inspectDocFlow.StepID + 1,
+                StepOwnerID = inspectDocFlow.CheckerID,
+                WorkerID = inspectDocFlow.WorkerID,
+                CheckerID = inspectDocFlow.CheckerID,
+                Opinions = "",
+                FlowStatusID = 1,
+                EditorID = 0,
+                EditorName = "",
+                EditTime = null,
+            };
 
             if (ModelState.IsValid)
             {
-                db.InspectDocFlows.Add(inspectDocFlow);
+                db.Entry(inspectDocFlow).State = EntityState.Modified;
+                db.InspectDocFlows.Add(nextDocFlow);
                 db.Entry(inspectDoc).State = EntityState.Modified;
                 db.SaveChanges();
 

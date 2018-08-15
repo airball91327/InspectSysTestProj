@@ -27,13 +27,10 @@
                 @Html.DisplayNameFor(model => model.StepID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InspectDocs.WorkerName)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InspectDocs.CheckerName)
+                @Html.DisplayNameFor(model => model.StepOwnerName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Opinions)
@@ -56,13 +53,10 @@
                     @Html.DisplayFor(modelItem => item.StepID)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.InspectDocs.WorkerName)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.InspectFlowStatusTable.FlowStatusName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.InspectDocs.CheckerName)
+                    @Html.DisplayFor(modelItem => item.StepOwnerName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Opinions)
