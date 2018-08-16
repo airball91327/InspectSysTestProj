@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
-    //Default class content is class 1.
-    document.getElementById("1").click();
+    //Default class content is first item from tablinks.
+    var tabs = document.getElementsByClassName("tablinks");
+    tabs.item(0).click();
 });
 
 function openClassContent(evt, acid, docID) {

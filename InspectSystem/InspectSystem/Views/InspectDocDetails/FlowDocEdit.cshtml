@@ -26,6 +26,7 @@
     @Html.HiddenFor(model => model.FlowStatusID)
     @Html.HiddenFor(model => model.DocID)
     @Html.HiddenFor(model => model.StepID)
+    @Html.HiddenFor(model => model.StepOwnerID)
     @Html.HiddenFor(model => model.WorkerID)
     @Html.HiddenFor(model => model.EditorID)
     @Html.HiddenFor(model => model.EditorName)
@@ -41,7 +42,6 @@
         @Html.LabelFor(model => model.InspectDocs.CheckerName, htmlAttributes: new { @class = "control-label col-md-3" })
         <div class="col-md-9">
             @Html.DropDownList("AreaCheckerNames", null, new { @class = "form-control combobox" })
-
         </div>
     </div>
 

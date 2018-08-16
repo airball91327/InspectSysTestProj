@@ -315,12 +315,11 @@ namespace InspectSystem.Controllers
             int checkerID = db.inspectAreaCheckers.Find(areaID).CheckerID;
             var areaCheckers = db.inspectAreaCheckers.ToList();
             var areaCheckerNames = areaCheckers.GroupBy(a => a.CheckerName).Select(g => g.First()).ToList();
-            //ViewBag.AreaCheckerNames = areaCheckerNames;
 
-            SelectList selectList = new SelectList(areaCheckerNames, "CheckerID", "CheckerName", checkerID);
-            ViewBag.AreaCheckerNames = selectList;
+            SelectList areaCheckerSelectList = new SelectList(areaCheckerNames, "CheckerID", "CheckerName", checkerID);
+            ViewBag.AreaCheckerNames = areaCheckerSelectList;
 
-            /* Set value to new a DocFlow. */
+            /* Set value to new first DocFlow. */
             InspectDocFlow DocFlow = new InspectDocFlow()
             {
                 DocID = docID,
@@ -342,14 +341,17 @@ namespace InspectSystem.Controllers
         // POST: InspectDocDetails/SendDocToChecker
         public ActionResult SendDocToChecker(InspectDocFlow inspectDocFlow)
         {
-
-            /* Save all temp details to database. */
+            /* Declear variables, and search data from DB. */
             int docID = inspectDocFlow.DocID;
             var DocDetailTempList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
             var areaID = DocDetailTempList.First().AreaID;
             var classID = DocDetailTempList.First().ClassID;
             List<InspectDocDetails> inspectDocDetails = new List<InspectDocDetails>();
+            var findDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID);
+            var findDoc = db.InspectDocs.Find(docID);
+            var checkerID = System.Convert.ToInt32(Request.Form["AreaCheckerNames"]);
 
+            /* Save all temp details to database. */
             /* Copy temp data to inspectDocDetails list. */
             foreach (var item in DocDetailTempList)
             {
@@ -371,8 +373,7 @@ namespace InspectSystem.Controllers
                     RepairDocID = item.RepairDocID
                 });
             }
-
-            var findDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID);
+            
             if (ModelState.IsValid)
             {
                 if(findDocDetails.Count() == 0)
@@ -399,12 +400,14 @@ namespace InspectSystem.Controllers
             }
 
             /* Change flow status to "Checking" for this doc. */
-            var findDoc = db.InspectDocs.Find(docID);
             findDoc.FlowStatusID = 1;
             findDoc.EndTime = DateTime.Now;
+            findDoc.CheckerID = checkerID;
+            findDoc.CheckerName = db.inspectAreaCheckers.Where(i => i.CheckerID == checkerID).First().CheckerName;
 
-            /* Set edit time for doc flow. */
+            /* Set edit time and checkerID for doc flow. */
             inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.CheckerID = checkerID;
 
             /* The next flow for checker. */
             InspectDocFlow NextDocFlow = new InspectDocFlow()

@@ -2,17 +2,24 @@
 var hasChanged = false;
 
 $(document).ready(function () {
-    //Default class content is class 1.
-    document.getElementById("1").click();
+
+    //Default class content is first item from tablinks.
+    var tabs = document.getElementsByClassName("tablinks");
+    tabs.item(0).click();
 
     // Show alert before change page.
     window.onbeforeunload = function (event) {
-        event.returnValue = "Write something clever here..";
+        event.returnValue = "是否離開此頁面?";
     };
 
     // When the form has been modified, set value to "changed".
     $(document).on("change", "#detailsForm", function () {
         hasChanged = true;
+    });
+
+    // When form submit, system will just save and change page, tempSaveBtn is in the ClassContentOfArea Views.
+    $(document).on("submit", "#detailsForm", function () {
+        window.onbeforeunload = null;
     });
 });
 
