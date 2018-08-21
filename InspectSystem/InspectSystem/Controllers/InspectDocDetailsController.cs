@@ -33,7 +33,7 @@ namespace InspectSystem.Controllers
             if (FindDoc == null)
             {
                 int workerID = 123456;
-                string workerName = "測試工人";
+                string workerName = "測試工程師";
 
                 /* Find the checker of the area. */
                 int checkerID = 0;
@@ -445,6 +445,24 @@ namespace InspectSystem.Controllers
         {
             ViewBag.msg = Msg;
             return View();
+        }
+
+        // GET: InspectDocDetails/CheckClass
+        public ActionResult CheckClass(int DocID, int ClassID)
+        {
+            Boolean CheckResult = false;
+            var findDocTemps = db.InspectDocDetailsTemporary.Where(i => i.DocID == DocID &&
+                                                                        i.ClassID == ClassID);
+            if(findDocTemps.Count() == 0)
+            {
+                CheckResult = false;
+                return Json(CheckResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                CheckResult = true;
+                return Json(CheckResult, JsonRequestBehavior.AllowGet);
+            }
         }
 
         protected override void Dispose(bool disposing)

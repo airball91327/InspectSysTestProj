@@ -75,5 +75,20 @@
 
 #flowDocBtn:hover {
     font-weight: bold;
-    box-shadow:4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+    box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+#sendToChecker {
+    margin-top: 50px;
+    background-color: lightblue;
+    border: 1px solid #ccc;
+}
+
+#sendToChecker:hover {
+    font-weight: bold;
+    box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
+}
+
+.glyphicon-ok {
+    color: green;
 }

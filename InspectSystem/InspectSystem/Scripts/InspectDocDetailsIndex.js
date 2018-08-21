@@ -94,3 +94,38 @@ function openClassContent(evt, acid, docID) {
         hasChanged = false;
     }
 }
+
+function checkClasses(docID) {
+
+    // Declare all variables
+    var i, tablinks, classID, checkResult;
+
+    // Get all elements with class="tablinks" and get class IDs.
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < (tablinks.length - 1); i++) {  
+        
+        classID = tablinks[i].id;
+        checkResult = "#checkResult" + tablinks[i].id;
+
+
+        $.ajax({
+            type: "GET",
+            url: "/InspectDocDetails/CheckClass",
+            async: false,
+            data: { DocID: docID, ClassID: classID },
+
+            success: function (result) {
+                console.log(result + "+" + checkResult + "+" + docID + "+" + classID); //For debug
+
+                if (result == true) {
+                    $(checkResult).show();
+                }
+            },
+            error: function (msg) {
+                alert("讀取錯誤");
+            }
+        });
+
+    }
+
+}
