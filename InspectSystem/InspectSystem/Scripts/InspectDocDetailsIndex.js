@@ -3,6 +3,20 @@ var hasChanged = false;
 
 $(document).ready(function () {
 
+    var value = $("#sendToChecker").val();
+    if (value == "true") {
+        $("#sendToChecker").removeAttr("disabled");
+    }
+    else {
+        $("#sendToChecker").attr("disabled", true);
+    }
+
+    /* Save inspect data to database. */
+    $("#sendToChecker").click(function () {
+        document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveBeforeSend");
+        document.getElementById("detailsForm").submit();
+    });
+
     //Default class content is first item from tablinks.
     var tabs = document.getElementsByClassName("tablinks");
     tabs.item(0).click();
@@ -45,6 +59,7 @@ function openClassContent(evt, acid, docID) {
                 type: "GET",
                 url: "/InspectDocDetails/ClassContentOfArea",
                 data: { ACID: acid, DocID: docID },
+                async: true,
                 beforeSend: function () {
                     $("#loadingModal").modal("show");
                 },
@@ -77,6 +92,7 @@ function openClassContent(evt, acid, docID) {
             type: "GET",
             url: "/InspectDocDetails/ClassContentOfArea",
             data: { ACID: acid, DocID: docID },
+            async: true,
             beforeSend: function () {
                 $("#loadingModal").modal("show");
             },
@@ -107,16 +123,21 @@ function checkClasses(docID) {
         classID = tablinks[i].id;
         checkResult = "#checkResult" + tablinks[i].id;
 
-
+        // Check that every class has temp data or not.
         $.ajax({
             type: "GET",
             url: "/InspectDocDetails/CheckClass",
             async: false,
             data: { DocID: docID, ClassID: classID },
-
+            beforeSend: function () {
+                $("#loadingModal").modal("show");
+            },
+            complete: function () {
+                $("#loadingModal").modal("hide");
+            },
             success: function (result) {
                 console.log(result + "+" + checkResult + "+" + docID + "+" + classID); //For debug
-
+                // If has temp data, show "V" before the class name.
                 if (result == true) {
                     $(checkResult).show();
                 }

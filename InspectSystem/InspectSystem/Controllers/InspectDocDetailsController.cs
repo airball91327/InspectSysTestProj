@@ -20,13 +20,14 @@ namespace InspectSystem.Controllers
             /* Set the DocID to year + month + date + areaID, for example: 2018/10/11 area 1, the docID is 2018101101*/
             string date = DateTime.Now.ToString("yyyyMMdd");
             int docID = System.Convert.ToInt32(date) * 100 + areaID;
+            string areaName = db.InspectAreas.Find(areaID).AreaName;
 
             ViewBag.AreaID = areaID;
-            ViewBag.AreaName = db.InspectAreas.Find(areaID).AreaName;
+            ViewBag.AreaName = areaName;
             ViewBag.DocID = docID;
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.ClassID);
+                                                  .OrderBy(c => c.ClassID).ToList();
 
             /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             var FindDoc = db.InspectDocs.Find(docID);
@@ -39,17 +40,16 @@ namespace InspectSystem.Controllers
                 int checkerID = 0;
                 string checkerName = "";
                 var findAreaChecker = db.inspectAreaCheckers.Find(areaID);
-                if(findAreaChecker != null)
+                if (findAreaChecker != null)
                 {
                     checkerID = findAreaChecker.CheckerID;
                     checkerName = findAreaChecker.CheckerName;
                 }
-
                 var inspectDocs = new InspectDocs() {
                     DocID = docID,
                     Date = DateTime.Now,
                     AreaID = areaID,
-                    AreaName = db.InspectAreas.Find(areaID).AreaName,
+                    AreaName = areaName,
                     WorkerID = workerID,
                     WorkerName = workerName,
                     CheckerID = checkerID,
@@ -60,8 +60,36 @@ namespace InspectSystem.Controllers
                 db.InspectDocs.Add(inspectDocs);
                 db.SaveChanges();
             }
+            else  // If found the InspectDoc.
+            {
+                /* Check all class is saved or not. */
+                foreach(var item in ClassesOfAreas)
+                {
+                    var findDocTemps = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
+                                                                                i.ClassID == item.ClassID);
+                    /* If find temp save of the class, set IsSaved to true. */
+                    if (findDocTemps.Count() != 0)
+                    {
+                        item.IsSaved = true;
+                    }
+                    else
+                    {
+                        item.IsSaved = false;
+                    }
+                }
+                var isAllSaved = ClassesOfAreas.Where(c => c.IsSaved == false).ToList();
+                if(isAllSaved.Count() == 0)
+                {
+                    ViewBag.AllSaved = "true";
+                }
+                else
+                {
+                    ViewBag.AllSaved = "false";
+                }
+
+            }
             TempData["UserID"] = db.InspectDocs.Find(docID).WorkerID;
-            return View(ClassesOfAreas.ToList());
+            return View(ClassesOfAreas);
         }
 
         // GET: InspectDocDetails/SelectAreas
@@ -448,6 +476,7 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectDocDetails/CheckClass
+        /*
         public ActionResult CheckClass(int DocID, int ClassID)
         {
             Boolean CheckResult = false;
@@ -463,7 +492,7 @@ namespace InspectSystem.Controllers
                 CheckResult = true;
                 return Json(CheckResult, JsonRequestBehavior.AllowGet);
             }
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

@@ -13,10 +13,6 @@
     .inputTextOfError {
         width: 70%;
     }
-    #sendToChecker {
-        position: absolute;
-        right: 12px;
-    }
 </style>
 
 <h3 style="font-weight: bold; padding-left: 10px">@ViewBag.ClassName</h3>
@@ -149,9 +145,8 @@
                 currentItemName = item.ItemName;
             }
         }
-        <div>
-            <input class="btn btn-primary" type="submit" value="暫時儲存" />
-            <button type="button" class="btn btn-success" id="sendToChecker">送出審核</button>
+        <div class="text-center">
+        <input class="btn btn-primary btn-lg" type="submit" value="暫時儲存" id="submitBtn"/>
         </div>
         <hr />
     </div>

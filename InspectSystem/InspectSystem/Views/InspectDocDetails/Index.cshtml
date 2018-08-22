@@ -18,25 +18,21 @@
     }
 }
 
-<script>
-    $(document).ready(function () {
-        $(".glyphicon-ok").hide();
-        checkClasses(@ViewBag.DocID);
-    });
-</script>
-
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
 <div class="container">
     <div class="tab">
         @foreach (var item in Model)
         {
-            var checkResult = "checkResult" + item.ClassID;
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">
-                <span id="@checkResult" class="glyphicon glyphicon-ok"></span>@item.InspectClasses.ClassName               
+                @if(item.IsSaved == true)
+                {
+                    <span class="glyphicon glyphicon-ok"></span>
+                }
+                @item.InspectClasses.ClassName               
             </button>
         }
-        <button class="tablinks" id="sendToChecker">送出審核</button>
+        <button class="tablinks" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</button>
     </div>
 
     <div class="tabcontent" id="tabContent">

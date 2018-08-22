@@ -20,6 +20,9 @@ namespace InspectSystem.Models
         [ForeignKey("InspectClasses")]
         [Display(Name = "類別代碼")]
         public int ClassID { get; set; }
+        [NotMapped]
+        [Display(Name = "是否已儲存")]
+        public Boolean IsSaved { get; set; }
 
         public virtual InspectAreas InspectAreas { get; set; }
         public virtual InspectClasses InspectClasses { get; set; }
