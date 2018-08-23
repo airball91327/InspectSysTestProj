@@ -95,6 +95,7 @@
                                     {
                                         case "string":
                                             <td class="valueTextBox">
+                                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
                                                 @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue" } })
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
                                             </td>
@@ -102,6 +103,7 @@
 
                                         case "float":
                                             <td class="valueTextBox">
+                                                @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
                                                 @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputTextOfValue inputValue", id = i } })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
@@ -110,6 +112,7 @@
                                             break;
 
                                         case "null":
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
                                             <td></td>
                                             break;
 

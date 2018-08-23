@@ -29,8 +29,13 @@ namespace InspectSystem.Controllers
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID).ToList();
 
-            /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             var FindDoc = db.InspectDocs.Find(docID);
+            if(FindDoc != null && FindDoc.FlowStatusID != 3)
+            {
+                TempData["ErrorMsg"] = "今日巡檢文件已送出!";
+                return RedirectToAction("SelectAreas");
+            }
+            /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             if (FindDoc == null)
             {
                 int workerID = 123456;
@@ -86,7 +91,6 @@ namespace InspectSystem.Controllers
                 {
                     ViewBag.AllSaved = "false";
                 }
-
             }
             TempData["UserID"] = db.InspectDocs.Find(docID).WorkerID;
             return View(ClassesOfAreas);
@@ -474,25 +478,6 @@ namespace InspectSystem.Controllers
             ViewBag.msg = Msg;
             return View();
         }
-
-        // GET: InspectDocDetails/CheckClass
-        /*
-        public ActionResult CheckClass(int DocID, int ClassID)
-        {
-            Boolean CheckResult = false;
-            var findDocTemps = db.InspectDocDetailsTemporary.Where(i => i.DocID == DocID &&
-                                                                        i.ClassID == ClassID);
-            if(findDocTemps.Count() == 0)
-            {
-                CheckResult = false;
-                return Json(CheckResult, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                CheckResult = true;
-                return Json(CheckResult, JsonRequestBehavior.AllowGet);
-            }
-        }*/
 
         protected override void Dispose(bool disposing)
         {

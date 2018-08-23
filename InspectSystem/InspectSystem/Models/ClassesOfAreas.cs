@@ -22,7 +22,10 @@ namespace InspectSystem.Models
         public int ClassID { get; set; }
         [NotMapped]
         [Display(Name = "是否已儲存")]
-        public Boolean IsSaved { get; set; }
+        public Boolean IsSaved { get; set; } // To show the class is saved or not in edit view.
+        [NotMapped]
+        [Display(Name = "不正常數量")]
+        public int CountErrors { get; set; } // To show the errors of class in detail view for checker.
 
         public virtual InspectAreas InspectAreas { get; set; }
         public virtual InspectClasses InspectClasses { get; set; }

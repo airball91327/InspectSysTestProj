@@ -128,7 +128,7 @@
                                             <div class="col">
                                                 @Html.LabelFor(modelItem => docItem.ErrorDescription)
                                                 <br />
-                                                @Html.DisplayFor(modelItem => docItem.ErrorDescription)
+                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { rows = "3", @readonly = "readonly" })
                                             </div>
                                         }
                                         j++;

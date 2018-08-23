@@ -79,6 +79,7 @@
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + i + "].FieldID" })
                                     @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
+                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
 
                                     switch (fieldItem.DataType)
                                     {

@@ -5,6 +5,15 @@
 
 @{
     ViewBag.Title = "選擇區域";
+
+    /* Show alert message. */
+    if (TempData["ErrorMsg"] != null)
+    {
+        <script>
+            var message = @Html.Raw(Json.Encode(TempData["ErrorMsg"]));
+            alert(message);
+        </script>
+    }
 }
 
 <style>
@@ -13,6 +22,7 @@
         padding-bottom: 15px;
         text-align: center;
     }
+
     .imgText {
         font-size: 28px;
         font-weight: bold;

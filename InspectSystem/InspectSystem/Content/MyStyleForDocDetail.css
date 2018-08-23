@@ -32,14 +32,14 @@
     display: block;
     background-color: inherit;
     color: black;
-    padding: 22px 16px;
+    padding: 20px 15px;
     width: 100%;
     border: none;
     outline: none;
     text-align: left;
     cursor: pointer;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 19px;
 }
 
 /* Change background color of buttons on hover */
@@ -50,8 +50,8 @@
 /* Create an active/current "tab button" class */
 .tab .active {
     background-color: coral;
-    font-weight: bold;
     color: white;
+    /*font-weight: bold;*/
     /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 1px black;*/
 }
 
@@ -64,10 +64,12 @@
     height: 100%;
 }
 
+/* Style the tab that will show the flow list. */
 #flowListBtn {
     margin-top: 50px;
 }
 
+/* Style the tab that will click to show the flow modal. */
 #flowDocBtn {
     background-color: lightblue;
     border: 1px solid #ccc;
@@ -78,6 +80,7 @@
     box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
 }
 
+/* Style the tab that will send doc to checker when enabled. */
 #sendToChecker:enabled {
     margin-top: 50px;
     background-color: lightblue;
@@ -89,6 +92,7 @@
     box-shadow: 4px 4px 12px 4px rgba(20%,20%,40%,0.5);
 }
 
+/* Style the tab when disabled. */
 #sendToChecker:disabled, #sendToChecker:disabled:hover {
     margin-top: 50px;
     background-color: lightgray;
@@ -96,6 +100,19 @@
     opacity: 0.3;
 }
 
+/* Style color for class glyphicon-ok. */
 .glyphicon-ok {
     color: green;
+}
+
+/* Style a circle class. */
+.circle {
+    height: 22px;
+    width: 22px;
+    display: inline-block;
+    border-radius: 50%;
+    font-size: 17px;
+    color: white;
+    text-align: center;
+    background-color: hsl(0, 90%, 50%);
 }
