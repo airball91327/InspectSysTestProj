@@ -64,7 +64,8 @@ namespace InspectSystem.Controllers
                 ItemID = itemid,
                 MaxValue = 0,
                 MinValue = 0,
-                FieldStatus = true
+                FieldStatus = true,
+                IsRequired = true
             };
 
             return PartialView(inspectFields);

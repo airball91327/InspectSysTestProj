@@ -64,7 +64,6 @@
                     @Html.RadioButtonFor(model => model.DataType, "float", new { @checked = "checked" })數字
                     @Html.RadioButtonFor(model => model.DataType, "boolean")正常/不正常
                     @Html.RadioButtonFor(model => model.DataType, "checkbox")勾選方塊
-                    @Html.RadioButtonFor(model => model.DataType, "null")無須填值
                     @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -98,6 +97,14 @@
                 <div class="col-md-10" style="margin-top : 7px">
                     @Html.CheckBoxFor(model => model.FieldStatus)
                     @Html.ValidationMessageFor(model => model.FieldStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsRequired, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="margin-top : 7px">
+                    @Html.CheckBoxFor(model => model.IsRequired)
+                    @Html.ValidationMessageFor(model => model.IsRequired, "", new { @class = "text-danger" })
                 </div>
             </div>
 

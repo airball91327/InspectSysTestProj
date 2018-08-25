@@ -48,6 +48,9 @@
         <th>
             @Html.DisplayNameFor(model => model.FieldStatus)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsRequired)
+        </th>
         <th></th>
     </tr>
 
@@ -70,7 +73,21 @@
                 @Html.DisplayFor(modelItem => item.FieldName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataType)
+                @switch(item.DataType)
+                {
+                    case "string":
+                        <p>字串</p>
+                        break;
+                    case "float":
+                        <p>數字</p>
+                        break;
+                    case "boolean":
+                        <p>正常/不正常</p>
+                        break;
+                    case "checkbox":
+                        <p>勾選方塊</p>
+                        break;
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UnitOfData)
@@ -83,6 +100,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FieldStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRequired)
             </td>
             <td>
                 <button class="btn btn-success fieldEditBtn" value="@rowNo">編輯</button>

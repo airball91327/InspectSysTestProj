@@ -41,6 +41,9 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "顯示欄位")]
         public Boolean FieldStatus { get; set; }
+        [Required]
+        [Display(Name = "是否必填")]
+        public Boolean IsRequired { get; set; }
 
         public virtual ClassesOfAreas ClassesOfAreas { get; set; }
     }
