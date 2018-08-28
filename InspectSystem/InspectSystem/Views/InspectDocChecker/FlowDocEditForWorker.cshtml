@@ -13,7 +13,9 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h3><b>簽核作業</b></h3>
+        <h3>
+            <b>簽核作業</b>
+        </h3>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.FlowStatusID)

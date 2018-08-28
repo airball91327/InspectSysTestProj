@@ -162,24 +162,6 @@ namespace InspectSystem.Controllers
             {
                 return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
-            else if(classID == 7)
-            {
-                return PartialView("~/Views/InspectDocDetails/ViewOfUPS.cshtml", inspectDocDetailsViewModels);
-            }
-            else if(classID == 8)
-            {
-                int CountItems = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Last().ItemID;
-                var MostFields = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == 1).ToList();
-                for (int j = 2; j <= CountItems; j++)
-                {
-                     if(inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == j).Count() > MostFields.Count())
-                    {
-                        MostFields = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == j).ToList();
-                    }
-                }
-                ViewBag.FieldsOfMostItem = MostFields;
-                return PartialView("~/Views/InspectDocDetails/ViewOfAirCondition.cshtml", inspectDocDetailsViewModels);
-            }
             else
             {
                 return PartialView(inspectDocDetailsViewModels);

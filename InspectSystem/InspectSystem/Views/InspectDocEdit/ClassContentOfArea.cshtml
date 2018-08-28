@@ -18,17 +18,21 @@
         font-weight: bold;
     }
 
-    input[type=text] {
-        width: 65%;
-    }
-
     #sendToChecker {
         position: absolute;
-        right: 12px;
+        right: 6%;
     }
 
-    .radioBtn {
-        padding-bottom: 15px;
+    input[type=text] {
+        width: 50%;
+    }
+
+    .radioBtn, .col-md, .mainCol {
+        padding-bottom: 5%;
+    }
+
+    .fieldTitle {
+        padding-left: 0%;
     }
 </style>
 
@@ -48,85 +52,79 @@
             if (item.ItemName != currentItemName)
             {
                 <div class="row">
-                    <div class="col-md-2 itemName">
+                    <div class="col-md-2 itemName mainCol">
                         @Html.DisplayFor(modelItem => item.ItemName)
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mainCol">
                         @foreach (var fieldItem in Model.InspectFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
                             {
-                                if (fieldItem.FieldName != null)
-                                {
-                                    var lengthOfFieldName = fieldItem.FieldName.Length;
-                                    int cols = (lengthOfFieldName / 2);
-                                    if(cols < 1)
-                                    {
-                                        cols = cols + 1;
-                                    }
-                                    string setCols = "col-md-" + cols.ToString();
-
-                                    <div class="@setCols">
-                                        @Html.DisplayFor(modelItem => fieldItem.FieldName)
-                                    </div>
-                                }
-
-                                foreach (var docItem in Model.InspectDocDetails)
-                                {
-                                    /* Display textbox or checkbox for all fields, except boolean type. */
-                                    if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
-                                        fieldItem.DataType != "boolean")
-                                    {
-                                        @Html.Hidden("InspectDocDetails[" + i + "].DocID", docItem.DocID)
-                                        @Html.Hidden("InspectDocDetails[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetails[" + i + "].AreaID" })
-                                        @Html.Hidden("InspectDocDetails[" + i + "].AreaName", docItem.AreaName)
-                                        @Html.Hidden("InspectDocDetails[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetails[" + i + "].ClassID" })
-                                        @Html.Hidden("InspectDocDetails[" + i + "].ClassName", docItem.ClassName)
-                                        @Html.Hidden("InspectDocDetails[" + i + "].ItemID", docItem.ItemID, new { id = "InspectDocDetails[" + i + "].ItemID" })
-                                        @Html.Hidden("InspectDocDetails[" + i + "].ItemName", docItem.ItemName)
-                                        @Html.Hidden("InspectDocDetails[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + i + "].FieldID" })
-                                        @Html.Hidden("InspectDocDetails[" + i + "].FieldName", docItem.FieldName)
-
-                                        switch (fieldItem.DataType)
+                                <div class="col-md clearfix">
+                                    <span class="col-xs-3 fieldTitle">
+                                        @if (fieldItem.FieldName != null)
                                         {
-                                            case "string":
-                                                <div class="col-md-5">
-                                                    @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetails[" + i + "].Value" } })
-                                                    @Html.ValidationMessage("InspectDocDetails[" + i + "].Value", "", new { @class = "text-danger" })
-                                                </div>
-                                                break;
-
-                                            case "float":
-                                                <div class="col-md-5">
-                                                    @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetails[" + i + "].Value", @class = "inputValue", id = i } })
-                                                    @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
-                                                    @Html.ValidationMessage("InspectDocDetails[" + i + "].Value", "", new { @class = "text-danger" })
-                                                    <br /><span class="@i"></span>
-                                                </div>
-                                                break;
-
-                                            case "checkbox":
-                                                <div class="col-md-1">
-                                                    @if (docItem.Value == "true")
-                                                    {
-                                                        @Html.CheckBox("InspectDocDetails[" + i + "].Value", true)
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.CheckBox("InspectDocDetails[" + i + "].Value", false)
-                                                    }
-                                                </div>
-                                                break;
+                                            @Html.DisplayFor(modelItem => fieldItem.FieldName)
                                         }
-                                        i++;
-                                    }
-                                    else if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
-                                             fieldItem.DataType == "boolean")
+                                    </span>
+
+                                    @foreach (var docItem in Model.InspectDocDetails)
                                     {
-                                        i++; // Skip an array space to let the boolean type insert later.
+                                        /* Display textbox or checkbox for all fields, except boolean type. */
+                                        if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                            fieldItem.DataType != "boolean")
+                                        {
+                                            @Html.Hidden("InspectDocDetails[" + i + "].DocID", docItem.DocID)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetails[" + i + "].AreaID" })
+                                            @Html.Hidden("InspectDocDetails[" + i + "].AreaName", docItem.AreaName)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetails[" + i + "].ClassID" })
+                                            @Html.Hidden("InspectDocDetails[" + i + "].ClassName", docItem.ClassName)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].ItemID", docItem.ItemID, new { id = "InspectDocDetails[" + i + "].ItemID" })
+                                            @Html.Hidden("InspectDocDetails[" + i + "].ItemName", docItem.ItemName)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + i + "].FieldID" })
+                                            @Html.Hidden("InspectDocDetails[" + i + "].FieldName", docItem.FieldName)
+
+                                            switch (fieldItem.DataType)
+                                            {
+                                                case "string":
+                                                    <span>
+                                                        @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetails[" + i + "].Value" } })
+                                                        @Html.ValidationMessage("InspectDocDetails[" + i + "].Value", "", new { @class = "text-danger" })
+                                                    </span>
+                                                    break;
+
+                                                case "float":
+                                                    <span>
+                                                        @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetails[" + i + "].Value", @class = "inputValue", id = i } })
+                                                        @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
+                                                        @Html.ValidationMessage("InspectDocDetails[" + i + "].Value", "", new { @class = "text-danger" })
+                                                        <br /><span class="@i"></span>
+                                                    </span>
+                                                    break;
+
+                                                case "checkbox":
+                                                    <span>
+                                                        @if (docItem.Value == "true")
+                                                        {
+                                                            @Html.CheckBox("InspectDocDetails[" + i + "].Value", true)
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.CheckBox("InspectDocDetails[" + i + "].Value", false)
+                                                        }
+                                                    </span>
+                                                    break;
+                                            }
+                                            i++;
+                                        }
+                                        else if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                                 fieldItem.DataType == "boolean")
+                                        {
+                                            i++; // Skip an array space to let the boolean type insert later.
+                                        }
                                     }
-                                }
+                                </div>
                             }
                         }
                     </div>

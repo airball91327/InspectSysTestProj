@@ -3,7 +3,7 @@
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script src="~/Scripts/InspectDocDetailsIndex.js"></script>
-<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css"> 
+<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
     ViewBag.Title = "巡檢系統";
@@ -26,11 +26,11 @@
         @foreach (var item in Model)
         {
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">
-                @if(item.IsSaved == true)
+                @if (item.IsSaved == true)
                 {
                     <span class="glyphicon glyphicon-ok"></span>
                 }
-                @item.InspectClasses.ClassName               
+                @item.InspectClasses.ClassName
             </button>
         }
         <button class="tablinks" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</button>
@@ -88,3 +88,5 @@
         </div>
     </div>
 </div>
+
+<button onclick="topFunction()" id="goToTopBtn" title="Go to top">回頁首</button>

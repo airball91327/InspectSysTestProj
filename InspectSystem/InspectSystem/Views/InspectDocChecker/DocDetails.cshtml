@@ -21,7 +21,7 @@
         {
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">
                 @item.InspectClasses.ClassName
-                @if(item.CountErrors != 0)
+                @if (item.CountErrors != 0)
                 {
                     <span class="circle">@item.CountErrors</span>
                 }
@@ -79,4 +79,5 @@
     </div>
 </div>
 
+<button onclick="topFunction()" id="goToTopBtn" title="Go to top">回頁首</button>
 
