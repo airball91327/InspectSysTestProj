@@ -1,61 +1,42 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
+<link rel="stylesheet" href="~/Content/MyStyleForClassContentOfArea.css" />
+
 @{
     ViewBag.Title = "ClassContentOfArea";
 }
 
-<style>
-    input[type=checkbox] {
-        -ms-transform: scale(2); /* IE */
-        -moz-transform: scale(2); /* FireFox */
-        -webkit-transform: scale(2); /* Safari and Chrome */
-        -o-transform: scale(2); /* Opera */
-    }
-
-    h3, .itemName {
-        font-weight: bold;
-    }
-</style>
-
-
-<h3 style="padding-left: 10px">@ViewBag.ClassName</h3>
+<h3>@ViewBag.ClassName</h3>
 <hr />
-    @{
-        var currentItemName = "0";
-        int i = 0, j = 0;
-    }
-    <div class="container col-md-12">
-        @foreach (var item in Model.InspectItems)
+@{
+    var currentItemName = "0";
+    int i = 0, j = 0;
+}
+<div class="container col-md-12">
+    @foreach (var item in Model.InspectItems)
+    {
+        /* Display the ItemName when ItemName is not the same. */
+        if (item.ItemName != currentItemName)
         {
-            /* Display the ItemName when ItemName is not the same. */
-            if (item.ItemName != currentItemName)
-            {
-                <div class="row">
-                    <div class="col-md-2 itemName">
-                        @Html.DisplayFor(modelItem => item.ItemName)
-                    </div>
-                    <div class="col-md-6">
-                        @foreach (var fieldItem in Model.InspectFields)
+            <div class="row itemRow">
+                <div class="col-md-2 itemName mainCol">
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </div>
+                <div class="col-md-6 mainCol">
+                    @foreach (var fieldItem in Model.InspectFields)
+                    {
+                        /* Display all the FieldName belong the current Item. */
+                        if (item.ItemID == fieldItem.ItemID)
                         {
-                            /* Display all the FieldName belong the current Item. */
-                            if (item.ItemID == fieldItem.ItemID)
-                            {
-                                if (fieldItem.FieldName != null)
-                                {
-                                    var lengthOfFieldName = fieldItem.FieldName.Length;
-                                    int cols = (lengthOfFieldName / 2);
-                                    if (cols < 1)
+                            <div class="col-md clearfix">
+                                <span class="col-xs-3 fieldTitle">
+                                    @if (fieldItem.FieldName != null)
                                     {
-                                        cols = cols + 1;
-                                    }
-                                    string setCols = "col-md-" + cols.ToString();
-
-                                    <div class="@setCols">
                                         @Html.DisplayFor(modelItem => fieldItem.FieldName)
-                                    </div>
-                                }
+                                    }
+                                </span>
 
-                                foreach (var docItem in Model.InspectDocDetails)
+                                @foreach (var docItem in Model.InspectDocDetails)
                                 {
                                     /* Display textbox or checkbox for all fields, except boolean type. */
                                     if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
@@ -64,20 +45,20 @@
                                         switch (fieldItem.DataType)
                                         {
                                             case "string":
-                                                <div class="col-md-5">
+                                                <span>
                                                     @Html.DisplayFor(modelItem => docItem.Value)
-                                                </div>
+                                                </span>
                                                 break;
 
                                             case "float":
-                                                <div class="col-md-5">
+                                                <span>
                                                     @Html.DisplayFor(modelItem => docItem.Value)
                                                     @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
-                                                </div>
+                                                </span>
                                                 break;
 
                                             case "checkbox":
-                                                <div class="col-md-1">
+                                                <span>
                                                     @if (docItem.Value == "true")
                                                     {
                                                         @Html.CheckBox("InspectDocDetails[" + i + "].Value", true, new { disabled = "disabled" })
@@ -86,7 +67,7 @@
                                                     {
                                                         @Html.CheckBox("InspectDocDetails[" + i + "].Value", false, new { disabled = "disabled" })
                                                     }
-                                                </div>
+                                                </span>
                                                 break;
                                         }
                                         i++;
@@ -97,53 +78,54 @@
                                         i++; // Skip an array space to let the boolean type insert later.
                                     }
                                 }
-                            }
+                            </div>
                         }
-                    </div>
-                    <div class="col-md-4">
-                        @foreach (var fieldItem in Model.InspectFields)
+                    }
+                </div>
+                <div class="col-md-4">
+                    @foreach (var fieldItem in Model.InspectFields)
+                    {
+                        /* Display all the FieldName belong the current Item. */
+                        if (item.ItemID == fieldItem.ItemID)
                         {
-                            /* Display all the FieldName belong the current Item. */
-                            if (item.ItemID == fieldItem.ItemID)
-                            {
 
-                                foreach (var docItem in Model.InspectDocDetails)
+                            foreach (var docItem in Model.InspectDocDetails)
+                            {
+                                /* Display textbox or checkbox for all fields. */
+                                if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
                                 {
-                                    /* Display textbox or checkbox for all fields. */
-                                    if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
+                                    if (fieldItem.DataType == "boolean")
                                     {
-                                        if (fieldItem.DataType == "boolean")
-                                        {
-                                            <div class="col">
-                                                @if(docItem.IsFunctional == true)
-                                                {
-                                                    <p>正常</p>
-                                                }
-                                                else if(docItem.IsFunctional == false)
-                                                {
-                                                    <p style="color: red;font-weight: bold">不正常</p>
-                                                }
-                                            </div>
-                                            <div class="w-100"></div>
-                                            <div class="col">
-                                                @Html.LabelFor(modelItem => docItem.ErrorDescription)
-                                                <br />
-                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { rows = "3", @readonly = "readonly" })
-                                            </div>
-                                        }
-                                        j++;
+                                        <div class="col">
+                                            @if (docItem.IsFunctional == true)
+                                            {
+                                                <p>正常</p>
+                                            }
+                                            else if (docItem.IsFunctional == false)
+                                            {
+                                                <p style="color: red;font-weight: bold">不正常</p>
+                                            }
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            @Html.LabelFor(modelItem => docItem.ErrorDescription)
+                                            <br />
+                                            @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { rows = "3", @readonly = "readonly" })
+                                        </div>
                                     }
+                                    j++;
                                 }
                             }
                         }
-                    </div>
+                    }
                 </div>
-                <hr />
-            }
-            else
-            {
-                currentItemName = item.ItemName;
-            }
-        <hr />
+            </div>
+            <hr />
         }
-    </div>
+        else
+        {
+            currentItemName = item.ItemName;
+        }
+        <hr />
+    }
+</div>

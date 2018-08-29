@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectDocFlow>
 
 <style>
+    h3 {
+        font-weight: bold;
+        padding-left: 5%;
+    }
+
     th {
         font-weight: bold;
         text-align: center;
@@ -12,11 +17,11 @@
 
     table {
         table-layout: fixed;
-        width: 100%;
+        width: inherit;
     }
 </style>
 
-<h3 style="font-weight: bold; padding-left: 10px">流程資訊</h3>
+<h3>流程資訊</h3>
 <hr />
 
 <div class="container col-md-12">
@@ -34,9 +39,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Opinions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EditorID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EditorName)
@@ -60,9 +62,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Opinions)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EditorID)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.EditorName)

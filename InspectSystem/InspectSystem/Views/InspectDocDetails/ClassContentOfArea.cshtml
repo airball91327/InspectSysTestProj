@@ -1,38 +1,13 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
 <script src="~/Scripts/ClassContentOfArea.js"></script>
+<link rel="stylesheet" href="~/Content/MyStyleForClassContentOfArea.css" />
 
 @{
     ViewBag.Title = "ClassContentOfArea";
 }
 
-<style>
-    input[type=checkbox] {
-        -ms-transform: scale(2); /* IE */
-        -moz-transform: scale(2); /* FireFox */
-        -webkit-transform: scale(2); /* Safari and Chrome */
-        -o-transform: scale(2); /* Opera */
-    }
-
-    h3, .itemName {
-        font-weight: bold;
-    }
-
-    input[type=text] {
-        width: 50%;
-    }
-
-    .radioBtn, .col-md, .mainCol {
-        padding-bottom: 5%;
-    }
-
-    .fieldTitle {
-        padding-left: 0%;
-    }
-</style>
-
-
-<h3 style="padding-left: 10px">@ViewBag.ClassName</h3>
+<h3>@ViewBag.ClassName</h3>
 <hr />
 @using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
 {
@@ -46,7 +21,7 @@
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
             {
-                <div class="row">
+                <div class="row itemRow">
                     <div class="col-md-2 itemName mainCol">
                         @Html.DisplayFor(modelItem => item.ItemName)
                     </div>

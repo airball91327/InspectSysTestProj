@@ -46,28 +46,10 @@ namespace InspectSystem.Controllers
                 InspectItems = itemsByACID
             };
 
-            /* Return other views for class MedicalGas and UPS with different layout. */
+            /* Return other views with different layout. */
             if (classID == 4 || classID == 5)
             {
                 return PartialView("~/Views/InspectDocTempView/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
-            }
-            else if (classID == 7)
-            {
-                return PartialView("~/Views/InspectDocTempView/ViewOfUPS.cshtml", inspectDocDetailsViewModels);
-            }
-            else if (classID == 8)
-            {
-                int CountItems = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Last().ItemID;
-                var MostFields = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == 1).ToList();
-                for (int j = 2; j <= CountItems; j++)
-                {
-                    if (inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == j).Count() > MostFields.Count())
-                    {
-                        MostFields = inspectDocDetailsViewModels.InspectDocDetailsTemporary.Where(i => i.ItemID == j).ToList();
-                    }
-                }
-                ViewBag.FieldsOfMostItem = MostFields;
-                return PartialView("~/Views/InspectDocTempView/ViewOfAirCondition.cshtml", inspectDocDetailsViewModels);
             }
             else
             {

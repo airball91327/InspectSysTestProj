@@ -55,7 +55,7 @@ namespace InspectSystem.Controllers
                 InspectItems = itemsByACID
             };
 
-            /* Return other views for class MedicalGas and UPS with different layout. */
+            /* Return other views with different layout. */
             if (classID == 4 || classID == 5)
             {
                 return PartialView("~/Views/InspectDocEdit/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
