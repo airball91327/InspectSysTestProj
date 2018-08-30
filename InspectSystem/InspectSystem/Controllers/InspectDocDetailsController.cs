@@ -170,6 +170,7 @@ namespace InspectSystem.Controllers
 
         // POST:InspectDocDetails/TempSave
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult TempSave(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
         {
             var areaID = inspectDocDetailsTemporary.First().AreaID;
@@ -206,6 +207,7 @@ namespace InspectSystem.Controllers
 
         // POST:InspectDocDetails/SaveBeforeSend
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveBeforeSend(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
         {
             var areaID = inspectDocDetailsTemporary.First().AreaID;
@@ -353,6 +355,8 @@ namespace InspectSystem.Controllers
         }
 
         // POST: InspectDocDetails/SendDocToChecker
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SendDocToChecker(InspectDocFlow inspectDocFlow)
         {
             /* Declear variables, and search data from DB. */

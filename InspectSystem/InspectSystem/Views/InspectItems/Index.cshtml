@@ -134,17 +134,22 @@
     .fieldPanel {
         display: none;
     }
+
     #areaDropDownList, #classDropDownList {
         width: 500px;
     }
 </style>
 
-<h2><b>巡檢項目維護</b></h2>
+<h2>
+    <b>巡檢項目維護</b>
+</h2>
 
 <!--使用者選擇區域與類別進行搜尋-->
 <hr />
 @using (Html.BeginForm("SearchItems", "InspectItems", FormMethod.Post, new { @class = "form-inline" }))
 {
+    @Html.AntiForgeryToken()
+
     <div class="container">
         <div class="form-group col-md-5">
             @Html.Label("選擇區域:", new { @for = "AreaList" })
@@ -165,7 +170,8 @@
 <hr />
 <div class="container">
     <button class="btn btn-primary" id="createBtn" disabled>新增項目</button>
-</div><br />
+</div>
+<br />
 
 
 <table class="table" id="editTable">
@@ -211,6 +217,8 @@
             <tr>
                 @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
                 {
+                    @Html.AntiForgeryToken()
+
                     @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
                     @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
                     <td class="col-md-2">
@@ -245,7 +253,7 @@
                     <div class="panel panel-info fieldPanel @fieldPanelNo">
                         <div class="panel-heading">欄位</div>
                         <div class="panel-body">
-                            <div class="fieldDiv" id="@fieldDivNo" ></div>
+                            <div class="fieldDiv" id="@fieldDivNo"></div>
                         </div>
                     </div>
                 </td>
@@ -257,6 +265,8 @@
 
 @using (Html.BeginForm("Create", "InspectItems", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
+
     <table class="table" id="createTable"></table>
 }
 

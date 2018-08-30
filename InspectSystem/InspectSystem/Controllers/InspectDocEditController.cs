@@ -68,6 +68,7 @@ namespace InspectSystem.Controllers
 
         // POST: InspectDocEdit/SaveData
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveData(List<InspectDocDetails> inspectDocDetails)
         {
             var areaID = inspectDocDetails.First().AreaID;
@@ -91,6 +92,7 @@ namespace InspectSystem.Controllers
         /*
         // POST: InspectDocEdit/SaveBeforeSend
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveBeforeSend(List<InspectDocDetails> inspectDocDetails)
         {
             var areaID = inspectDocDetails.First().AreaID;
