@@ -10,6 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
+    [Authorize]
     public class InspectDocEditController : Controller
     {
         private BMEDcontext db = new BMEDcontext();

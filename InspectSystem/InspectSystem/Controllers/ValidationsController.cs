@@ -12,7 +12,7 @@ namespace InspectSystem.Controllers
     {
         private BMEDcontext db = new BMEDcontext();
 
-        // GET: Validations/FieldID
+        // GET: Validations/FieldID (not used)
         public ActionResult FieldID(InspectFields inspectFields)
         {
             var ACID = TempData["CreateACID"];
