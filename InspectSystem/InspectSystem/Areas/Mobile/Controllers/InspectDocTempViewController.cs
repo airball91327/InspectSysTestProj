@@ -8,20 +8,20 @@ using System.Web;
 using System.Web.Mvc;
 using InspectSystem.Models;
 
-namespace InspectSystem.Controllers
+namespace InspectSystem.Areas.Mobile.Controllers
 {
     //[Authorize]
     public class InspectDocTempViewController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
 
-        // GET: InspectDocTempView
+        // GET: Mobile/InspectDocTempView
         //public ActionResult Index()
         //{
         //    return View();
         //}
 
-        // GET: InspectDocTempView/ClassContentOfArea
+        // GET: Mobile/InspectDocTempView/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;

@@ -206,6 +206,11 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Mobile\Controllers\InspectDocCheckerController.cs" />
+    <Compile Include="Areas\Mobile\Controllers\InspectDocDetailsController.cs" />
+    <Compile Include="Areas\Mobile\Controllers\InspectDocEditController.cs" />
+    <Compile Include="Areas\Mobile\Controllers\InspectDocTempViewController.cs" />
+    <Compile Include="Areas\Mobile\MobileAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreaCheckersController.cs" />
@@ -291,6 +296,32 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Areas\Mobile\Views\web.config" />
+    <Content Include="Areas\Mobile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Mobile\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\Index.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\DocListForChecker.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\DocListForWorker.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\DocDetails.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\ClassContentOfArea.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\GetFlowList.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\FlowDocEditForChecker.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\FlowDocEditForWorker.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\Index.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\SelectAreas.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\ViewOfMedicalGas.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\ClassContentOfArea.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\AreaPrecautions.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\DocDetails.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\FlowDocEdit.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\AfterSendDoc.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocEdit\Index.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocEdit\ViewOfMedicalGas.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfArea.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocEdit\DocDetails.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocTempView\ViewOfMedicalGas.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocTempView\ClassContentOfArea.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ClassContentOfArea.js" />
@@ -485,6 +516,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Mobile\Models\" />
     <Folder Include="Views\Validations\" />
   </ItemGroup>
   <ItemGroup>

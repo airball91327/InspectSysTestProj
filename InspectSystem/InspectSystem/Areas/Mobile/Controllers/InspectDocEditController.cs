@@ -8,14 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using InspectSystem.Models;
 
-namespace InspectSystem.Controllers
+namespace InspectSystem.Areas.Mobile.Controllers
 {
     //[Authorize]
     public class InspectDocEditController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
 
-        // GET: InspectDocEdit
+        // GET: Mobile/InspectDocEdit
         public ActionResult Index(int docID)
         {
             var theEditDoc = db.InspectDocs.Find(docID);
@@ -30,7 +30,7 @@ namespace InspectSystem.Controllers
             return View(ClassesOfAreas.ToList());
         }
 
-        // GET: InspectDocEdit/ClassContentOfArea
+        // GET: Mobile/InspectDocEdit/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
@@ -67,7 +67,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // POST: InspectDocEdit/SaveData
+        // POST: Mobile/InspectDocEdit/SaveData
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveData(List<InspectDocDetails> inspectDocDetails)
@@ -91,7 +91,7 @@ namespace InspectSystem.Controllers
         }
 
         /*
-        // POST: InspectDocEdit/SaveBeforeSend
+        // POST: Mobile/InspectDocEdit/SaveBeforeSend
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveBeforeSend(List<InspectDocDetails> inspectDocDetails)
@@ -114,7 +114,7 @@ namespace InspectSystem.Controllers
         }
         */
 
-        // GET: InspectDocDetails/DocDetails
+        // GET: Mobile/InspectDocDetails/DocDetails
         public ActionResult DocDetails(int docID)
         {
             var theEditDoc = db.InspectDocs.Find(docID);

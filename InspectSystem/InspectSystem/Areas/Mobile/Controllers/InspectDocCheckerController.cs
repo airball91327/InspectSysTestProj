@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using InspectSystem.Models;
 
-namespace InspectSystem.Controllers
+namespace InspectSystem.Areas.Mobile.Controllers
 {
     //[Authorize]
     public class InspectDocCheckerController : Controller
@@ -20,7 +20,7 @@ namespace InspectSystem.Controllers
             return View();
         }
 
-        // GET: InspectDocChecker/DocListForChecker
+        // GET: Mobile/InspectDocChecker/DocListForChecker
         public ActionResult DocListForChecker(int UserID)
         {
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
@@ -32,7 +32,7 @@ namespace InspectSystem.Controllers
             return View(CheckingDocs.ToList());
         }
 
-        // GET: InspectDocChecker/DocListForWorker
+        // GET: Mobile/InspectDocChecker/DocListForWorker
         public ActionResult DocListForWorker(int UserID)
         {
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
@@ -44,7 +44,7 @@ namespace InspectSystem.Controllers
             return View(CheckingDocs.ToList());
         }
 
-        // GET: InspectDocChecker/DocDetails
+        // GET: Mobile/InspectDocChecker/DocDetails
         public ActionResult DocDetails(int docID)
         {
             /* Set variables from DB. */
@@ -60,7 +60,7 @@ namespace InspectSystem.Controllers
                                                   .OrderBy(c => c.ClassID);
 
             /* Count errors for every class, and set count result to "CountErrors". */
-            foreach(var item in ClassesOfAreas)
+            foreach (var item in ClassesOfAreas)
             {
                 var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
                                                            d.IsFunctional == false);
@@ -69,7 +69,7 @@ namespace InspectSystem.Controllers
             return View(ClassesOfAreas.ToList());
         }
 
-        // GET: InspectDocChecker/ClassContentOfArea
+        // GET: Mobile/InspectDocChecker/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
@@ -106,19 +106,19 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // GET: InspectDocChecker/GetFlowList
+        // GET: Mobile/InspectDocChecker/GetFlowList
         public ActionResult GetFlowList(int docID)
         {
             var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderBy(i => i.StepID);
             var findDoc = db.InspectDocs.Find(docID);
 
-            foreach( var item in flowList)
+            foreach (var item in flowList)
             {
-                if(item.StepOwnerID == item.WorkerID)
+                if (item.StepOwnerID == item.WorkerID)
                 {
                     item.StepOwnerName = findDoc.WorkerName;
                 }
-                else if(item.StepOwnerID == item.CheckerID)
+                else if (item.StepOwnerID == item.CheckerID)
                 {
                     item.StepOwnerName = findDoc.CheckerName;
                 }
@@ -127,7 +127,7 @@ namespace InspectSystem.Controllers
             return PartialView(flowList.ToList());
         }
 
-        // GET: InspectDocChecker/FlowDoc
+        // GET: Mobile/InspectDocChecker/FlowDoc
         public ActionResult FlowDoc(int docID, int userID, string role)
         {
             /* Find FlowDoc and set step to next. */
@@ -140,17 +140,17 @@ namespace InspectSystem.Controllers
             flowDoc.Opinions = "";
 
             /* According user role to retrun views. */
-            if( role == "Checker" )
+            if (role == "Checker")
             {
                 return PartialView("FlowDocEditForChecker", flowDoc);
             }
-            else 
+            else
             {
                 return PartialView("FlowDocEditForWorker", flowDoc);
             }
         }
 
-        // POST: InspectDocChecker/FlowDocEditForChecker
+        // POST: Mobile/InspectDocChecker/FlowDocEditForChecker
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult FlowDocEditForChecker(InspectDocFlow inspectDocFlow)
@@ -165,7 +165,7 @@ namespace InspectSystem.Controllers
             inspectDoc.FlowStatusID = nextFlowStatusID;
 
             /* If doc is send back to worker. */
-            if(nextFlowStatusID == 0)
+            if (nextFlowStatusID == 0)
             {
                 /* New next flow for worker. */
                 InspectDocFlow nextDocFlow = new InspectDocFlow()
@@ -189,7 +189,7 @@ namespace InspectSystem.Controllers
                 }
             }
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 /* Add new data to doc flow, and modefiy doc. */
                 db.Entry(inspectDocFlow).State = EntityState.Modified;
@@ -197,11 +197,11 @@ namespace InspectSystem.Controllers
                 db.SaveChanges();
 
                 /* return save success message. */
-                if(inspectDocFlow.FlowStatusID == 2)
+                if (inspectDocFlow.FlowStatusID == 2)
                 {
                     TempData["SendMsg"] = "文件已結案";
                 }
-                else if(inspectDocFlow.FlowStatusID == 0)
+                else if (inspectDocFlow.FlowStatusID == 0)
                 {
                     TempData["SendMsg"] = "文件已退回";
                 }
@@ -214,7 +214,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // POST: InspectDocChecker/FlowDocEditForWorker
+        // POST: Mobile/InspectDocChecker/FlowDocEditForWorker
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult FlowDocEditForWorker(InspectDocFlow inspectDocFlow)

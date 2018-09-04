@@ -8,14 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using InspectSystem.Models;
 
-namespace InspectSystem.Controllers
+namespace InspectSystem.Areas.Mobile.Controllers
 {
     //[Authorize]
     public class InspectDocDetailsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
 
-        // GET: InspectDocDetails
+        // GET: Mobile/InspectDocDetails
         public ActionResult Index(int areaID)
         {
             /* Set the DocID to year + month + date + areaID, for example: 2018/10/11 area 1, the docID is 2018101101*/
@@ -31,7 +31,7 @@ namespace InspectSystem.Controllers
                                                   .OrderBy(c => c.ClassID).ToList();
 
             var FindDoc = db.InspectDocs.Find(docID);
-            if(FindDoc != null && FindDoc.FlowStatusID != 3)
+            if (FindDoc != null && FindDoc.FlowStatusID != 3)
             {
                 TempData["ErrorMsg"] = "今日巡檢文件已送出!";
                 return RedirectToAction("SelectAreas");
@@ -51,7 +51,8 @@ namespace InspectSystem.Controllers
                     checkerID = findAreaChecker.CheckerID;
                     checkerName = findAreaChecker.CheckerName;
                 }
-                var inspectDocs = new InspectDocs() {
+                var inspectDocs = new InspectDocs()
+                {
                     DocID = docID,
                     Date = DateTime.Now,
                     AreaID = areaID,
@@ -69,7 +70,7 @@ namespace InspectSystem.Controllers
             else  // If found the InspectDoc.
             {
                 /* Check all class is saved or not. */
-                foreach(var item in ClassesOfAreas)
+                foreach (var item in ClassesOfAreas)
                 {
                     var findDocTemps = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                                 i.ClassID == item.ClassID);
@@ -84,7 +85,7 @@ namespace InspectSystem.Controllers
                     }
                 }
                 var isAllSaved = ClassesOfAreas.Where(c => c.IsSaved == false).ToList();
-                if(isAllSaved.Count() == 0)
+                if (isAllSaved.Count() == 0)
                 {
                     ViewBag.AllSaved = "true";
                 }
@@ -97,13 +98,13 @@ namespace InspectSystem.Controllers
             return View(ClassesOfAreas);
         }
 
-        // GET: InspectDocDetails/SelectAreas
+        // GET: Mobile/InspectDocDetails/SelectAreas
         public ActionResult SelectAreas()
         {
             return View(db.InspectAreas.ToList());
         }
 
-        // GET: InspectDocDetails/ClassContentOfArea
+        // GET: Mobile/InspectDocDetails/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
@@ -114,7 +115,7 @@ namespace InspectSystem.Controllers
                                                 .Include(i => i.ClassesOfAreas.InspectClasses);
             var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
                                                          i.ItemStatus == true).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID && 
+            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
                                                         i.FieldStatus == true).ToList();
 
             /* Create a list for user to insert values, and add some known value first. */
@@ -152,14 +153,15 @@ namespace InspectSystem.Controllers
             {
                 inspectDocDetailsTemporary = inspectDocDetailsTemp.ToList();
             }
-            
-            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels(){
-                    InspectDocDetailsTemporary = inspectDocDetailsTemporary,
-                    InspectFields = fieldsByACID,
-                    InspectItems = itemsByACID
-                };
+
+            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
+            {
+                InspectDocDetailsTemporary = inspectDocDetailsTemporary,
+                InspectFields = fieldsByACID,
+                InspectItems = itemsByACID
+            };
             /* Return views with different layout. */
-            if(classID == 4 || classID == 5)
+            if (classID == 4 || classID == 5)
             {
                 return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
@@ -169,7 +171,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // POST: InspectDocDetails/TempSave
+        // POST: Mobile/InspectDocDetails/TempSave
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult TempSave(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
@@ -179,7 +181,7 @@ namespace InspectSystem.Controllers
             var classID = inspectDocDetailsTemporary.First().ClassID;
 
             if (ModelState.IsValid)
-            {        
+            {
                 var findTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                         i.ClassID == classID);
                 /* If can't find temp data, insert data to database. */
@@ -206,7 +208,7 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
-        // POST: InspectDocDetails/SaveBeforeSend
+        // POST: Mobile/InspectDocDetails/SaveBeforeSend
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveBeforeSend(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
@@ -242,14 +244,14 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { AreaID = areaID });
         }
 
-        // GET: InspectDocDetails/AreaPrecautions
+        // GET: Mobile/InspectDocDetails/AreaPrecautions
         public ActionResult AreaPrecautions(int areaID)
         {
             var areaPrecautions = db.InspectPrecautions.Where(i => i.AreaID == areaID);
             return PartialView(areaPrecautions.ToList());
         }
 
-        //GET: InspectDocDetails/CheckValue
+        //GET: Mobile/InspectDocDetails/CheckValue
         /* Use ajax to check the min and max value for fields. */
         public ActionResult CheckValue(int AreaID, int ClassID, int ItemID, int FieldID, string Value)
         {
@@ -298,7 +300,7 @@ namespace InspectSystem.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: InspectDocDetails/DocDetails
+        // GET: Mobile/InspectDocDetails/DocDetails
         public ActionResult DocDetails(int docID)
         {
             var DocDetailList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
@@ -323,7 +325,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // GET: InspectDocDetails/FlowDocEdit
+        // GET: Mobile/InspectDocDetails/FlowDocEdit
         public ActionResult FlowDocEdit(int docID, int userID)
         {
 
@@ -355,7 +357,7 @@ namespace InspectSystem.Controllers
             return PartialView(DocFlow);
         }
 
-        // POST: InspectDocDetails/SendDocToChecker
+        // POST: Mobile/InspectDocDetails/SendDocToChecker
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SendDocToChecker(InspectDocFlow inspectDocFlow)
@@ -392,10 +394,10 @@ namespace InspectSystem.Controllers
                     RepairDocID = item.RepairDocID
                 });
             }
-            
+
             if (ModelState.IsValid)
             {
-                if(findDocDetails.Count() == 0)
+                if (findDocDetails.Count() == 0)
                 {
                     foreach (var item in inspectDocDetails)
                     {
@@ -459,7 +461,7 @@ namespace InspectSystem.Controllers
             }
         }
 
-        // GET: InspectDocDetails/AfterSendDoc
+        // GET: Mobile/InspectDocDetails/AfterSendDoc
         public ActionResult AfterSendDoc(string Msg)
         {
             ViewBag.msg = Msg;
