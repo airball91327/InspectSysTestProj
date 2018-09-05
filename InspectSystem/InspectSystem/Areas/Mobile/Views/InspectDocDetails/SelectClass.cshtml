@@ -1,0 +1,43 @@
+﻿@model IEnumerable<InspectSystem.Models.ClassesOfAreas>
+
+@Scripts.Render("~/bundles//jquery")
+<link rel="stylesheet" href="~/Content/w3.css">
+<script src="~/Scripts/InspectDocDetailsIndex.js"></script>
+
+@{
+    ViewBag.Title = "選擇項目";
+    TempData.Keep("UserID");
+
+    /* Show alert message. */
+    if (TempData["SaveMsg"] != null)
+    {
+        <script>
+            var message = @Html.Raw(Json.Encode(TempData["SaveMsg"]));
+            alert(message);
+        </script>
+    }
+}
+
+<style>
+    h3 {
+        font-weight: bold;
+        text-align:center;
+    }
+</style>
+
+<h3>@ViewBag.AreaName</h3>
+<hr />
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <a class="btn btn-primary btn-lg w3-mobile" href="@Url.Action("ClassContentOfArea", new { acid = @item.ACID, docID = @ViewBag.DocID })" id="@item.ClassID">
+            @if (item.IsSaved == true)
+            {
+                <span class="glyphicon glyphicon-ok"></span>
+            }
+            @item.InspectClasses.ClassName
+        </a>
+    }
+    <a class="btn btn-primary btn-lg w3-mobile" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</a>
+</div>
+

@@ -18,6 +18,19 @@ namespace InspectSystem.Areas.Mobile.Controllers
         // GET: Mobile/InspectDocDetails
         public ActionResult Index(int areaID)
         {
+            
+            return View();
+        }
+
+        // GET: Mobile/InspectDocDetails/SelectAreas
+        public ActionResult SelectAreas()
+        {
+            return View(db.InspectAreas.ToList());
+        }
+
+        // GET: Mobile/InspectDocDetails/SelectClass
+        public ActionResult SelectClass(int areaID)
+        {
             /* Set the DocID to year + month + date + areaID, for example: 2018/10/11 area 1, the docID is 2018101101*/
             string date = DateTime.Now.ToString("yyyyMMdd");
             int docID = System.Convert.ToInt32(date) * 100 + areaID;
@@ -98,12 +111,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return View(ClassesOfAreas);
         }
 
-        // GET: Mobile/InspectDocDetails/SelectAreas
-        public ActionResult SelectAreas()
-        {
-            return View(db.InspectAreas.ToList());
-        }
-
         // GET: Mobile/InspectDocDetails/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
@@ -163,11 +170,11 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* Return views with different layout. */
             if (classID == 4 || classID == 5)
             {
-                return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+                return View("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
-                return PartialView(inspectDocDetailsViewModels);
+                return View(inspectDocDetailsViewModels);
             }
         }
 

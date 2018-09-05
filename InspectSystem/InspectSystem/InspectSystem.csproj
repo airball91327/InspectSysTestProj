@@ -322,6 +322,7 @@
     <Content Include="Areas\Mobile\Views\InspectDocEdit\DocDetails.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocTempView\ViewOfMedicalGas.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocTempView\ClassContentOfArea.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocDetails\SelectClass.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ClassContentOfArea.js" />
