@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<InspectSystem.Models.ClassesOfAreas>
 
 @Scripts.Render("~/bundles//jquery")
-<link rel="stylesheet" href="~/Content/w3.css">
-<script src="~/Scripts/InspectDocDetailsIndex.js"></script>
+<script src="~/Scripts/Mobile/InspectDocDetailsSelectClass.js"></script>
+<link rel="stylesheet" href="~/Content/MobileStyle/MyStyleForDocDetail.css">
 
 @{
     ViewBag.Title = "選擇項目";
@@ -25,12 +25,20 @@
     }
 </style>
 
+<script>
+    $(document).ready(function () {
+        $("#sendToChecker").click(function () {
+            window.location.href = "@Url.Action("DocDetails", new { area = "Mobile", docID = ViewBag.DocID })";
+        });
+    });
+</script>
+
 <h3>@ViewBag.AreaName</h3>
 <hr />
 <div class="container">
     @foreach (var item in Model)
     {
-        <a class="btn btn-primary btn-lg w3-mobile" href="@Url.Action("ClassContentOfArea", new { acid = @item.ACID, docID = @ViewBag.DocID })" id="@item.ClassID">
+        <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("ClassContentOfAreaEdit", new { area = "Mobile", acid = item.ACID, docID = ViewBag.DocID })" id="@item.ClassID">
             @if (item.IsSaved == true)
             {
                 <span class="glyphicon glyphicon-ok"></span>
@@ -38,6 +46,6 @@
             @item.InspectClasses.ClassName
         </a>
     }
-    <a class="btn btn-primary btn-lg w3-mobile" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</a>
+    <button class="btn btn-primary btn-block btn-lg" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</button>
 </div>
 

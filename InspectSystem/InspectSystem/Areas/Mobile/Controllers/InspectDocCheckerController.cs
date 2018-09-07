@@ -73,6 +73,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+            ViewBag.DocID = docID;
 
             /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
@@ -98,11 +99,11 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* Return other views with different layout. */
             if (classID == 4 || classID == 5)
             {
-                return PartialView("~/Views/InspectDocChecker/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+                return View("~/Areas/Mobile/Views/InspectDocChecker/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
-                return PartialView(inspectDocDetailsViewModels);
+                return View(inspectDocDetailsViewModels);
             }
         }
 
@@ -124,7 +125,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 }
             }
 
-            return PartialView(flowList.ToList());
+            return View(flowList.ToList());
         }
 
         // GET: Mobile/InspectDocChecker/FlowDoc
@@ -134,6 +135,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
                                             .OrderByDescending(i => i.StepID).First();
 
+            ViewBag.AreaID = flowDoc.InspectDocs.AreaID;
+
             /* Use userID to find the user details. (Not Implement)*/
             flowDoc.EditorID = userID;
             flowDoc.EditorName = "資料庫撈userName";
@@ -142,11 +145,11 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* According user role to retrun views. */
             if (role == "Checker")
             {
-                return PartialView("FlowDocEditForChecker", flowDoc);
+                return View("FlowDocEditForChecker", flowDoc);
             }
             else
             {
-                return PartialView("FlowDocEditForWorker", flowDoc);
+                return View("FlowDocEditForWorker", flowDoc);
             }
         }
 
@@ -205,12 +208,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 {
                     TempData["SendMsg"] = "文件已退回";
                 }
-                return RedirectToAction("DocListForChecker", new { UserID = userID });
+                return RedirectToAction("DocListForChecker", new { area = "Mobile", UserID = userID });
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForChecker", new { UserID = userID });
+                return RedirectToAction("DocListForChecker", new { area = "Mobile", UserID = userID });
             }
         }
 
@@ -251,12 +254,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
                 /* return save success message. */
                 TempData["SendMsg"] = "文件傳送成功";
-                return RedirectToAction("DocListForWorker", new { UserID = userID });
+                return RedirectToAction("DocListForWorker", new { area = "Mobile", UserID = userID });
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForWorker", new { UserID = userID });
+                return RedirectToAction("DocListForWorker", new { area = "Mobile", UserID = userID });
             }
         }
     }

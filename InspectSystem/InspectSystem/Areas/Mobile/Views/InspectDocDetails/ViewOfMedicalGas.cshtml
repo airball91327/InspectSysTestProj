@@ -1,5 +1,6 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
+@Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/ClassContentOfArea.js"></script>
 
 @{
@@ -19,7 +20,7 @@
 <h3 style="font-weight: bold; padding-left: 10px">@ViewBag.ClassName</h3>
 <hr />
 
-@using (Html.BeginForm("TempSave", "InspectDocDetails", FormMethod.Post, new { id = "detailsForm" }))
+@using (Html.BeginForm("TempSave", "InspectDocDetails", new { area = "Mobile" }, FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()
 

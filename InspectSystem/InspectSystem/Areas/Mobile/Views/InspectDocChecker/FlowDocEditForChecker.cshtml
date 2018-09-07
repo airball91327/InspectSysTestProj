@@ -1,12 +1,10 @@
 ﻿@model InspectSystem.Models.InspectDocFlow
 
-@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles//jquery")
 
-<style>
-    .myDisplayStyle {
-        margin-top: 7px;
-    }
-</style>
+@{
+    ViewBag.Title = "簽核作業";
+}
 
 <script>
     $(document).ready(function () {
@@ -24,14 +22,18 @@
     });
 </script>
 
-@using (Html.BeginForm("FlowDocEditForChecker", "InspectDocChecker"))
+@using (Html.BeginForm("FlowDocEditForChecker", "InspectDocChecker", new { area = "Mobile" }, FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h3>
+        <h3 class="text-center">
             <b>簽核作業</b>
         </h3>
+        <hr />
+        <div class="text-center">
+            <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = Model.DocID })">回項目選擇</a>
+        </div>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.CheckerID)
@@ -44,23 +46,23 @@
         @Html.HiddenFor(model => model.FlowStatusID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.InspectDocs.WorkerName, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9 myDisplayStyle">
+            @Html.LabelFor(model => model.InspectDocs.WorkerName, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
                 @Html.DisplayFor(model => model.InspectDocs.WorkerName)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Opinions, htmlAttributes: new { @class = "control-label col-md-3" })
-            <div class="col-md-9">
+            @Html.LabelFor(model => model.Opinions, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
                 @Html.TextAreaFor(model => model.Opinions, new { @class = "form-control", cols = "50", rows = "5" })
                 @Html.ValidationMessageFor(model => model.Opinions, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-3">審核結果</label>
-            <div class="col-md-9" style="margin-top : 7px">
+            <label class="control-label col-xs-3">審核結果</label>
+            <div class="col-xs-9" style="margin-top : 7px">
                 @Html.RadioButton("NextFlowStatusID", "0")退回文件
                 @Html.RadioButton("NextFlowStatusID", "2")結案
                 <p id="errorMsg" style="color: red"></p>
@@ -68,7 +70,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-3 col-md-9">
+            <div class="col-xs-offset-3 col-xs-9">
                 <br />
                 <button type="button" class="btn btn-primary btn-lg" id="submitBtn">送出</button>
             </div>

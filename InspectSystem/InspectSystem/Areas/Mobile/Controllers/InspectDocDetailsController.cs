@@ -111,10 +111,11 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return View(ClassesOfAreas);
         }
 
-        // GET: Mobile/InspectDocDetails/ClassContentOfArea
-        public ActionResult ClassContentOfArea(int ACID, int docID)
+        // GET: Mobile/InspectDocDetails/ClassContentOfAreaEdit
+        public ActionResult ClassContentOfAreaEdit(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+            ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
 
             /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
@@ -170,7 +171,45 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* Return views with different layout. */
             if (classID == 4 || classID == 5)
             {
-                return View("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+                return View("~/Areas/Mobile/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+            }
+            else
+            {
+                return View(inspectDocDetailsViewModels);
+            }
+        }
+
+        // GET: Mobile/InspectDocDetails/ClassContentOfArea
+        public ActionResult ClassContentOfArea(int ACID, int docID)
+        {
+            ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+            ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
+
+            /* Get items and fields to display. */
+            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectClasses);
+            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
+                                                         i.ItemStatus == true).ToList();
+            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
+                                                        i.FieldStatus == true).ToList();
+
+            /* Find the temp data. */
+            var classID = db.ClassesOfAreas.Find(ACID).ClassID;
+            var inspectDocDetailsTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
+                                                                                 i.ClassID == classID);
+
+            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
+            {
+                InspectDocDetailsTemporary = inspectDocDetailsTemp.ToList(),
+                InspectFields = fieldsByACID,
+                InspectItems = itemsByACID
+            };
+
+            /* Return views with different layout. */
+            if (classID == 4 || classID == 5)
+            {
+                return View("~/Areas/Mobile/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
@@ -209,46 +248,10 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
                 db.SaveChanges();
                 TempData["SaveMsg"] = "暫存完成";
-                return RedirectToAction("Index", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { AreaID = areaID });
             }
             TempData["SaveMsg"] = "暫存失敗";
-            return RedirectToAction("Index", new { AreaID = areaID });
-        }
-
-        // POST: Mobile/InspectDocDetails/SaveBeforeSend
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveBeforeSend(List<InspectDocDetailsTemporary> inspectDocDetailsTemporary)
-        {
-            var areaID = inspectDocDetailsTemporary.First().AreaID;
-            var docID = inspectDocDetailsTemporary.First().DocID;
-            var classID = inspectDocDetailsTemporary.First().ClassID;
-
-            if (ModelState.IsValid)
-            {
-                var findTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
-                                                                        i.ClassID == classID);
-                /* If can't find temp data, insert data to database. */
-                if (findTemp.Any() == false)
-                {
-                    foreach (var item in inspectDocDetailsTemporary)
-                    {
-                        db.InspectDocDetailsTemporary.Add(item);
-                    }
-                }
-                else
-                {
-                    foreach (var item in inspectDocDetailsTemporary)
-                    {
-                        db.Entry(item).State = EntityState.Modified;
-                    }
-                }
-
-                db.SaveChanges();
-                return RedirectToAction("DocDetails", new { DocID = docID });
-            }
-            TempData["SaveMsg"] = "傳送失敗";
-            return RedirectToAction("Index", new { AreaID = areaID });
+            return RedirectToAction("SelectClass", new { AreaID = areaID });
         }
 
         // GET: Mobile/InspectDocDetails/AreaPrecautions
@@ -317,7 +320,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             if (DocDetailList.Count == 0)
             {
                 TempData["SaveMsg"] = "尚未有資料儲存";
-                return RedirectToAction("Index", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { AreaID = areaID });
             }
             else
             {
@@ -361,7 +364,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 InspectDocs = db.InspectDocs.Find(docID)
             };
 
-            return PartialView(DocFlow);
+            return View(DocFlow);
         }
 
         // POST: Mobile/InspectDocDetails/SendDocToChecker
@@ -424,7 +427,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             else
             {
                 TempData["SaveMsg"] = "資料儲存失敗";
-                return RedirectToAction("Index", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { AreaID = areaID });
             }
 
             /* Change flow status to "Checking" for this doc. */
@@ -464,7 +467,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             else
             {
                 TempData["SaveMsg"] = "資料傳送失敗";
-                return RedirectToAction("Index", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { AreaID = areaID });
             }
         }
 

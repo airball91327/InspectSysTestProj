@@ -26,14 +26,16 @@ namespace InspectSystem.Areas.Mobile.Controllers
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID);
 
-            TempData["UserID"] = theEditDoc.WorkerID;
             return View(ClassesOfAreas.ToList());
         }
 
-        // GET: Mobile/InspectDocEdit/ClassContentOfArea
-        public ActionResult ClassContentOfArea(int ACID, int docID)
+        // GET: Mobile/InspectDocEdit/ClassContentOfAreaEdit
+        public ActionResult ClassContentOfAreaEdit(int ACID, int docID)
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+            ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
+            ViewBag.DocID = docID;
+            ViewBag.ACID = ACID;
 
             /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
@@ -59,11 +61,51 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* Return other views with different layout. */
             if (classID == 4 || classID == 5)
             {
-                return PartialView("~/Views/InspectDocEdit/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+                return View("~/Areas/Mobile/Views/InspectDocEdit/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
-                return PartialView(inspectDocDetailsViewModels);
+                return View(inspectDocDetailsViewModels);
+            }
+        }
+
+        // GET: Mobile/InspectDocChecker/ClassContentOfArea
+        public ActionResult ClassContentOfArea(int ACID, int docID)
+        {
+            ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
+            ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
+            ViewBag.DocID = docID;
+            ViewBag.ACID = ACID;
+
+            /* Get items and fields to display. */
+            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectAreas)
+                                                .Include(i => i.ClassesOfAreas.InspectClasses);
+            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
+                                                         i.ItemStatus == true).ToList();
+            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
+                                                        i.FieldStatus == true).ToList();
+
+            /* Find the data. */
+            var classID = db.ClassesOfAreas.Find(ACID).ClassID;
+            var inspectDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
+                                                                    i.ClassID == classID);
+
+            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
+            {
+                InspectDocDetails = inspectDocDetails.ToList(),
+                InspectFields = fieldsByACID,
+                InspectItems = itemsByACID
+            };
+
+            /* Return other views with different layout. */
+            if (classID == 4 || classID == 5)
+            {
+                return View("~/Areas/Mobile/Views/InspectDocChecker/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+            }
+            else
+            {
+                return View(inspectDocDetailsViewModels);
             }
         }
 
@@ -84,10 +126,31 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
                 db.SaveChanges();
                 TempData["SaveMsg"] = "資料修改完成";
-                return RedirectToAction("Index", new { DocID = docID });
+                return RedirectToAction("Index", new { area = "Mobile", DocID = docID });
             }
             TempData["SaveMsg"] = "資料修改失敗";
-            return RedirectToAction("Index", new { DocID = docID });
+            return RedirectToAction("Index", new { area = "Mobile", DocID = docID });
+        }
+
+        // GET: Mobile/InspectDocEdit/GetFlowList
+        public ActionResult GetFlowList(int docID)
+        {
+            var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderBy(i => i.StepID);
+            var findDoc = db.InspectDocs.Find(docID);
+
+            foreach (var item in flowList)
+            {
+                if (item.StepOwnerID == item.WorkerID)
+                {
+                    item.StepOwnerName = findDoc.WorkerName;
+                }
+                else if (item.StepOwnerID == item.CheckerID)
+                {
+                    item.StepOwnerName = findDoc.CheckerName;
+                }
+            }
+
+            return View(flowList.ToList());
         }
 
         /*
@@ -113,25 +176,5 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return RedirectToAction("Index", new { DocID = docID });
         }
         */
-
-        // GET: Mobile/InspectDocDetails/DocDetails
-        public ActionResult DocDetails(int docID)
-        {
-            var theEditDoc = db.InspectDocs.Find(docID);
-            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
-            int areaID = theEditDoc.AreaID;
-
-            ViewBag.AreaID = areaID;
-            ViewBag.AreaName = DocDetailList.First().AreaName;
-            ViewBag.DocID = docID;
-
-            var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.ClassID);
-
-            TempData["UserID"] = theEditDoc.WorkerID;
-
-            return View(ClassesOfAreas.ToList());
-        }
-
     }
 }

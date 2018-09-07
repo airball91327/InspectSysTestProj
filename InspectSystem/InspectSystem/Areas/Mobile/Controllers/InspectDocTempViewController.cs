@@ -15,12 +15,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
     {
         private BMEDcontext db = new BMEDcontext();
 
-        // GET: Mobile/InspectDocTempView
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
         // GET: Mobile/InspectDocTempView/ClassContentOfArea
         public ActionResult ClassContentOfArea(int ACID, int docID)
         {
@@ -50,11 +44,11 @@ namespace InspectSystem.Areas.Mobile.Controllers
             /* Return other views with different layout. */
             if (classID == 4 || classID == 5)
             {
-                return PartialView("~/Views/InspectDocTempView/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
+                return View("~/Areas/Mobile/Views/InspectDocTempView/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
             }
             else
             {
-                return PartialView(inspectDocDetailsViewModels);
+                return View(inspectDocDetailsViewModels);
             }
         }
     }

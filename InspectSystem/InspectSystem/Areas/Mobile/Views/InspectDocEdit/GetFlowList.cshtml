@@ -10,6 +10,7 @@
     h3 {
         font-weight: bold;
         padding-left: 5%;
+        text-align: center;
     }
 
     th {
@@ -27,11 +28,11 @@
     }
 </style>
 
-<h3 class="text-center">
-    流程資訊
-</h3>
+<h3>流程資訊</h3>
 <hr />
-<a class="btn btn-primary btn-block btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = Model.First().DocID })">回項目選擇</a>
+<div class="text-center">
+    <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("Index", new { area = "Mobile", docID = Model.First().DocID})">回項目選擇</a>
+</div>
 <hr />
 
 <div class="container col-xs-12">

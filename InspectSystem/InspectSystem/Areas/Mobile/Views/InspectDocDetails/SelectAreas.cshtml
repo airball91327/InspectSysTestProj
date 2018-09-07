@@ -32,41 +32,44 @@
     }
 
     h2 {
-        text-align:center;
+        text-align: center;
+    }
+
+    .div.w3-display-middle {
+        width: 160px;
+        height: 50px;
     }
 </style>
 
 <h2>
     <b>選擇區域</b>
 </h2>
-
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-xs-6">
-            <div class="w3-display-container">
-                <a href="@Url.Action("SelectClass", new { areaID = item.AreaID})" class="w3-button w3-round-large w3-opacity w3-hover-opacity-off">
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xs-6 w3-display-container">
+                <a href="@Url.Action("SelectClass", new { area = "Mobile", areaID = item.AreaID})" class="w3-button w3-round-large w3-opacity w3-hover-opacity-off">
                     @if (item.AreaID == 4)
                     {
                         <img src="~/Content/Building4.jpg" class="img-responsive w3-round" />
-                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
                     }
                     else if (item.AreaID == 5)
                     {
                         <img src="~/Content/Building5.jpg" class="img-responsive w3-round" />
-                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
                     }
                     else
                     {
                         <img src="~/Content/Building1.jpg" class="img-responsive w3-round" />
-                        <p class="w3-display-middle imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
                     }
+                    <div class="w3-display-middle">
+                        <p class="imgText">@Html.DisplayFor(modelItem => item.AreaName)</p>
+                    </div>
                 </a>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
-
 
 
 

@@ -1,34 +1,40 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
-<link rel="stylesheet" href="~/Content/MyStyleForClassContentOfArea.css" />
+@Scripts.Render("~/bundles//jquery")
+<script src="~/Scripts/ScrollToTop.js"></script>
+<link rel="stylesheet" href="~/Content/MobileStyle/MyStyleForClassContentOfArea.css" />
 
 @{
-    ViewBag.Title = "ClassContentOfArea";
+    ViewBag.Title = "詳細內容";
 }
 
 <h3>@ViewBag.ClassName</h3>
+<hr />
+<div class="text-center">
+    <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = ViewBag.DocID })">回到上頁</a>
+</div>
 <hr />
 @{
     var currentItemName = "0";
     int i = 0, j = 0;
 }
-<div class="container col-md-12">
+<div class="container col-xs-12">
     @foreach (var item in Model.InspectItems)
     {
         /* Display the ItemName when ItemName is not the same. */
         if (item.ItemName != currentItemName)
         {
             <div class="row itemRow">
-                <div class="col-md-2 itemName mainCol">
+                <div class="col-xs-12 itemName mainCol">
                     @Html.DisplayFor(modelItem => item.ItemName)
                 </div>
-                <div class="col-md-6 mainCol">
+                <div class="col-xs-12 mainCol">
                     @foreach (var fieldItem in Model.InspectFields)
                     {
                         /* Display all the FieldName belong the current Item. */
                         if (item.ItemID == fieldItem.ItemID)
                         {
-                            <div class="col-md clearfix">
+                            <div class="col-xs clearfix">
                                 <span class="col-xs-3 fieldTitle">
                                     @if (fieldItem.FieldName != null)
                                     {
@@ -82,7 +88,7 @@
                         }
                     }
                 </div>
-                <div class="col-md-4">
+                <div class="col-xs-12">
                     @foreach (var fieldItem in Model.InspectFields)
                     {
                         /* Display all the FieldName belong the current Item. */
@@ -106,7 +112,6 @@
                                                 <p style="color: red;font-weight: bold">不正常</p>
                                             }
                                         </div>
-                                        <div class="w-100"></div>
                                         <div class="col">
                                             @Html.LabelFor(modelItem => docItem.ErrorDescription)
                                             <br />
@@ -129,3 +134,10 @@
         <hr />
     }
 </div>
+
+<div class="text-center">
+    <a class="btn btn-primary btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = ViewBag.DocID })">回到上頁</a>
+</div>
+
+<!-- Button for go to top-->
+<button onclick="topFunction()" id="goToTopBtn" title="Go to top">回頁首</button>

@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<InspectSystem.Models.ClassesOfAreas>
 
 @Scripts.Render("~/bundles//jquery")
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script src="~/Scripts/InspectDocDetailsIndex.js"></script>
-<link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
+<link rel="stylesheet" href="~/Content/MobileStyle/MyStyleForDocDetail.css">
 
 @{
     ViewBag.Title = "巡檢系統";
     TempData.Keep("UserID");
+    TempData.Keep("Role");
 
     /* Show alert message. */
     if (TempData["SaveMsg"] != null)
@@ -19,7 +19,7 @@
     }
 }
 
-<h3 style="font-weight: bold">@ViewBag.AreaName</h3>
+<h3 style="font-weight: bold" class="text-center">@ViewBag.AreaName</h3>
 <hr />
 <div class="container">
     <div class="tab">
@@ -88,5 +88,3 @@
         </div>
     </div>
 </div>
-
-<button onclick="topFunction()" id="goToTopBtn" title="Go to top">回頁首</button>
