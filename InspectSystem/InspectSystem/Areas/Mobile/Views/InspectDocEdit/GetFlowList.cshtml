@@ -1,88 +1,56 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectDocFlow>
 
 @Scripts.Render("~/bundles//jquery")
+<link rel="stylesheet" href="~/Content/MobileStyle/MyMobileTabStyle.css" />
 
 @{
     ViewBag.Title = "流程資訊";
 }
 
-<style>
-    h3 {
-        font-weight: bold;
-        padding-left: 5%;
-        text-align: center;
-    }
-
-    th {
-        font-weight: bold;
-        text-align: center;
-    }
-
-    td {
-        text-align: center;
-    }
-
-    table {
-        table-layout: fixed;
-        width: inherit;
-    }
-</style>
 
 <h3>流程資訊</h3>
 <hr />
-<div class="text-center">
+<div class="container">
     <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("Index", new { area = "Mobile", docID = Model.First().DocID})">回項目選擇</a>
 </div>
 <hr />
 
-<div class="container col-xs-12">
-    <table class="table-bordered">
+@foreach (var item in Model)
+{
+    <div class="tab row">
+        <button class="col-xs-12">
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StepID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StepOwnerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Opinions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EditorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EditTime)
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
+            <div>
+                <h4>
+                    @Html.DisplayNameFor(model => model.StepID)
                     @Html.DisplayFor(modelItem => item.StepID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InspectFlowStatusTable.FlowStatusName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StepOwnerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Opinions)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EditorName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EditTime)
-                </td>
-            </tr>
-        }
+                </h4>
+            </div>
 
-    </table>
-    <hr />
-</div>
+            <div class="col-xs-12">
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)</span>
+                @Html.DisplayFor(model => item.InspectFlowStatusTable.FlowStatusName)
+            </div>
+
+            <div class="col-xs-12">
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.StepOwnerName)</span>
+                @Html.DisplayFor(modelItem => item.StepOwnerName)
+            </div>
+
+            <div class="col-xs-12">
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.Opinions)</span>
+                @Html.DisplayFor(modelItem => item.Opinions)
+            </div>
+
+            <div class="col-xs-12">
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.EditorName)</span>
+                @Html.DisplayFor(modelItem => item.EditorName)
+            </div>
+
+            <div class="col-xs-12">
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.EditTime)</span>
+                @Html.DisplayFor(modelItem => item.EditTime)
+            </div>
+        </button>
+    </div>
+}

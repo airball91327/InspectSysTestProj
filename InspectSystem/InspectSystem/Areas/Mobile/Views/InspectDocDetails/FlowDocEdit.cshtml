@@ -23,6 +23,10 @@
             簽核作業
         </h3>
         <hr />
+        <div class="container">
+            <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = Model.DocID })">回項目選擇</a>
+        </div>
+        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.FlowStatusID)
         @Html.HiddenFor(model => model.DocID)

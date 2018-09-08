@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<InspectSystem.Models.InspectDocs>
 
 @Scripts.Render("~/bundles//jquery")
+<link rel="stylesheet" href="~/Content/MobileStyle/MyMobileTabStyle.css" />
 
 @{
     ViewBag.Title = "主管審核頁面";
@@ -16,52 +17,43 @@
 <h2 class="text-center">
     <b>主管審核頁面</b>
 </h2>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkerName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CheckerName)
-        </th>
-        <th></th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InspectFlowStatusTable.FlowStatusName)
-            </td>
-            <td>
+<hr />
+
+@foreach (var item in Model)
+{
+    <div class="tab row">
+        <button class="col-xs-12" onclick="location.href='@Url.Action("DocDetails", new { area = "Mobile", docID = item.DocID })'">
+
+            <div>
+                <h4>
+                    @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+                </h4>
+            </div>
+
+            <div>
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)</span>
+                @Html.DisplayFor(model => item.InspectFlowStatusTable.FlowStatusName)
+            </div>
+
+            <div>
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.Date)</span>
                 @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
+            </div>
+
+            <div>
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.EndTime)</span>
                 @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
+            </div>
+
+            <div>
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.WorkerName)</span>
                 @Html.DisplayFor(modelItem => item.WorkerName)
-            </td>
-            <td>
+            </div>
+
+            <div>
+                <span class="col-xs-3">@Html.DisplayNameFor(model => model.CheckerName)</span>
                 @Html.DisplayFor(modelItem => item.CheckerName)
-            </td>
-            <td>
-                <a class="btn btn-primary" href="@Url.Action("DocDetails", new { area = "Mobile", docID = item.DocID })">詳細內容</a>
-            </td>
-        </tr>
-    }
-</table>
+            </div>
+        </button>
+    </div>
+}

@@ -184,6 +184,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
             ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
+            ViewBag.DocID = docID;
 
             /* Get items and fields to display. */
             var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
