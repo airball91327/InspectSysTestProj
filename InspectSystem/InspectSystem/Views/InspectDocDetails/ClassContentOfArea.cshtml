@@ -78,7 +78,7 @@
                                                         @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i } })
                                                         @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                         @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                                        <br /><span class="@i"></span>
+                                                        <br /><span class="@i col-xs-offset-3"></span>
                                                     </span>
                                                     break;
 

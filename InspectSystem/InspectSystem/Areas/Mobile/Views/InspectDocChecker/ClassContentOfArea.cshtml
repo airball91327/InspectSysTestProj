@@ -18,7 +18,7 @@
     var currentItemName = "0";
     int i = 0, j = 0;
 }
-<div class="container col-xs-12">
+<div class="container">
     @foreach (var item in Model.InspectItems)
     {
         /* Display the ItemName when ItemName is not the same. */
@@ -64,7 +64,7 @@
                                                 break;
 
                                             case "checkbox":
-                                                <span>
+                                                <span class="checkboxStyle">
                                                     @if (docItem.Value == "true")
                                                     {
                                                         @Html.CheckBox("InspectDocDetails[" + i + "].Value", true, new { disabled = "disabled" })
@@ -135,8 +135,8 @@
     }
 </div>
 
-<div class="text-center">
-    <a class="btn btn-primary btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = ViewBag.DocID })">回到上頁</a>
+<div class="container">
+    <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("DocDetails", new { area = "Mobile", docID = ViewBag.DocID })">回到上頁</a>
 </div>
 
 <!-- Button for go to top-->

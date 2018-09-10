@@ -20,8 +20,10 @@
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-<a class="btn btn-primary" href="@backToList">回到列表</a>
-<a class="btn btn-primary" href="@Url.Action("Index", "InspectDocEdit", new { docID = ViewBag.DocID })">編輯</a>
+<div class="container">
+    <a class="btn btn-primary" href="@backToList">回到列表</a>
+    <a class="btn btn-primary" href="@Url.Action("Index", "InspectDocEdit", new { docID = ViewBag.DocID })">編輯</a>
+</div>
 <hr />
 
 <div class="container">

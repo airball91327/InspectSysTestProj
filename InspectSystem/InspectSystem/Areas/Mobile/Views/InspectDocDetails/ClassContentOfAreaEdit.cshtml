@@ -2,11 +2,14 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/ClassContentOfArea.js"></script>
+<script src="~/Scripts/Mobile/CheckFormModified.js"></script>
 <script src="~/Scripts/ScrollToTop.js"></script>
 <link rel="stylesheet" href="~/Content/MobileStyle/MyStyleForClassContentOfArea.css" />
 
 @{
     ViewBag.Title = "詳細內容";
+    TempData.Keep("UserID");
+    TempData.Keep("Role");
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -84,12 +87,12 @@
                                                         @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i } })
                                                         @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                         @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                                        <br /><span class="@i"></span>
+                                                        <br /><span class="@i col-xs-offset-3"></span>
                                                     </span>
                                                     break;
 
                                                 case "checkbox":
-                                                    <span>
+                                                    <span class="checkboxStyle">
                                                         @if (docItem.Value == "true")
                                                         {
                                                             @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", true)
@@ -161,11 +164,11 @@
                 currentItemName = item.ItemName;
             }
         }
-        <div class="text-center">
-            <input class="btn btn-primary btn-lg" type="submit" value="暫時儲存" id="submitBtn" />
-        </div>
-        <hr />
     </div>
+    <div class="container">
+        <input  type="submit" class="btn btn-primary btn-block btn-lg" value="暫時儲存" id="submitBtn" style="max-width:100%" />
+    </div>
+    <hr />
 }
 
 <!--Modal for precautions of area.-->

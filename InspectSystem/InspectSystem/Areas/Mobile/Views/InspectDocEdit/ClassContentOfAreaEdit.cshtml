@@ -2,11 +2,14 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/ClassContentOfAreaDocEdit.js"></script>
+<script src="~/Scripts/Mobile/CheckFormModified.js"></script>
 <script src="~/Scripts/ScrollToTop.js"></script>
 <link rel="stylesheet" href="~/Content/MobileStyle/MyStyleForClassContentOfArea.css" />
 
 @{
     ViewBag.Title = "內容編輯";
+    TempData.Keep("UserID");
+    TempData.Keep("Role");
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -21,7 +24,7 @@
 
     var currentItemName = "0";
     int i = 0, j = 0;
-    <div class="container col-xs-12">
+    <div class="container">
         @foreach (var item in Model.InspectItems)
         {
             /* Display the ItemName when ItemName is not the same. */
@@ -37,7 +40,7 @@
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
                             {
-                                <div class="col-md clearfix">
+                                <div class="col-xs clearfix">
                                     <span class="col-xs-3 fieldTitle">
                                         @if (fieldItem.FieldName != null)
                                         {
@@ -75,12 +78,12 @@
                                                         @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetails[" + i + "].Value", @class = "inputValue", id = i } })
                                                         @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                         @Html.ValidationMessage("InspectDocDetails[" + i + "].Value", "", new { @class = "text-danger" })
-                                                        <br /><span class="@i"></span>
+                                                        <br /><span class="@i col-xs-offset-3"></span>
                                                     </span>
                                                     break;
 
                                                 case "checkbox":
-                                                    <span>
+                                                    <span class="checkboxStyle">
                                                         @if (docItem.Value == "true")
                                                         {
                                                             @Html.CheckBox("InspectDocDetails[" + i + "].Value", true)
@@ -152,11 +155,11 @@
                 currentItemName = item.ItemName;
             }
         }
-        <div>
-            <input class="btn btn-primary btn-lg" type="submit" value="儲存修改資料" />
-        </div>
-        <hr />
     </div>
+    <div class="container">
+        <input type="submit" class="btn btn-primary btn-block btn-lg" value="儲存修改資料" style="max-width:100%" />
+    </div>
+    <hr />
 }
 
 <!-- Button for go to top-->

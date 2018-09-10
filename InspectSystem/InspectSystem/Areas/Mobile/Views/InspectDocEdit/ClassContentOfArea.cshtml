@@ -11,17 +11,23 @@
     TempData.Keep("Role");
 }
 
+<style>
+
+</style>
+
 <h3>@ViewBag.ClassName</h3>
 <hr />
-<a class="btn btn-primary btn-lg" href="@Url.Action("Index", new { area = "Mobile", docID = ViewBag.DocID })">回項目選擇</a>
-<a class="btn btn-primary btn-lg" href="@backToList">回審核列表</a>
-<a class="btn btn-primary btn-lg" href="@Url.Action("ClassContentOfAreaEdit", new { area = "Mobile", acid = ViewBag.ACID, docID = ViewBag.DocID })">編輯</a>
+<div class="btn-group btn-group-justified">
+    <a class="btn btn-primary btn-lg" href="@Url.Action("Index", new { area = "Mobile", docID = ViewBag.DocID })">回項目選擇</a>
+    <a class="btn btn-primary btn-lg" href="@backToList">回審核列表</a>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("ClassContentOfAreaEdit", new { area = "Mobile", acid = ViewBag.ACID, docID = ViewBag.DocID })">編輯</a>
+</div>
 <hr />
 @{
     var currentItemName = "0";
     int i = 0, j = 0;
 }
-<div class="container col-xs-12">
+<div class="container">
     @foreach (var item in Model.InspectItems)
     {
         /* Display the ItemName when ItemName is not the same. */
@@ -67,7 +73,7 @@
                                                 break;
 
                                             case "checkbox":
-                                                <span>
+                                                <span class="checkboxStyle">
                                                     @if (docItem.Value == "true")
                                                     {
                                                         @Html.CheckBox("InspectDocDetails[" + i + "].Value", true, new { disabled = "disabled" })
