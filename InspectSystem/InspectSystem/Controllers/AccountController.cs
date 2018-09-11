@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -61,7 +65,64 @@ namespace InspectSystem.Controllers
             return View();
         }
 
-        //
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                //
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
+                string url = "WebApi/api/Accounts?id=" + model.UserName;
+                url += "&pwd=" + HttpUtility.UrlEncode(model.Password, Encoding.GetEncoding("UTF-8"));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.GetAsync(url);
+                string rstr = "";
+                if (response.IsSuccessStatusCode)
+                {
+                    rstr = await response.Content.ReadAsStringAsync();
+                }
+                //
+                //var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                //if (result.Succeeded)
+                if (rstr.Contains("成功"))
+                {
+
+                    //await _signInManager.SignInAsync(new ApplicationUser { Id = "1", UserName = model.UserName }, new AuthenticationProperties { IsPersistent = model.RememberMe });
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                        return RedirectToLocal(returnUrl);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                //if (result.RequiresTwoFactor)
+                //{
+                //    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                //}
+                //if (result.IsLockedOut)
+                //{
+                //    _logger.LogWarning("您的帳號被封鎖.");
+                //    return RedirectToAction(nameof(Lockout));
+                //}
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "登入無效.");
+                    return View(model);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        /*
+        // Origin code
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -90,6 +151,7 @@ namespace InspectSystem.Controllers
                     return View(model);
             }
         }
+        */
 
         //
         // GET: /Account/VerifyCode
@@ -151,7 +213,7 @@ namespace InspectSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -248,7 +310,7 @@ namespace InspectSystem.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
                 // 不顯示使用者不存在
