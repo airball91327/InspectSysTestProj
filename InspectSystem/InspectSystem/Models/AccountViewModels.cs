@@ -52,6 +52,10 @@ namespace InspectSystem.Models
         [Display(Name = "使用者帳號")]
         public string UserName { get; set; }
 
+        [EmailAddress]
+        [Display(Name = "電子郵件")]
+        public string Email { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "密碼")]

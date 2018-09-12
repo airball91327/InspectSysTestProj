@@ -91,15 +91,43 @@ namespace InspectSystem.Controllers
                 //
                 //var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 //if (result.Succeeded)
+                /* If the UserName and the Password are legal. */
                 if (rstr.Contains("成功"))
                 {
-
-                    //await _signInManager.SignInAsync(new ApplicationUser { Id = "1", UserName = model.UserName }, new AuthenticationProperties { IsPersistent = model.RememberMe });
 
                     if (!string.IsNullOrEmpty(returnUrl))
                         return RedirectToLocal(returnUrl);
 
-                    return RedirectToAction("Index", "Home");
+                    /* If the user is first login to the system, new a user data to DB. */
+                    var findUser = await UserManager.FindByNameAsync(model.UserName);
+                    if(findUser == null)
+                    {
+                        var user = new ApplicationUser { UserName = model.UserName, Email = "GetFromDB@hotmail.com" };
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: model.RememberMe, rememberBrowser: false);
+
+                            /* Role name. */
+                            var roleName = "admin";
+                            /* Add role to user. */
+                            await UserManager.AddToRoleAsync(user.Id, roleName);
+
+                            return RedirectToAction("Index", "InspectDocChecker");
+                        }
+                    }
+                    else  /* If user isn't first login, check name and password to login. */
+                    {
+                        var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                        switch (result)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToAction("Index", "InspectDocChecker");
+                        }
+                    }
+
+                    ModelState.AddModelError(string.Empty, "登入無效.");
+                    return View(model);
                 }
                 //if (result.RequiresTwoFactor)
                 //{
@@ -454,7 +482,7 @@ namespace InspectSystem.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
