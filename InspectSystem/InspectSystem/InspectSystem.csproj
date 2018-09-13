@@ -525,6 +525,7 @@
     <Content Include="Views\InspectDocEdit\ClassContentOfArea.cshtml" />
     <Content Include="Views\InspectDocEdit\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

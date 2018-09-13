@@ -24,7 +24,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
             if (User.IsInRole("Admin") == true)
             {
-                return RedirectToAction("Index", "InspectDocChecker", new { Area = "Mobile" });
+                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
             }
             else if (User.IsInRole("Supervisor") == true)
             {

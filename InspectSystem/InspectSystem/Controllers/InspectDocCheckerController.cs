@@ -26,7 +26,7 @@ namespace InspectSystem.Controllers
 
             if (User.IsInRole("Admin") == true)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("DocListForChecker", "InspectDocChecker");
             }
             else if (User.IsInRole("Supervisor") == true)
             {
