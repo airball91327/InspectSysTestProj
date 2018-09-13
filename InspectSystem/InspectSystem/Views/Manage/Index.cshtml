@@ -3,7 +3,7 @@
     ViewBag.Title = "管理";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
@@ -23,11 +23,12 @@
             }
             ]
         </dd>
+        @*
         <dt>外部登入:</dt>
         <dd>
             @Model.Logins.Count [
             @Html.ActionLink("管理", "ManageLogins") ]
-        </dd>
+        </dd>*@
         @*
             電話號碼可用作為雙重要素驗證系統中的第二項驗證要素。
              
@@ -56,12 +57,14 @@
                 }
             </dd>
         *@
+        @*
         <dt>雙因素驗證:</dt>
         <dd>
             <p>
                 未設定任何雙重要素驗證提供者。請參閱<a href="https://go.microsoft.com/fwlink/?LinkId=403804">此文章</a>
                 以取得設定此 ASP.NET 應用程式以支援雙重要素驗證的詳細資料。
             </p>
+            *@
             @*@if (Model.TwoFactor)
                 {
                     using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

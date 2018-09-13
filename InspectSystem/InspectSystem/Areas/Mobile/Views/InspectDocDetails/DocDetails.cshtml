@@ -5,8 +5,6 @@
 
 @{
     ViewBag.Title = "項目選擇";
-    TempData.Keep("UserID");
-    TempData.Keep("Role");
 }
 
 <style>
@@ -34,5 +32,5 @@
             @item.InspectClasses.ClassName
         </a>
     }
-    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" style="margin-top: 50px" href="@Url.Action("FlowDocEdit", new { area = "Mobile", docID = ViewBag.DocID, userID = TempData["UserID"] })">簽核作業</a>
+    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" style="margin-top: 50px" href="@Url.Action("FlowDocEdit", new { area = "Mobile", docID = ViewBag.DocID })">簽核作業</a>
 </div>

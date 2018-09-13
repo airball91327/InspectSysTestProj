@@ -10,7 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Areas.Mobile.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InspectDocDetailsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -47,13 +47,13 @@ namespace InspectSystem.Areas.Mobile.Controllers
             if (FindDoc != null && FindDoc.FlowStatusID != 3)
             {
                 TempData["ErrorMsg"] = "今日巡檢文件已送出!";
-                return RedirectToAction("SelectAreas");
+                return RedirectToAction("SelectAreas", new { Area = "Mobile" });
             }
             /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             if (FindDoc == null)
             {
-                int workerID = 123456;
-                string workerName = "測試工程師";
+                int workerID = System.Convert.ToInt32(User.Identity.Name);
+                string workerName = "DB撈資料";
 
                 /* Find the checker of the area. */
                 int checkerID = 0;
@@ -107,7 +107,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     ViewBag.AllSaved = "false";
                 }
             }
-            TempData["UserID"] = db.InspectDocs.Find(docID).WorkerID;
             return View(ClassesOfAreas);
         }
 
@@ -249,10 +248,10 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
                 db.SaveChanges();
                 TempData["SaveMsg"] = "暫存完成";
-                return RedirectToAction("SelectClass", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { Area = "Mobile", AreaID = areaID });
             }
             TempData["SaveMsg"] = "暫存失敗";
-            return RedirectToAction("SelectClass", new { AreaID = areaID });
+            return RedirectToAction("SelectClass", new { Area = "Mobile", AreaID = areaID });
         }
 
         // GET: Mobile/InspectDocDetails/AreaPrecautions
@@ -321,7 +320,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             if (DocDetailList.Count == 0)
             {
                 TempData["SaveMsg"] = "尚未有資料儲存";
-                return RedirectToAction("SelectClass", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { Area = "Mobile", AreaID = areaID });
             }
             else
             {
@@ -337,7 +336,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         }
 
         // GET: Mobile/InspectDocDetails/FlowDocEdit
-        public ActionResult FlowDocEdit(int docID, int userID)
+        public ActionResult FlowDocEdit(int docID)
         {
 
             var findDoc = db.InspectDocs.Find(docID);
@@ -364,7 +363,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 EditTime = null,
                 InspectDocs = db.InspectDocs.Find(docID)
             };
-
             return View(DocFlow);
         }
 
@@ -428,7 +426,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             else
             {
                 TempData["SaveMsg"] = "資料儲存失敗";
-                return RedirectToAction("SelectClass", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { Area = "Mobile", AreaID = areaID });
             }
 
             /* Change flow status to "Checking" for this doc. */
@@ -463,12 +461,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 db.Entry(findDoc).State = EntityState.Modified;
                 db.SaveChanges();
                 var msg = "資料已傳送";
-                return RedirectToAction("AfterSendDoc", new { Msg = msg });
+                return RedirectToAction("AfterSendDoc", new { Area = "Mobile", Msg = msg });
             }
             else
             {
                 TempData["SaveMsg"] = "資料傳送失敗";
-                return RedirectToAction("SelectClass", new { AreaID = areaID });
+                return RedirectToAction("SelectClass", new { Area = "Mobile", AreaID = areaID });
             }
         }
 

@@ -113,7 +113,7 @@ namespace InspectSystem.Controllers
                             /* Add role to user. */
                             await UserManager.AddToRoleAsync(user.Id, roleName);
 
-                            return RedirectToAction("Index", "InspectDocChecker");
+                            return RedirectToAction("DocListForChecker", "InspectDocChecker");
                         }
                     }
                     else  /* If user isn't first login, check name and password to login. */
@@ -122,6 +122,10 @@ namespace InspectSystem.Controllers
                         switch (result)
                         {
                             case SignInStatus.Success:
+                                //var userId = User.Identity.GetUserId(); // The User is not login yet, when the next request(action) comes, so the result will be null.
+                                //var userName = model.UserName;
+                                //var user = UserManager.FindByName(model.UserName);
+
                                 return RedirectToAction("Index", "InspectDocChecker");
                         }
                     }

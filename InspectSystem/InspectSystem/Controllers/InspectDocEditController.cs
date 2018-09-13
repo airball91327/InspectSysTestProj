@@ -6,11 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InspectDocEditController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -26,7 +27,6 @@ namespace InspectSystem.Controllers
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID);
 
-            TempData["UserID"] = theEditDoc.WorkerID;
             return View(ClassesOfAreas.ToList());
         }
 
@@ -127,8 +127,6 @@ namespace InspectSystem.Controllers
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.ClassID);
-
-            TempData["UserID"] = theEditDoc.WorkerID;
 
             return View(ClassesOfAreas.ToList());
         }

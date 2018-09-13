@@ -6,11 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InspectDocDetailsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -39,8 +40,8 @@ namespace InspectSystem.Controllers
             /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             if (FindDoc == null)
             {
-                int workerID = 123456;
-                string workerName = "測試工程師";
+                int workerID = System.Convert.ToInt32(User.Identity.Name);
+                string workerName = "DB撈資料";
 
                 /* Find the checker of the area. */
                 int checkerID = 0;
@@ -324,7 +325,7 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectDocDetails/FlowDocEdit
-        public ActionResult FlowDocEdit(int docID, int userID)
+        public ActionResult FlowDocEdit(int docID)
         {
 
             var findDoc = db.InspectDocs.Find(docID);

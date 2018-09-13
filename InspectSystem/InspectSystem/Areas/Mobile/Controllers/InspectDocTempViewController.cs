@@ -10,7 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Areas.Mobile.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InspectDocTempViewController : Controller
     {
         private BMEDcontext db = new BMEDcontext();

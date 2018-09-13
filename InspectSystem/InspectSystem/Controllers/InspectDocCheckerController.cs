@@ -6,41 +6,55 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InspectDocCheckerController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
 
         public ActionResult Index()
         {
-            return View();
+            /* Get current user. */
+            var userId = User.Identity.GetUserId();
+            var userName = User.Identity.Name;
+
+            if (User.IsInRole("Admin") == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (User.IsInRole("Supervisor") == true)
+            {
+                return RedirectToAction("DocListForChecker", "InspectDocChecker");
+            }
+            else
+            {
+                return RedirectToAction("DocListForWorker", "InspectDocChecker");
+            }
         }
 
         // GET: InspectDocChecker/DocListForChecker
-        public ActionResult DocListForChecker(int UserID)
+        public ActionResult DocListForChecker()
         {
+            int UserID = System.Convert.ToInt32(User.Identity.Name);
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
                                                          i.FlowStatusID == 1);
-            TempData["UserID"] = UserID;
-            TempData["Role"] = "Checker";
-            TempData.Keep("UserID");
-            TempData.Keep("Role");
+
             return View(CheckingDocs.ToList());
         }
 
         // GET: InspectDocChecker/DocListForWorker
-        public ActionResult DocListForWorker(int UserID)
+        public ActionResult DocListForWorker()
         {
+            int UserID = System.Convert.ToInt32(User.Identity.Name);
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
                                                          i.FlowStatusID == 0);
-            TempData["UserID"] = UserID;
-            TempData["Role"] = "Worker";
-            TempData.Keep("UserID");
-            TempData.Keep("Role");
+
             return View(CheckingDocs.ToList());
         }
 
@@ -128,19 +142,19 @@ namespace InspectSystem.Controllers
         }
 
         // GET: InspectDocChecker/FlowDoc
-        public ActionResult FlowDoc(int docID, int userID, string role)
+        public ActionResult FlowDoc(int docID)
         {
             /* Find FlowDoc and set step to next. */
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
                                             .OrderByDescending(i => i.StepID).First();
 
             /* Use userID to find the user details. (Not Implement)*/
-            flowDoc.EditorID = userID;
+            flowDoc.EditorID = System.Convert.ToInt32(User.Identity.Name);
             flowDoc.EditorName = "資料庫撈userName";
             flowDoc.Opinions = "";
 
             /* According user role to retrun views. */
-            if( role == "Checker" )
+            if( User.IsInRole("Supervisor") == true)
             {
                 return PartialView("FlowDocEditForChecker", flowDoc);
             }
@@ -205,12 +219,12 @@ namespace InspectSystem.Controllers
                 {
                     TempData["SendMsg"] = "文件已退回";
                 }
-                return RedirectToAction("DocListForChecker", new { UserID = userID });
+                return RedirectToAction("DocListForChecker");
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForChecker", new { UserID = userID });
+                return RedirectToAction("DocListForChecker");
             }
         }
 
@@ -251,12 +265,12 @@ namespace InspectSystem.Controllers
 
                 /* return save success message. */
                 TempData["SendMsg"] = "文件傳送成功";
-                return RedirectToAction("DocListForWorker", new { UserID = userID });
+                return RedirectToAction("DocListForWorker");
             }
             else
             {
                 TempData["SendMsg"] = "文件傳送失敗";
-                return RedirectToAction("DocListForWorker", new { UserID = userID });
+                return RedirectToAction("DocListForWorker");
             }
         }
     }

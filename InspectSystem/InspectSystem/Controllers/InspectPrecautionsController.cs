@@ -10,7 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class InspectPrecautionsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();

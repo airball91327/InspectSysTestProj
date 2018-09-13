@@ -6,9 +6,7 @@
 
 @{
     ViewBag.Title = "詳細內容";
-    string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { area = "Mobile", userID = TempData["UserID"] }).ToString();
-    TempData.Keep("UserID");
-    TempData.Keep("Role");
+    string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { area = "Mobile" }).ToString();
 }
 
 <style>

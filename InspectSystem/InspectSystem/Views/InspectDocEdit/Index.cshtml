@@ -108,7 +108,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @Html.Action("FlowDoc", "InspectDocChecker", new { docID = ViewBag.DocID, userID = TempData["UserID"], role = TempData["Role"] })
+                    @Html.Action("FlowDoc", "InspectDocChecker", new { docID = ViewBag.DocID })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">關閉視窗</button>

@@ -12,9 +12,7 @@
             alert(message);
         </script>
     }
-    string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { area = "Mobile", userID = TempData["UserID"] }).ToString();
-    TempData.Keep("UserID");
-    TempData.Keep("Role");
+    string backToList = Url.Action("DocListForWorker", "InspectDocChecker", new { area = "Mobile" }).ToString();
 }
 
 <h3>@ViewBag.AreaName</h3>
@@ -36,5 +34,5 @@
         </a>
     }
     <a class="btn btn-primary btn-block btn-lg" id="flowListBtn" href="@Url.Action("GetFlowList", new { area = "Mobile", docID = ViewBag.DocID })">流程資訊</a>
-    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" href="@Url.Action("FlowDoc", "InspectDocChecker", new { area = "Mobile", docID = ViewBag.DocID, userID = TempData["UserID"], role = TempData["Role"] })">簽核作業</a>
+    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" href="@Url.Action("FlowDoc", "InspectDocChecker", new { area = "Mobile", docID = ViewBag.DocID })">簽核作業</a>
 </div>
