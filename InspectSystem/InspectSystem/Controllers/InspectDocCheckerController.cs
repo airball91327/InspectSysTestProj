@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using WebMatrix.WebData;
 using InspectSystem.Models;
 
@@ -24,18 +23,18 @@ namespace InspectSystem.Controllers
             //var userName = User.Identity.Name;
             var userName = WebSecurity.CurrentUserName;
 
-            if (User.IsInRole("Admin") == true)
-            {
+            //if (User.IsInRole("Admin") == true)
+            //{
+            //    return RedirectToAction("DocListForChecker", "InspectDocChecker");
+            //}
+            //else if (User.IsInRole("Supervisor") == true)
+            //{
                 return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            }
-            else if (User.IsInRole("Supervisor") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            }
-            else
-            {
-                return RedirectToAction("DocListForWorker", "InspectDocChecker");
-            }
+            //}
+            //else
+            //{
+            //    return RedirectToAction("DocListForWorker", "InspectDocChecker");
+            //}
         }
 
         // GET: InspectDocChecker/DocListForChecker
@@ -149,7 +148,7 @@ namespace InspectSystem.Controllers
                                             .OrderByDescending(i => i.StepID).First();
 
             /* Use userID to find the user details. (Not Implement)*/
-            flowDoc.EditorID = System.Convert.ToInt32(User.Identity.Name);
+            flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
             flowDoc.EditorName = "資料庫撈userName";
             flowDoc.Opinions = "";
 

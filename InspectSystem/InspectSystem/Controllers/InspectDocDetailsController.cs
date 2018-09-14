@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+using WebMatrix.WebData;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
@@ -40,7 +40,7 @@ namespace InspectSystem.Controllers
             /* Find the InspectDoc according to the docID, if can't find, new a doc. */
             if (FindDoc == null)
             {
-                int workerID = System.Convert.ToInt32(User.Identity.Name);
+                int workerID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
                 string workerName = "DB撈資料";
 
                 /* Find the checker of the area. */

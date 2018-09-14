@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+using WebMatrix.WebData;
 using InspectSystem.Models;
 
 namespace InspectSystem.Areas.Mobile.Controllers
@@ -19,27 +19,27 @@ namespace InspectSystem.Areas.Mobile.Controllers
         public ActionResult Index()
         {
             /* Get current user. */
-            var userId = User.Identity.GetUserId();
-            var userName = User.Identity.Name;
+            //var userId = User.Identity.GetUserId();
+            var userName = WebSecurity.CurrentUserName;
 
-            if (User.IsInRole("Admin") == true)
-            {
+            //if (User.IsInRole("Admin") == true)
+            //{
+            //    return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
+            //}
+            //else if (User.IsInRole("Supervisor") == true)
+            //{
                 return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            }
-            else if (User.IsInRole("Supervisor") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            }
-            else
-            {
-                return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
-            }
+            //}
+            //else
+            //{
+            //    return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
+            //}
         }
 
         // GET: Mobile/InspectDocChecker/DocListForChecker
         public ActionResult DocListForChecker()
         {
-            int UserID = System.Convert.ToInt32(User.Identity.Name);
+            int UserID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
                                                          i.FlowStatusID == 1);
           
@@ -49,7 +49,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         // GET: Mobile/InspectDocChecker/DocListForWorker
         public ActionResult DocListForWorker()
         {
-            int UserID = System.Convert.ToInt32(User.Identity.Name);
+            int UserID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
                                                          i.FlowStatusID == 0);
             
@@ -150,7 +150,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.AreaID = flowDoc.InspectDocs.AreaID;
 
             /* Use userID to find the user details. (Not Implement)*/
-            flowDoc.EditorID = System.Convert.ToInt32(User.Identity.Name);
+            flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
             flowDoc.EditorName = "資料庫撈userName";
             flowDoc.Opinions = "";
 

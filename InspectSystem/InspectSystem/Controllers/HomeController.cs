@@ -11,10 +11,6 @@ namespace InspectSystem.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        
-
-        
+        }  
     }
 }

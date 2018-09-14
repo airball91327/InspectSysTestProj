@@ -17,7 +17,7 @@ namespace InspectSystem.Areas.Mobile
             context.MapRoute(
                 "Mobile_default",
                 "Mobile/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "InspectDocChecker", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
