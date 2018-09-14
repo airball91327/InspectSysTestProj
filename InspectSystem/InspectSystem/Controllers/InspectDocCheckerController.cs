@@ -7,8 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
+using WebMatrix.WebData;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
@@ -21,8 +20,9 @@ namespace InspectSystem.Controllers
         public ActionResult Index()
         {
             /* Get current user. */
-            var userId = User.Identity.GetUserId();
-            var userName = User.Identity.Name;
+            //var userId = User.Identity.GetUserId();
+            //var userName = User.Identity.Name;
+            var userName = WebSecurity.CurrentUserName;
 
             if (User.IsInRole("Admin") == true)
             {

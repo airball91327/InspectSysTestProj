@@ -1,7 +1,6 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using Owin;
 
-[assembly: OwinStartupAttribute(typeof(InspectSystem.Startup))]
+//[assembly: OwinStartupAttribute(typeof(InspectSystem.Startup))]
 namespace InspectSystem
 {
     public partial class Startup
