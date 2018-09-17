@@ -54,7 +54,7 @@ namespace InspectSystem.Controllers
                 /* If the UserName and the Password are legal. */
                 if (rstr.Contains("成功"))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);                  
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     return RedirectToAction("Index", "Home");
                 }
                 else

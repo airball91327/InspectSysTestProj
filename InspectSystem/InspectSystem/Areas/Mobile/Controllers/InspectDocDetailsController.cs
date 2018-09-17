@@ -168,15 +168,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 InspectFields = fieldsByACID,
                 InspectItems = itemsByACID
             };
-            /* Return views with different layout. */
-            if (classID == 4 || classID == 5)
-            {
-                return View("~/Areas/Mobile/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
-            }
-            else
-            {
-                return View(inspectDocDetailsViewModels);
-            }
+
+            return View(inspectDocDetailsViewModels);
         }
 
         // GET: Mobile/InspectDocDetails/ClassContentOfArea
@@ -207,15 +200,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 InspectItems = itemsByACID
             };
 
-            /* Return views with different layout. */
-            if (classID == 4 || classID == 5)
-            {
-                return View("~/Areas/Mobile/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
-            }
-            else
-            {
-                return View(inspectDocDetailsViewModels);
-            }
+            return View(inspectDocDetailsViewModels);
         }
 
         // POST: Mobile/InspectDocDetails/TempSave

@@ -94,7 +94,6 @@ namespace InspectSystem.Controllers
                     ViewBag.AllSaved = "false";
                 }
             }
-            TempData["UserID"] = db.InspectDocs.Find(docID).WorkerID;
             return View(ClassesOfAreas);
         }
 
@@ -154,20 +153,14 @@ namespace InspectSystem.Controllers
                 inspectDocDetailsTemporary = inspectDocDetailsTemp.ToList();
             }
             
-            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels(){
+            InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
+            {
                     InspectDocDetailsTemporary = inspectDocDetailsTemporary,
                     InspectFields = fieldsByACID,
                     InspectItems = itemsByACID
-                };
-            /* Return views with different layout. */
-            if(classID == 4 || classID == 5)
-            {
-                return PartialView("~/Views/InspectDocDetails/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
-            }
-            else
-            {
-                return PartialView(inspectDocDetailsViewModels);
-            }
+            };
+
+            return PartialView(inspectDocDetailsViewModels);
         }
 
         // POST: InspectDocDetails/TempSave

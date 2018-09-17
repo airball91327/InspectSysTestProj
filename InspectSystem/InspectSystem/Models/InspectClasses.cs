@@ -15,5 +15,8 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "類別名稱")]
         public string ClassName { get; set; }
+        [Required]
+        [Display(Name = "排列順序")]
+        public int ClassOrder { get; set; }
     }
 }

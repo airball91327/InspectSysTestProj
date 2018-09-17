@@ -14,6 +14,16 @@
 
 <!DOCTYPE html>
 
+<style>
+    /* Style the scale of checkbox. */
+    input[type=checkbox], input[type=radio] {
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FireFox */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
+    }
+</style>
+
 <script>
     $(document).ready(function () {
 
@@ -60,10 +70,10 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.DataType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10" style="margin-top : 7px">
-                    @Html.RadioButtonFor(model => model.DataType, "string")字串
-                    @Html.RadioButtonFor(model => model.DataType, "float", new { @checked = "checked" })數字
-                    @Html.RadioButtonFor(model => model.DataType, "boolean")正常/不正常
-                    @Html.RadioButtonFor(model => model.DataType, "checkbox")勾選方塊
+                    @Html.RadioButtonFor(model => model.DataType, "string") 字串
+                    @Html.RadioButtonFor(model => model.DataType, "float", new { @checked = "checked" }) 數字
+                    @Html.RadioButtonFor(model => model.DataType, "boolean") 正常/不正常
+                    @Html.RadioButtonFor(model => model.DataType, "checkbox") 勾選方塊
                     @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -282,20 +282,16 @@
     <Content Include="Areas\Mobile\Views\InspectDocChecker\GetFlowList.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\FlowDocEditForChecker.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\FlowDocEditForWorker.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\Index.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\SelectAreas.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocDetails\ViewOfMedicalGas.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\ClassContentOfAreaEdit.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\AreaPrecautions.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\DocDetails.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\FlowDocEdit.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\AfterSendDoc.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\Index.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocEdit\ViewOfMedicalGas.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfAreaEdit.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\DocDetails.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocTempView\ViewOfMedicalGas.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocTempView\ClassContentOfArea.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\SelectClass.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfArea.cshtml" />
@@ -391,6 +387,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -450,7 +448,6 @@
     <Content Include="Views\InspectDocDetails\SelectAreas.cshtml" />
     <Content Include="Views\InspectDocDetails\ClassContentOfArea.cshtml" />
     <Content Include="Views\InspectDocDetails\AreaPrecautions.cshtml" />
-    <Content Include="Views\InspectDocDetails\ViewOfMedicalGas.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -464,9 +461,7 @@
     <Content Include="Views\InspectDocChecker\DocDetails.cshtml" />
     <Content Include="Views\InspectDocDetails\DocDetails.cshtml" />
     <Content Include="Views\InspectDocChecker\ClassContentOfArea.cshtml" />
-    <Content Include="Views\InspectDocChecker\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocTempView\ClassContentOfArea.cshtml" />
-    <Content Include="Views\InspectDocTempView\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocDetails\AfterSendDoc.cshtml" />
     <Content Include="Views\InspectDocChecker\DocListForChecker.cshtml" />
     <Content Include="Views\InspectDocChecker\DocListForWorker.cshtml" />
@@ -478,7 +473,6 @@
     <Content Include="Views\InspectDocDetails\FlowDocEdit.cshtml" />
     <Content Include="Views\InspectDocEdit\Index.cshtml" />
     <Content Include="Views\InspectDocEdit\ClassContentOfArea.cshtml" />
-    <Content Include="Views\InspectDocEdit\ViewOfMedicalGas.cshtml" />
     <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
