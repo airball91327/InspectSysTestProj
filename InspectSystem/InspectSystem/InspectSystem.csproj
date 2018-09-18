@@ -211,6 +211,7 @@
     <Compile Include="Models\InspectDocDetailsViewModels.cs" />
     <Compile Include="Models\InspectDocFlow.cs" />
     <Compile Include="Models\InspectDocs.cs" />
+    <Compile Include="Models\InspectFieldDropDown.cs" />
     <Compile Include="Models\InspectFields.cs" />
     <Compile Include="Models\InspectItems.cs" />
     <Compile Include="Models\InspectFlowStatusTable.cs" />
@@ -437,7 +438,6 @@
     <Content Include="Views\InspectItems\Index.cshtml" />
     <Content Include="Views\InspectFields\Create.cshtml" />
     <Content Include="Views\InspectFields\Edit.cshtml" />
-    <Content Include="Views\InspectFields\Index.cshtml" />
     <Content Include="Views\InspectFields\Search.cshtml" />
     <Content Include="Views\InspectPrecautions\Create.cshtml" />
     <Content Include="Views\InspectPrecautions\Delete.cshtml" />
@@ -475,6 +475,8 @@
     <Content Include="Views\InspectDocEdit\ClassContentOfArea.cshtml" />
     <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Shared\_LayoutSupervisor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

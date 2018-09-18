@@ -30,9 +30,11 @@ namespace InspectSystem.Controllers
                                  .Include(i => i.InspectAreas)
                                  .Include(i => i.InspectClasses);
 
+            var inspectClassOrder = db.InspectClasses.OrderBy(i => i.ClassOrder);
+
             //DropDownList for user to select area and class
             ViewBag.AreaList = new SelectList(db.InspectAreas, "AreaID", "AreaName", TempData["AreaListValue"]);
-            ViewBag.ClassList = new SelectList(db.InspectClasses, "ClassID", "ClassName", TempData["ClassListValue"]);
+            ViewBag.ClassList = new SelectList(inspectClassOrder, "ClassID", "ClassName", TempData["ClassListValue"]);
 
             return View(InspectItems.ToList());
         }

@@ -43,7 +43,7 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AreaID,CheckerID,CheckerName")] InspectAreaChecker inspectAreaChecker)
+        public ActionResult Edit([Bind(Include = "AreaID,CheckerID,CheckerName,Email")] InspectAreaChecker inspectAreaChecker)
         {
             if (ModelState.IsValid)
             {

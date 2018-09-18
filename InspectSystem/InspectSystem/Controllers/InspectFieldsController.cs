@@ -18,7 +18,7 @@ namespace InspectSystem.Controllers
         // GET: InspectFields
         public ActionResult Index()
         {
-            return PartialView(db.InspectFields.ToList());
+            return RedirectToAction("Index", "InspectItems", null);
         }
 
         // GET: InspectFields/Search
@@ -77,18 +77,40 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(InspectFields inspectFields)
+        public ActionResult Create(InspectFields inspectFields, FormCollection collection)
         {
+            // Set variables
             int ACID = inspectFields.ACID;
             int itemID = inspectFields.ItemID;
 
             int fieldCount = db.InspectFields.Count(fc => fc.ACID == ACID && fc.ItemID == itemID);
             int fieldID = fieldCount + 1;
-
             inspectFields.FieldID = fieldID;
 
             if (ModelState.IsValid)
             {
+                //// for datatype dropdownlist, and dynamic inset textbox. ////
+                var inputCount = 0;
+
+                if (int.TryParse(collection["TextBoxCount"], out inputCount))
+                {
+                    for (int i = 1; i <= inputCount; i++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
+                        {
+                            InspectFieldDropDown inspectFieldDropDown = new InspectFieldDropDown
+                            {
+                                ACID = ACID,
+                                ItemID = itemID,
+                                FieldID = fieldID,
+                                Value = collection["textbox" + i]
+                            };
+                            db.InspectFieldDropDown.Add(inspectFieldDropDown);
+                        }
+                    }
+                }
+                //// for datatype dropdownlist, and dynamic inset textbox. ////
+
                 db.InspectFields.Add(inspectFields);
                 db.SaveChanges();
                 return RedirectToAction("Search", new { acid = ACID, itemid = itemID });
@@ -101,6 +123,13 @@ namespace InspectSystem.Controllers
         {
 
             ViewBag.ItemNameForEdit = db.InspectItems.Find(ACID, itemID).ItemName;
+
+            var DropDownList = db.InspectFieldDropDown.Where(i => i.ACID == ACID &&
+                                                                  i.ItemID == itemID &&
+                                                                  i.FieldID == fieldID)
+                                                      .OrderBy(i => i.Id);
+            TempData["DropDownList"] = DropDownList.ToList();
+            TempData["DropDownCount"] = DropDownList.Count();
 
             if (ACID == null || itemID == null || fieldID == null)
             {
@@ -119,7 +148,7 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(InspectFields inspectFields)
+        public ActionResult Edit(InspectFields inspectFields, FormCollection collection)
         {
             var ACID = inspectFields.ACID;
             var itemID = inspectFields.ItemID;

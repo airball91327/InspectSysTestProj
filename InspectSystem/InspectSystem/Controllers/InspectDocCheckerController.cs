@@ -29,12 +29,22 @@ namespace InspectSystem.Controllers
             //}
             //else if (User.IsInRole("Supervisor") == true)
             //{
-                return RedirectToAction("DocListForChecker", "InspectDocChecker");
+            //    return RedirectToAction("DocListForChecker", "InspectDocChecker");
             //}
             //else
             //{
             //    return RedirectToAction("DocListForWorker", "InspectDocChecker");
             //}
+
+            // For testing
+            if( userName == "344027")
+            {
+                return RedirectToAction("DocListForChecker", "InspectDocChecker");
+            }
+            else
+            {
+                return RedirectToAction("DocListForWorker", "InspectDocChecker");
+            }
         }
 
         // GET: InspectDocChecker/DocListForChecker

@@ -17,6 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.CheckerName)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
         <th></th>
     </tr>
 
@@ -30,6 +33,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CheckerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
             @Html.ActionLink("主管編輯", "Edit", new { id=item.AreaID })

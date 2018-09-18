@@ -16,6 +16,9 @@ namespace InspectSystem.Models
         public int CheckerID { get; set; }
         [Display(Name = "簽核主管")]
         public string CheckerName { get; set; }
+        [Display(Name = "電子郵件")]
+        [EmailAddress(ErrorMessage = "無效的Email格式")]
+        public string Email { get; set; }
 
         public virtual InspectAreas InspectAreas { get; set; }
     }
