@@ -298,8 +298,6 @@
     <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfArea.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\GetFlowList.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\ClassContentOfArea.cshtml" />
-    <None Include="Properties\PublishProfiles\InspectSys - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\InspectSys - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ClassContentOfArea.js" />
@@ -481,6 +479,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Mobile\Models\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
