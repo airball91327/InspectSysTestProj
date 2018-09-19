@@ -36,7 +36,7 @@
                                     }
                                 </span>
 
-                                @foreach (var docItem in Model.InspectDocDetails)
+                                @foreach (var docItem in Model.InspectDocDetailsTemporary)
                                 {
                                     /* Display textbox or checkbox for all fields, except boolean type. */
                                     if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
@@ -89,7 +89,7 @@
                         if (item.ItemID == fieldItem.ItemID)
                         {
 
-                            foreach (var docItem in Model.InspectDocDetails)
+                            foreach (var docItem in Model.InspectDocDetailsTemporary)
                             {
                                 /* Display textbox or checkbox for all fields. */
                                 if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID)
