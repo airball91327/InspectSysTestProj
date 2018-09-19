@@ -10,7 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class InspectFieldsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -89,27 +89,29 @@ namespace InspectSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                //// for datatype dropdownlist, and dynamic inset textbox. ////
-                var inputCount = 0;
+                /* for datatype dropdownlist, and dynamic inset textbox. */
+                if (inspectFields.DataType == "dropdownlist")
+                { 
+                    var inputCount = 0;
 
-                if (int.TryParse(collection["TextBoxCount"], out inputCount))
-                {
-                    for (int i = 1; i <= inputCount; i++)
+                    if (int.TryParse(collection["TextBoxCount"], out inputCount))
                     {
-                        if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
+                        for (int i = 1; i <= inputCount; i++)
                         {
-                            InspectFieldDropDown inspectFieldDropDown = new InspectFieldDropDown
+                            if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
                             {
-                                ACID = ACID,
-                                ItemID = itemID,
-                                FieldID = fieldID,
-                                Value = collection["textbox" + i]
-                            };
-                            db.InspectFieldDropDown.Add(inspectFieldDropDown);
+                                InspectFieldDropDown inspectFieldDropDown = new InspectFieldDropDown
+                                {
+                                    ACID = ACID,
+                                    ItemID = itemID,
+                                    FieldID = fieldID,
+                                    Value = collection["textbox" + i]
+                                };
+                                db.InspectFieldDropDown.Add(inspectFieldDropDown);
+                            }
                         }
                     }
                 }
-                //// for datatype dropdownlist, and dynamic inset textbox. ////
 
                 db.InspectFields.Add(inspectFields);
                 db.SaveChanges();
@@ -152,9 +154,85 @@ namespace InspectSystem.Controllers
         {
             var ACID = inspectFields.ACID;
             var itemID = inspectFields.ItemID;
+            var fieldID = inspectFields.FieldID;
 
             if (ModelState.IsValid)
             {
+                if(inspectFields.DataType == "dropdownlist")
+                {
+                    /* for datatype dropdownlist, and dynamic inset textbox. */
+                    var inputCount = 0;
+                    var DropDownList = db.InspectFieldDropDown.Where(i => i.ACID == ACID &&
+                                                                          i.ItemID == itemID &&
+                                                                          i.FieldID == fieldID)
+                                                              .OrderBy(i => i.Id);
+
+                    if (int.TryParse(collection["TextBoxCount"], out inputCount))
+                    {
+                        // If insert data is more than origin.
+                        if (inputCount > DropDownList.Count())
+                        {
+                            var i = 1;
+                            foreach (var item in DropDownList)
+                            {
+                                if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
+                                {
+                                    item.Value = collection["textbox" + i];
+                                    db.Entry(item).State = EntityState.Modified;
+                                }
+                                i++;
+                            }
+                            for (int j = i; j <= inputCount; j++)
+                            {
+                                if (!string.IsNullOrWhiteSpace(collection["textbox" + j]))
+                                {
+                                    InspectFieldDropDown inspectFieldDropDown = new InspectFieldDropDown
+                                    {
+                                        ACID = ACID,
+                                        ItemID = itemID,
+                                        FieldID = fieldID,
+                                        Value = collection["textbox" + j]
+                                    };
+                                    db.InspectFieldDropDown.Add(inspectFieldDropDown);
+                                }
+                            }
+                        }
+                        else if (inputCount < DropDownList.Count())
+                        {
+                            var i = 1;
+                            foreach (var item in DropDownList)
+                            {
+                                if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
+                                {
+                                    if (i <= inputCount)
+                                    {
+                                        item.Value = collection["textbox" + i];
+                                        db.Entry(item).State = EntityState.Modified;
+                                    }
+                                }
+                                else
+                                {
+                                    db.InspectFieldDropDown.Remove(item);
+                                }
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            var i = 1;
+                            foreach (var item in DropDownList)
+                            {
+                                if (!string.IsNullOrWhiteSpace(collection["textbox" + i]))
+                                {
+                                    item.Value = collection["textbox" + i];
+                                    db.Entry(item).State = EntityState.Modified;
+                                }
+                                i++;
+                            }
+                        }
+                    }
+                }
+
                 db.Entry(inspectFields).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Search",new { acid = ACID, itemid = itemID });
