@@ -24,7 +24,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.AreaName = theEditDoc.InspectAreas.AreaName;
             ViewBag.DocID = docID;
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.ClassID);
+                                                  .OrderBy(c => c.InspectClasses.ClassOrder);
 
             return View(ClassesOfAreas.ToList());
         }

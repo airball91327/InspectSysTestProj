@@ -69,7 +69,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.DocID = docID;
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.ClassID);
+                                                  .OrderBy(c => c.InspectClasses.ClassOrder);
 
             /* Count errors for every class, and set count result to "CountErrors". */
             foreach (var item in ClassesOfAreas)

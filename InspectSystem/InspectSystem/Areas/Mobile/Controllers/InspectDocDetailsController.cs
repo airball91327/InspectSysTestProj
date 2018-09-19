@@ -42,7 +42,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.DocID = docID;
 
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.ClassID).ToList();
+                                                  .OrderBy(c => c.InspectClasses.ClassOrder).ToList();
 
             var FindDoc = db.InspectDocs.Find(docID);
             if (FindDoc != null && FindDoc.FlowStatusID != 3)
@@ -315,7 +315,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 ViewBag.DocID = docID;
 
                 var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                      .OrderBy(c => c.ClassID);
+                                                      .OrderBy(c => c.InspectClasses.ClassOrder);
 
                 return View(ClassesOfAreas.ToList());
             }
