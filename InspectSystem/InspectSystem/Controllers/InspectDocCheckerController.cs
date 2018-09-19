@@ -176,7 +176,7 @@ namespace InspectSystem.Controllers
             int nextFlowStatusID = System.Convert.ToInt32(Request.Form["NextFlowStatusID"]);
 
             /* Insert edit time, and change flow status for inspect doc. */
-            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);
             inspectDoc.FlowStatusID = nextFlowStatusID;
 
             /* If doc is send back to worker. */
@@ -239,7 +239,7 @@ namespace InspectSystem.Controllers
             var inspectDoc = db.InspectDocs.Find(docID);
 
             /* Insert edit time, and change flow status to "checking" for doc. */
-            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);
             inspectDoc.FlowStatusID = 1;
 
             /* New next flow for checker. */

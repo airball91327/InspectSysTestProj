@@ -33,7 +33,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         public ActionResult SelectClass(int areaID)
         {
             /* Set the DocID to year + month + date + areaID, for example: 2018/10/11 area 1, the docID is 2018101101*/
-            string date = DateTime.Now.ToString("yyyyMMdd");
+            string date = DateTime.UtcNow.AddHours(08).ToString("yyyyMMdd");
             int docID = System.Convert.ToInt32(date) * 100 + areaID;
             string areaName = db.InspectAreas.Find(areaID).AreaName;
 
@@ -68,7 +68,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 var inspectDocs = new InspectDocs()
                 {
                     DocID = docID,
-                    Date = DateTime.Now,
+                    Date = DateTime.UtcNow.AddHours(08),
                     AreaID = areaID,
                     AreaName = areaName,
                     WorkerID = workerID,
@@ -417,12 +417,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
             /* Change flow status to "Checking" for this doc. */
             findDoc.FlowStatusID = 1;
-            findDoc.EndTime = DateTime.Now;
+            findDoc.EndTime = DateTime.UtcNow.AddHours(08);
             findDoc.CheckerID = checkerID;
             findDoc.CheckerName = db.inspectAreaCheckers.Where(i => i.CheckerID == checkerID).First().CheckerName;
 
             /* Set edit time and checkerID for doc flow. */
-            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);
             inspectDocFlow.CheckerID = checkerID;
 
             /* The next flow for checker. */

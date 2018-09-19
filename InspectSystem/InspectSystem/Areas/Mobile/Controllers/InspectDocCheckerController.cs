@@ -28,12 +28,22 @@ namespace InspectSystem.Areas.Mobile.Controllers
             //}
             //else if (User.IsInRole("Supervisor") == true)
             //{
-                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
+            //    return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
             //}
             //else
             //{
             //    return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
             //}
+
+            // For testing
+            if (userName == "344027")
+            {
+                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
+            }
+            else
+            {
+                return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
+            }
         }
 
         // GET: Mobile/InspectDocChecker/DocListForChecker
@@ -147,7 +157,17 @@ namespace InspectSystem.Areas.Mobile.Controllers
             flowDoc.Opinions = "";
 
             /* According user role to retrun views. */
-            if (User.IsInRole("Supervisor") == true)
+            //if (User.IsInRole("Supervisor") == true)
+            //{
+            //    return View("FlowDocEditForChecker", flowDoc);
+            //}
+            //else
+            //{
+            //    return View("FlowDocEditForWorker", flowDoc);
+            //}
+
+            // For testing
+            if (WebSecurity.CurrentUserName == "344027")
             {
                 return View("FlowDocEditForChecker", flowDoc);
             }
@@ -168,7 +188,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             int nextFlowStatusID = System.Convert.ToInt32(Request.Form["NextFlowStatusID"]);
 
             /* Insert edit time, and change flow status for inspect doc. */
-            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);
             inspectDoc.FlowStatusID = nextFlowStatusID;
 
             /* If doc is send back to worker. */
@@ -231,7 +251,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             var inspectDoc = db.InspectDocs.Find(docID);
 
             /* Insert edit time, and change flow status to "checking" for doc. */
-            inspectDocFlow.EditTime = DateTime.Now;
+            inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);
             inspectDoc.FlowStatusID = 1;
 
             /* New next flow for checker. */

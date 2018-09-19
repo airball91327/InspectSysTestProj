@@ -25,34 +25,34 @@
         <button class="col-xs-12" onclick="location.href='@Url.Action("Index", "InspectDocEdit", new { area = "Mobile", docID = item.DocID })'">
 
             <div>
-                <h4>
+                <h4 class="col-xs-12">
                     @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
                 </h4>
             </div>
 
             <div>
-                <span class="col-xs-3">@Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)</span>
-                @Html.DisplayFor(model => item.InspectFlowStatusTable.FlowStatusName)
+                <span class="col-xs-4">@Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)</span>
+                <span class="col-xs-8">@Html.DisplayFor(model => item.InspectFlowStatusTable.FlowStatusName)</span>
             </div>
 
             <div>
-                <span class="col-xs-3">@Html.DisplayNameFor(model => model.Date)</span>
-                @Html.DisplayFor(modelItem => item.Date)
+                <span class="col-xs-4">@Html.DisplayNameFor(model => model.Date)</span>
+                <span class="col-xs-8">@Html.DisplayFor(modelItem => item.Date)</span>
             </div>
 
             <div>
-                <span class="col-xs-3">@Html.DisplayNameFor(model => model.EndTime)</span>
-                @Html.DisplayFor(modelItem => item.EndTime)
+                <span class="col-xs-4">@Html.DisplayNameFor(model => model.EndTime)</span>
+                <span class="col-xs-8">@Html.DisplayFor(modelItem => item.EndTime)</span>
             </div>
 
             <div>
-                <span class="col-xs-3">@Html.DisplayNameFor(model => model.WorkerName)</span>
-                @Html.DisplayFor(modelItem => item.WorkerName)
+                <span class="col-xs-4">@Html.DisplayNameFor(model => model.WorkerName)</span>
+                <span class="col-xs-8">@Html.DisplayFor(modelItem => item.WorkerName)</span>
             </div>
 
             <div>
-                <span class="col-xs-3">@Html.DisplayNameFor(model => model.CheckerName)</span>
-                @Html.DisplayFor(modelItem => item.CheckerName)
+                <span class="col-xs-4">@Html.DisplayNameFor(model => model.CheckerName)</span>
+                <span class="col-xs-8">@Html.DisplayFor(modelItem => item.CheckerName)</span>
             </div>
         </button>
     </div>
