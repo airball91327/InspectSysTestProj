@@ -47,15 +47,7 @@ namespace InspectSystem.Controllers
                 InspectItems = itemsByACID
             };
 
-            /* Return other views with different layout. */
-            if (classID == 4 || classID == 5)
-            {
-                return PartialView("~/Views/InspectDocTempView/ViewOfMedicalGas.cshtml", inspectDocDetailsViewModels);
-            }
-            else
-            {
-                return PartialView(inspectDocDetailsViewModels);
-            }
+            return PartialView(inspectDocDetailsViewModels);
         }
     }
 }
