@@ -35,10 +35,9 @@
             document.getElementById("@editModalNo").style.display = "none";
         });
 
-        if (@TempData["DropDownCount"] != 0) {
-
-            $("#textbox1").val("@FieldDropDown[0].Value");
-            @{ 
+        @if (FieldDropDown.Count != 0) {
+            @:$("#textbox1").val("@FieldDropDown[0].Value");
+            {
                 foreach(var item in FieldDropDown.Skip(1))
                 {
                     @:loadDropDown("@item.Value");
@@ -90,7 +89,7 @@
                     @Html.RadioButtonFor(model => model.DataType, "float") 數字
                     @Html.RadioButtonFor(model => model.DataType, "boolean") 正常/不正常
                     @Html.RadioButtonFor(model => model.DataType, "checkbox") 勾選方塊
-                    @*@Html.RadioButtonFor(model => model.DataType, "dropdownlist") 下拉選單*@
+                    @Html.RadioButtonFor(model => model.DataType, "dropdownlist") 下拉選單
                     @Html.ValidationMessageFor(model => model.DataType, "", new { @class = "text-danger" })
                 </div>
             </div>

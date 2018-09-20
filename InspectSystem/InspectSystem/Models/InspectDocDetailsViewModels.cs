@@ -11,5 +11,6 @@ namespace InspectSystem.Models
         public IEnumerable<InspectDocDetailsTemporary> InspectDocDetailsTemporary { get; set; }
         public IEnumerable<InspectFields> InspectFields { get; set; }
         public IEnumerable<InspectItems> InspectItems { get; set; }
+        public IEnumerable<InspectFieldDropDown> InspectFieldDropDowns { get; set; }
     }
 }

@@ -9,6 +9,10 @@ input[type=checkbox] {
 /* Style the input type textbox.*/
 input[type=text] {
     width: 50%;
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 /* Style the h3. */

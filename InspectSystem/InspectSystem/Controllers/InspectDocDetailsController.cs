@@ -116,6 +116,7 @@ namespace InspectSystem.Controllers
                                                          i.ItemStatus == true).ToList();
             var fieldsByACID = inspectFields.Where(i => i.ACID == ACID && 
                                                         i.FieldStatus == true).ToList();
+            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
 
             /* Create a list for user to insert values, and add some known value first. */
             var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
@@ -157,7 +158,8 @@ namespace InspectSystem.Controllers
             {
                     InspectDocDetailsTemporary = inspectDocDetailsTemporary,
                     InspectFields = fieldsByACID,
-                    InspectItems = itemsByACID
+                    InspectItems = itemsByACID,
+                    InspectFieldDropDowns = fieldDropDown
             };
 
             return PartialView(inspectDocDetailsViewModels);

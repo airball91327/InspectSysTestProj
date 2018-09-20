@@ -43,6 +43,7 @@ namespace InspectSystem.Controllers
                                                          i.ItemStatus == true).ToList();
             var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
                                                         i.FieldStatus == true).ToList();
+            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
 
             /* Find the doc details. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
@@ -53,7 +54,8 @@ namespace InspectSystem.Controllers
             {
                 InspectDocDetails = inspectDocDetails,
                 InspectFields = fieldsByACID,
-                InspectItems = itemsByACID
+                InspectItems = itemsByACID,
+                InspectFieldDropDowns = fieldDropDown
             };
 
             return PartialView(inspectDocDetailsViewModels);

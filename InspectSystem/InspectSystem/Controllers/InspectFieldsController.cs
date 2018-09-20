@@ -10,7 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class InspectFieldsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -131,7 +131,6 @@ namespace InspectSystem.Controllers
                                                                   i.FieldID == fieldID)
                                                       .OrderBy(i => i.Id);
             TempData["DropDownList"] = DropDownList.ToList();
-            TempData["DropDownCount"] = DropDownList.Count();
 
             if (ACID == null || itemID == null || fieldID == null)
             {

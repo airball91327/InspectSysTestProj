@@ -92,6 +92,36 @@
                                                         }
                                                     </span>
                                                     break;
+
+                                                case "dropdownlist":
+                                                    var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == fieldItem.ACID &&
+                                                                                                            m.ItemID == fieldItem.ItemID &&
+                                                                                                            m.FieldID == fieldItem.FieldID);
+                                                    List<SelectListItem> dropDownList = new List<SelectListItem>();
+                                                    foreach(var searchItem in searchList)
+                                                    {
+                                                        if(searchItem.Value == docItem.Value)
+                                                        {
+                                                            dropDownList.Add(new SelectListItem()
+                                                            {
+                                                                Text = searchItem.Value,
+                                                                Value = searchItem.Value,
+                                                                Selected = true
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            dropDownList.Add(new SelectListItem()
+                                                            {
+                                                                Text = searchItem.Value,
+                                                                Value = searchItem.Value
+                                                            });
+                                                        }
+                                                    }
+                                                    <span class="dropDownListStyle">
+                                                        @Html.DropDownList("InspectDocDetails[" + i + "].Value", (IEnumerable<SelectListItem>)dropDownList, new { @class = "form-control", style = "width: 50%" })
+                                                    </span>
+                                                    break;
                                             }
                                             i++;
                                         }
