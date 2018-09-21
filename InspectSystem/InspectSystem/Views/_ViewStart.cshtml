@@ -1,6 +1,6 @@
 ﻿@{
     /* Separate layouts for Supervisor, Engineer and Admin. */
-    if (User.IsInRole("Admin") || User.Identity.Name == "344027")
+    if (User.IsInRole("Admin"))
     {
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     }

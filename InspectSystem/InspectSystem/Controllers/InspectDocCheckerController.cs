@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using InspectSystem.Models;
+using System.Web.Security;
 
 namespace InspectSystem.Controllers
 {
@@ -23,21 +24,12 @@ namespace InspectSystem.Controllers
             //var userName = User.Identity.Name;
             var userName = WebSecurity.CurrentUserName;
 
-            //if (User.IsInRole("Admin") == true)
-            //{
-            //    return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            //}
-            //else if (User.IsInRole("Supervisor") == true)
-            //{
-            //    return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            //}
-            //else
-            //{
-            //    return RedirectToAction("DocListForWorker", "InspectDocChecker");
-            //}
-
-            // For testing
-            if( userName == "344027")
+            if (User.IsInRole("Admin") == true)
+            {
+                return RedirectToAction("DocListForChecker", "InspectDocChecker");
+            }
+            else if (User.IsInRole("MedMgr") == true || 
+                     User.IsInRole("Manager") == true)
             {
                 return RedirectToAction("DocListForChecker", "InspectDocChecker");
             }
@@ -151,11 +143,22 @@ namespace InspectSystem.Controllers
 
             /* Use userID to find the user details. (Not Implement)*/
             flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
-            flowDoc.EditorName = "資料庫撈userName";
             flowDoc.Opinions = "";
 
+            // Get real name.
+            // 先取得該使用者的 FormsIdentity
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            // 再取出使用者的 FormsAuthenticationTicket
+            FormsAuthenticationTicket ticket = id.Ticket;
+            // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
+            char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
+            string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+            flowDoc.EditorName = roles.Last();
+
             /* According user role to retrun views. */
-            if( User.IsInRole("Supervisor") == true)
+            if ( User.IsInRole("MedMgr") == true || 
+                 User.IsInRole("Manager") == true || 
+                 User.IsInRole("Admin") == true)
             {
                 return PartialView("FlowDocEditForChecker", flowDoc);
             }

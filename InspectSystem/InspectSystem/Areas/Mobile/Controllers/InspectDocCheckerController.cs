@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using InspectSystem.Models;
+using System.Web.Security;
 
 namespace InspectSystem.Areas.Mobile.Controllers
 {
@@ -22,21 +23,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
             //var userId = User.Identity.GetUserId();
             var userName = WebSecurity.CurrentUserName;
 
-            //if (User.IsInRole("Admin") == true)
-            //{
-            //    return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            //}
-            //else if (User.IsInRole("Supervisor") == true)
-            //{
-            //    return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            //}
-            //else
-            //{
-            //    return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
-            //}
-
-            // For testing
-            if (userName == "344027")
+            if (User.IsInRole("Admin") == true)
+            {
+                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
+            }
+            else if (User.IsInRole("MedMgr") == true || 
+                     User.IsInRole("Manager") == true)
             {
                 return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
             }
@@ -151,23 +143,24 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
             ViewBag.AreaID = flowDoc.InspectDocs.AreaID;
 
-            /* Use userID to find the user details. (Not Implement)*/
+            /* Use userID to find the user details.*/
             flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
-            flowDoc.EditorName = "資料庫撈userName";
             flowDoc.Opinions = "";
 
-            /* According user role to retrun views. */
-            //if (User.IsInRole("Supervisor") == true)
-            //{
-            //    return View("FlowDocEditForChecker", flowDoc);
-            //}
-            //else
-            //{
-            //    return View("FlowDocEditForWorker", flowDoc);
-            //}
+            // Get real name.
+            // 先取得該使用者的 FormsIdentity
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            // 再取出使用者的 FormsAuthenticationTicket
+            FormsAuthenticationTicket ticket = id.Ticket;
+            // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
+            char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
+            string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+            flowDoc.EditorName = roles.Last();
 
-            // For testing
-            if (WebSecurity.CurrentUserName == "344027")
+            /* According user role to retrun views. */
+            if (User.IsInRole("MedMgr") == true || 
+                User.IsInRole("Manager") == true || 
+                User.IsInRole("Admin") == true)
             {
                 return View("FlowDocEditForChecker", flowDoc);
             }
@@ -175,6 +168,15 @@ namespace InspectSystem.Areas.Mobile.Controllers
             {
                 return View("FlowDocEditForWorker", flowDoc);
             }
+            // For testing
+            //if (WebSecurity.CurrentUserName == "344027")
+            //{
+            //    return View("FlowDocEditForChecker", flowDoc);
+            //}
+            //else
+            //{
+            //    return View("FlowDocEditForWorker", flowDoc);
+            //}
         }
 
         // POST: Mobile/InspectDocChecker/FlowDocEditForChecker

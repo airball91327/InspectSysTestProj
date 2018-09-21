@@ -39,7 +39,7 @@ namespace InspectSystem.Controllers
                 //
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
-                string url = "WebApi/api/Accounts?id=" + model.UserName;
+                string url = "WebApi/Accounts/CheckPasswd?id=" + model.UserName;
                 url += "&pwd=" + HttpUtility.UrlEncode(model.Password, Encoding.GetEncoding("UTF-8"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
@@ -52,9 +52,48 @@ namespace InspectSystem.Controllers
                 }
 
                 /* If the UserName and the Password are legal. */
+
                 if (rstr.Contains("成功"))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    // Get user role
+                    HttpClient clientRole = new HttpClient();
+                    clientRole.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
+                    string urlRole = "WebApi/Accounts/GetRoles?id=" + model.UserName;
+                    clientRole.DefaultRequestHeaders.Accept.Clear();
+                    clientRole.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage responseRole = await clientRole.GetAsync(urlRole);
+                    string rstrRole = "";
+                    if (responseRole.IsSuccessStatusCode)
+                    {
+                        rstrRole = await responseRole.Content.ReadAsStringAsync();
+                    }
+
+                    // Get user real name
+                    char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\', '!', ';' };
+                    string[] rstrSpilt = rstr.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+                    string userRealName = rstrSpilt[1].ToString();
+
+                    // Set user role and real name to userData.
+                    string userData = rstrRole + userRealName;
+
+                    // Set authentication cookie with userName, and userData(real name and user role)
+                    //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    var authTicket = new FormsAuthenticationTicket(
+                    1,                             // version
+                    model.UserName,                // user name
+                    DateTime.Now,                  // created
+                    DateTime.Now.AddMinutes(60),   // expires
+                    model.RememberMe,              // persistent?
+                    userData,                      // can be used to store roles
+                    FormsAuthentication.FormsCookiePath
+                    );
+
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    // Create the cookie.
+                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);                  
+                    Response.Cookies.Add(authCookie);
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -82,7 +121,6 @@ namespace InspectSystem.Controllers
             if (disposing)
             {
             }
-
             base.Dispose(disposing);
         }   
     }

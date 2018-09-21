@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using InspectSystem.Models;
+using System.Web.Security;
 
 namespace InspectSystem.Areas.Mobile.Controllers
 {
@@ -54,7 +55,15 @@ namespace InspectSystem.Areas.Mobile.Controllers
             if (FindDoc == null)
             {
                 int workerID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
-                string workerName = "DB撈資料";
+                // Get real name.
+                // 先取得該使用者的 FormsIdentity
+                FormsIdentity id = (FormsIdentity)User.Identity;
+                // 再取出使用者的 FormsAuthenticationTicket
+                FormsAuthenticationTicket ticket = id.Ticket;
+                // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
+                char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
+                string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+                string workerName = roles.Last();
 
                 /* Find the checker of the area. */
                 int checkerID = 0;
