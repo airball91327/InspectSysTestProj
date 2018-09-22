@@ -116,7 +116,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
         // GET: Mobile/InspectDocChecker/GetFlowList
         public ActionResult GetFlowList(int docID)
         {
-            var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderByDescending(i => i.StepID);
+            var flowList = db.InspectDocFlows.Where(i => i.DocID == docID).OrderBy(i => i.StepID);
             var findDoc = db.InspectDocs.Find(docID);
 
             foreach (var item in flowList)
