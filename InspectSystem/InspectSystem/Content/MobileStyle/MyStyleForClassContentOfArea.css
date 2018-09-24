@@ -7,7 +7,7 @@ input[type=checkbox] {
 }
 
 /* Style the input type textbox.*/
-input[type=text] {
+input[type=text], input[type=number] {
     width: 50%;
     height: 30px;
     box-sizing: border-box;
