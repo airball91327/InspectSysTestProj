@@ -42,6 +42,7 @@ namespace InspectSystem
                     count++;
                 }
                 // 指派角色到目前這個 HttpContext 的 User 物件去
+                // userRole[0] = "Usual"; // For Test
                 Context.User = new GenericPrincipal(Context.User.Identity, userRole);
             }
         }
