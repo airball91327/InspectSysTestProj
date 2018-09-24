@@ -61,6 +61,7 @@
                                             @Html.Hidden("InspectDocDetails[" + i + "].ItemName", docItem.ItemName)
                                             @Html.Hidden("InspectDocDetails[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + i + "].FieldID" })
                                             @Html.Hidden("InspectDocDetails[" + i + "].FieldName", docItem.FieldName)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].IsFunctional", docItem.IsFunctional)
 
                                             switch (fieldItem.DataType)
                                             {
