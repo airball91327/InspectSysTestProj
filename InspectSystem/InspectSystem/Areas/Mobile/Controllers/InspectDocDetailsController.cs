@@ -100,7 +100,27 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     /* If find temp save of the class, set IsSaved to true. */
                     if (findDocTemps.Count() != 0)
                     {
-                        item.IsSaved = true;
+                        Boolean isDataCompleted = true; 
+                        /* Check are all the required fields having data. */
+                        foreach(var tempItem in findDocTemps)
+                        {
+                            // Set search variables.
+                            var tACID = item.ACID;
+                            var tItemID = tempItem.ItemID;
+                            var tFieldID = tempItem.FieldID;
+                            var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
+                            var isRequired = findField.IsRequired;
+                            // If required field has no data.
+                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            {
+                                isDataCompleted = false;
+                                break;
+                            }
+                        }
+                        if(isDataCompleted == true)
+                        {
+                            item.IsSaved = true;
+                        }
                     }
                     else
                     {
