@@ -42,6 +42,17 @@
     }
 </style>
 
+<script>
+    function confirmToWork(url) {
+        var targetUrl = url;
+        if (confirm("是否開始巡檢?")) {
+            window.location.href = targetUrl;
+        }
+        else {
+        }
+    }
+</script>
+
 <h2>
     <b>選擇區域</b>
 </h2>
@@ -50,7 +61,7 @@
         @foreach (var item in Model)
         {
             <div class="col-xs-6 w3-display-container">
-                <a href="@Url.Action("SelectClass", new { area = "Mobile", areaID = item.AreaID})" class="w3-button w3-round-large w3-opacity w3-hover-opacity-off">
+                <a href="#" class="w3-button w3-round-large w3-opacity w3-hover-opacity-off" onclick="confirmToWork('@Url.Action("SelectClass", new { area = "Mobile", areaID = item.AreaID})')">
                     @if (item.AreaID == 4)
                     {
                         <img src="~/Content/Building4.jpg" class="img-responsive w3-round" />
