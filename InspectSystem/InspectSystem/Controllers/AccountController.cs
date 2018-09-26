@@ -88,7 +88,7 @@ namespace InspectSystem.Controllers
                     model.UserName,                // user name
                     DateTime.Now,                  // created
                     DateTime.Now.AddMinutes(60),   // expires
-                    model.RememberMe,              // persistent?
+                    model.RememberMe,              // persistent set "true" is accroding to matches the form authentication timeout attribute.
                     userData,                      // can be used to store roles
                     FormsAuthentication.FormsCookiePath
                     );
