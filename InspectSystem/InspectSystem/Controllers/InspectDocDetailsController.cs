@@ -61,7 +61,7 @@ namespace InspectSystem.Controllers
                 /* Find the checker of the area. */
                 int checkerID = 0;
                 string checkerName = "";
-                var findAreaChecker = db.inspectAreaCheckers.Find(areaID);
+                var findAreaChecker = db.InspectAreaCheckers.Where(i => i.AreaID == areaID).First();
                 if (findAreaChecker != null)
                 {
                     checkerID = findAreaChecker.CheckerID;
@@ -360,8 +360,8 @@ namespace InspectSystem.Controllers
 
             var findDoc = db.InspectDocs.Find(docID);
             int areaID = findDoc.AreaID;
-            int checkerID = db.inspectAreaCheckers.Find(areaID).CheckerID;
-            var areaCheckers = db.inspectAreaCheckers.ToList();
+            int checkerID = db.InspectAreaCheckers.Where(i => i.AreaID == areaID).First().CheckerID;
+            var areaCheckers = db.InspectAreaCheckers.ToList();
             var areaCheckerNames = areaCheckers.GroupBy(a => a.CheckerName).Select(g => g.First()).ToList();
 
             SelectList areaCheckerSelectList = new SelectList(areaCheckerNames, "CheckerID", "CheckerName", checkerID);
@@ -453,7 +453,7 @@ namespace InspectSystem.Controllers
             findDoc.FlowStatusID = 1;
             findDoc.EndTime = DateTime.UtcNow.AddHours(08);
             findDoc.CheckerID = checkerID;
-            findDoc.CheckerName = db.inspectAreaCheckers.Where(i => i.CheckerID == checkerID).First().CheckerName;
+            findDoc.CheckerName = db.InspectAreaCheckers.Where(i => i.CheckerID == checkerID).First().CheckerName;
 
             /* Set edit time and checkerID for doc flow. */
             inspectDocFlow.EditTime = DateTime.UtcNow.AddHours(08);

@@ -15,5 +15,11 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "區域名稱")]
         public string AreaName { get; set; }
+        [NotMapped]
+        [Display(Name = "預設簽核主管ID")]
+        public int CheckerID { get; set; }
+        [NotMapped]
+        [Display(Name = "預設簽核主管名稱")]
+        public string CheckerName { get; set; }
     }
 }

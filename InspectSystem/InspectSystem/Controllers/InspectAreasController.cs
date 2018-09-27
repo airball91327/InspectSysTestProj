@@ -47,20 +47,26 @@ namespace InspectSystem.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AreaID,AreaName")] InspectAreas inspectAreas)
+        public ActionResult Create([Bind(Include = "AreaID,AreaName,CheckerID,CheckerName")] InspectAreas inspectAreas)
         {
-            InspectAreaChecker inspectAreaChecker = new InspectAreaChecker()
-            {
-                AreaID = inspectAreas.AreaID
-            };
             if (ModelState.IsValid)
             {
                 db.InspectAreas.Add(inspectAreas);
-                db.inspectAreaCheckers.Add(inspectAreaChecker);
+                db.SaveChanges();
+
+                var getAreaID = db.InspectAreas.ToList().Last().AreaID;
+                // Insert default checker for the new area.
+                InspectAreaChecker inspectAreaChecker = new InspectAreaChecker()
+                {
+                    AreaID = getAreaID,
+                    CheckerID = inspectAreas.CheckerID,
+                    CheckerName = inspectAreas.CheckerName,
+                    AreaCheckerID = (inspectAreas.CheckerID) * 1000 + getAreaID
+                };
+                db.InspectAreaCheckers.Add(inspectAreaChecker);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(inspectAreas);
         }
 

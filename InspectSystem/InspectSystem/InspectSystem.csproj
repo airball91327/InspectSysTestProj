@@ -479,6 +479,8 @@
     <Content Include="Views\InspectDocs\Index.cshtml" />
     <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
     <Content Include="Views\InspectDocs\Edit.cshtml" />
+    <Content Include="Views\InspectAreaCheckers\Create.cshtml" />
+    <Content Include="Views\InspectAreaCheckers\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

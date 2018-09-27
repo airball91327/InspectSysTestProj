@@ -1,20 +1,19 @@
 ﻿@model InspectSystem.Models.InspectAreaChecker
 
 @{
-    ViewBag.Title = "編輯";
+    ViewBag.Title = "Create";
 }
 
-<h2><b>編輯</b></h2>
+<h2><b>新增簽核主管</b></h2>
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.AreaCheckerID)
+        @Html.HiddenFor(model => model.AreaCheckerID, new { @Value = 0})
 
         <div class="form-group">
             @Html.LabelFor(model => model.InspectAreas.AreaName, "AreaID", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -50,7 +49,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="儲存" class="btn btn-primary" />
+                <input type="submit" value="儲存" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -59,7 +58,3 @@
 <div>
     @Html.ActionLink("回到列表", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
