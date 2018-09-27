@@ -61,7 +61,7 @@ namespace InspectSystem.Controllers
                     AreaID = getAreaID,
                     CheckerID = inspectAreas.CheckerID,
                     CheckerName = inspectAreas.CheckerName,
-                    AreaCheckerID = (inspectAreas.CheckerID) * 1000 + getAreaID
+                    AreaCheckerID = (inspectAreas.CheckerID) * 100 + getAreaID
                 };
                 db.InspectAreaCheckers.Add(inspectAreaChecker);
                 db.SaveChanges();

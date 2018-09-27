@@ -47,7 +47,7 @@ namespace InspectSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newAreaCheckerID = (inspectAreaChecker.CheckerID) * 1000 +(inspectAreaChecker.AreaID);
+                var newAreaCheckerID = (inspectAreaChecker.CheckerID) * 100 +(inspectAreaChecker.AreaID);
                 if( newAreaCheckerID == inspectAreaChecker.AreaCheckerID ) // Did not change area or checker.
                 {
                     db.Entry(inspectAreaChecker).State = EntityState.Modified;
@@ -90,7 +90,7 @@ namespace InspectSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AreaCheckerID,AreaID,CheckerID,CheckerName,Email")] InspectAreaChecker inspectAreaChecker)
         {
-            inspectAreaChecker.AreaCheckerID = (inspectAreaChecker.CheckerID) * 1000 + (inspectAreaChecker.AreaID);
+            inspectAreaChecker.AreaCheckerID = (inspectAreaChecker.CheckerID) * 100 + (inspectAreaChecker.AreaID);
             if (ModelState.IsValid)
             {
                 var isDataExist = db.InspectAreaCheckers.Find(inspectAreaChecker.AreaCheckerID);
