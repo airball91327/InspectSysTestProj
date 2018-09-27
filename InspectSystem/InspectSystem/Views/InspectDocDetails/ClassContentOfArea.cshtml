@@ -1,6 +1,7 @@
 ﻿@model InspectSystem.Models.InspectDocDetailsViewModels
 
 <script src="~/Scripts/ClassContentOfArea.js"></script>
+<script src="~/Scripts/Mobile/CheckErrorDescription.js"></script>
 <link rel="stylesheet" href="~/Content/MyStyleForClassContentOfArea.css" />
 
 @{
@@ -168,7 +169,7 @@
                                             <div class="col">
                                                 @Html.LabelFor(modelItem => docItem.ErrorDescription)
                                                 <br />
-                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + j + "].ErrorDescription", rows = "3" })
+                                                @Html.TextAreaFor(modelItem => docItem.ErrorDescription, new { @Name = "InspectDocDetailsTemporary[" + j + "].ErrorDescription", rows = "3", id = "InspectDocDetailsTemporary[" + j + "].ErrorDescription" })
                                             </div>
                                         }
                                         j++;

@@ -1,12 +1,20 @@
 ﻿$(document).ready(function () {
 
     $("input:radio").change(function () {
+
+        // Set variables.
         var objName = this.name.toString();
         var cutName = objName.split(".", 1);
-        var targetId = cutName + ".ErrorDescription"
-        var value = this.nodeValue;
-        document.getElementById(targetId).setAttribute("required", "required");
-        alert(objName + ":" + cutName + ":" + targetId + ":" + value);
+        var targetId = cutName + ".ErrorDescription";
+        var value = this.value;
+
+        // Controll ErrorDescription textbox.
+        if (value == "False") {
+            document.getElementById(targetId).setAttribute("Required", "Required");
+        }
+        else {
+            document.getElementById(targetId).removeAttribute("Required");
+        }
     });
 
 });

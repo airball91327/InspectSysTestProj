@@ -192,6 +192,7 @@
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
     <Compile Include="Controllers\InspectDocEditController.cs" />
+    <Compile Include="Controllers\InspectDocsController.cs" />
     <Compile Include="Controllers\InspectDocTempViewController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
@@ -472,10 +473,12 @@
     <Content Include="Views\InspectDocDetails\FlowDocEdit.cshtml" />
     <Content Include="Views\InspectDocEdit\Index.cshtml" />
     <Content Include="Views\InspectDocEdit\ClassContentOfArea.cshtml" />
-    <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutSupervisor.cshtml" />
+    <Content Include="Views\InspectDocs\Index.cshtml" />
+    <Content Include="Views\InspectDocEdit\DocDetails.cshtml" />
+    <Content Include="Views\InspectDocs\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
