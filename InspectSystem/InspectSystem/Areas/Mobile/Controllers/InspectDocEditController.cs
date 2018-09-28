@@ -25,6 +25,14 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.DocID = docID;
             var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
                                                   .OrderBy(c => c.InspectClasses.ClassOrder);
+            /* Count errors for every class, and set count result to "CountErrors". */
+            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
+            foreach (var item in ClassesOfAreas)
+            {
+                var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
+                                                           d.IsFunctional == false);
+                item.CountErrors = toFindErrors.Count();
+            }
 
             return View(ClassesOfAreas.ToList());
         }

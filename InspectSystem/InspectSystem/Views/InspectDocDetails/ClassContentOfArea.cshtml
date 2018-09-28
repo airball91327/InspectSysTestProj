@@ -185,6 +185,8 @@
             {
                 currentItemName = item.ItemName;
             }
+            int countFields = Model.InspectFields.Count();
+            <input type="hidden" id="countFields" value="@countFields" />
         }
         <div class="text-center">
             <input class="btn btn-primary btn-lg" type="submit" value="暫時儲存" id="submitBtn" />

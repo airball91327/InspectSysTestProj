@@ -30,6 +30,10 @@
                 <span class="glyphicon glyphicon-ok"></span>
             }
             @item.InspectClasses.ClassName
+            @if (item.CountErrors != 0)
+            {
+                <span class="circle">@item.CountErrors</span>
+            }
         </a>
     }
     <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" style="margin-top: 50px" href="@Url.Action("FlowDocEdit", new { area = "Mobile", docID = ViewBag.DocID })">簽核作業</a>

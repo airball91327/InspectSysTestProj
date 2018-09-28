@@ -31,6 +31,10 @@
                 <span class="glyphicon glyphicon-ok"></span>
             }
             @item.InspectClasses.ClassName
+            @if (item.CountErrors != 0)
+            {
+                <span class="circle">@item.CountErrors</span>
+            }
         </a>
     }
     <a class="btn btn-primary btn-block btn-lg" id="flowListBtn" href="@Url.Action("GetFlowList", new { area = "Mobile", docID = ViewBag.DocID })">流程資訊</a>

@@ -21,7 +21,13 @@
     <div class="tab">
         @foreach (var item in Model)
         {
-            <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">@item.InspectClasses.ClassName</button>
+            <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">
+                @item.InspectClasses.ClassName
+                @if (item.CountErrors != 0)
+                {
+                    <span class="circle">@item.CountErrors</span>
+                }
+            </button>
         }
         <!-- Trigger the flowDoc modal with a button -->
         <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn" style="margin-top: 50px">簽核作業</button>

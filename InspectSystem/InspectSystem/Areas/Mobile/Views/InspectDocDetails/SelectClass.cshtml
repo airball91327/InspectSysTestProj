@@ -43,6 +43,10 @@
                 <span class="glyphicon glyphicon-ok"></span>
             }
             @item.InspectClasses.ClassName
+            @if (item.CountErrors != 0)
+            {
+                <span class="circle">@item.CountErrors</span>
+            }
         </a>
     }
     <button class="btn btn-primary btn-block btn-lg" id="sendToChecker" value="@ViewBag.AllSaved">送出審核</button>
