@@ -31,19 +31,20 @@ namespace InspectSystem
                 // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
                 char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
                 string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
-                int count = 0;
-                string[] userRole = new string[10];
+                int count = 0, j = 0;
+                string[] userRoles = new string[10];
                 foreach(var value in roles)
                 {
                     if(value == "roleName")
                     {
-                        userRole[0] = roles[count + 1];
+                        userRoles[j] = roles[count + 1];
+                        j++;
                     }
                     count++;
                 }
                 // 指派角色到目前這個 HttpContext 的 User 物件去
                 //userRole[0] = "Usual"; // For Test
-                Context.User = new GenericPrincipal(Context.User.Identity, userRole);
+                Context.User = new GenericPrincipal(Context.User.Identity, userRoles);
             }
         }
     }
