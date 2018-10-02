@@ -94,7 +94,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
                                                 .Include(i => i.ClassesOfAreas.InspectAreas)
                                                 .Include(i => i.ClassesOfAreas.InspectClasses);
             var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true).ToList();
+                                                         i.ItemStatus == true)
+                                             .OrderBy(i => i.ItemOrder).ToList();
             var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
                                                         i.FieldStatus == true).ToList();
 

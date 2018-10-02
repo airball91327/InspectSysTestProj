@@ -53,7 +53,7 @@ namespace InspectSystem.Controllers
                                  .Include(i => i.InspectClasses);
             var SearchResult = InspectItems
                                .Where(s => s.AreaID == AreaListValue &&
-                                           s.ClassID == ClassListValue);
+                                           s.ClassID == ClassListValue).OrderBy(s => s.ItemOrder);
             TempData["SearchResult"]  = SearchResult.ToList(); 
 
             return RedirectToAction("Index");
@@ -72,7 +72,7 @@ namespace InspectSystem.Controllers
                                  .Include(i => i.InspectClasses);
             var SearchResult = InspectItems
                                .Where(s => s.AreaID == AreaListValue &&
-                                           s.ClassID == ClassListValue);
+                                           s.ClassID == ClassListValue).OrderBy(s => s.ItemOrder);
             TempData["SearchResult"] = SearchResult.ToList();
 
             return RedirectToAction("Index");
@@ -113,6 +113,7 @@ namespace InspectSystem.Controllers
             /* Use ACID to search the DB for existing items to declare the itemID for create. */
             int itemCount = db.InspectItems.Count(ic => ic.ACID == ACID);
             int itemID = itemCount + 1;
+            int itemOrder = itemID;
 
             /* If CheckBox is not selected, it will return nothing, 
                so use the condition to give value to checkbox's request. */
@@ -121,7 +122,9 @@ namespace InspectSystem.Controllers
                 itemStatus = true;
             }
             else
+            {
                 itemStatus = false;
+            }
 
             //Insert the values to create items
             inspectItems.ACID = ACID;
@@ -130,6 +133,7 @@ namespace InspectSystem.Controllers
             inspectItems.ItemID = itemID;
             inspectItems.ItemName = Request.Form["itemName"];
             inspectItems.ItemStatus = itemStatus;
+            inspectItems.ItemOrder = itemOrder;
 
             /* If can't find the data from ClassesOfAreas table, insert a new data in the table. */
             ClassesOfAreas classesOfAreas = db.ClassesOfAreas.Find(ACID);
@@ -188,33 +192,62 @@ namespace InspectSystem.Controllers
             return RedirectToAction("ReloadPage");
         }
 
-        /* Unused code
-        // GET: InspectItems/Delete/5
-        public ActionResult Delete(int? id, int? Itemid)
+        // POST: /InspectItems/SetItemOrder
+        [HttpPost]
+        public ActionResult SetItemOrder(int oldIndex, int newIndex, int acid)
         {
-            if (id == null)
+            if (oldIndex < newIndex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            InspectItems inspectItems = db.InspectItems.Find(id, Itemid);
-            if (inspectItems == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inspectItems);
-        }
+                var currItem = db.InspectItems.SingleOrDefault(i => i.ItemOrder == oldIndex &&
+                                                                    i.ACID == acid);
+                if (currItem == null)
+                {
+                    var msg = "排序錯誤";
+                    return Json(msg);
+                }
 
-        // POST: InspectItems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, int Itemid)
-        {
-            InspectItems inspectItems = db.InspectItems.Find(id, Itemid);
-            db.InspectItems.Remove(inspectItems);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+                var ItemList = db.InspectItems
+                    .Where(i =>
+                        i.ItemOrder <= newIndex &&
+                        i.ItemOrder > oldIndex &&
+                        i.ACID == acid &&
+                        i.ItemID != currItem.ItemID
+                    ).ToList();
+
+                foreach (var item in ItemList)
+                {
+                    item.ItemOrder--;
+                }
+
+                currItem.ItemOrder = newIndex;
+                db.SaveChanges();
+            }
+            else
+            {
+                var currItem = db.InspectItems.SingleOrDefault(i => i.ItemOrder == oldIndex &&
+                                                                    i.ACID == acid);
+                if (currItem == null)
+                {
+                    var msg = "排序錯誤";
+                    return Json(msg);
+                }
+
+                var ItemList = db.InspectItems
+                    .Where(i =>
+                        i.ItemOrder < oldIndex &&
+                        i.ItemOrder >= newIndex &&
+                        i.ACID == acid &&
+                        i.ItemID != currItem.ItemID
+                    ).ToList();
+
+                foreach (var item in ItemList)
+                    item.ItemOrder++;
+
+                currItem.ItemOrder = newIndex;
+                db.SaveChanges();
+            }
+            return RedirectToAction("ReloadPage");
         }
-        */
 
         protected override void Dispose(bool disposing)
         {

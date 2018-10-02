@@ -27,7 +27,9 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "顯示項目")]
         public Boolean ItemStatus { get; set; }
-
+        [Required]
+        [Display(Name = "排列順序")]
+        public int ItemOrder { get; set; }
 
         public virtual InspectAreas InspectAreas { get; set; }
         public virtual InspectClasses InspectClasses { get; set; }

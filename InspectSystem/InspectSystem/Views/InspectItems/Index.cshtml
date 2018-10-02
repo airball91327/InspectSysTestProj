@@ -110,6 +110,7 @@
 
         if (@TempData["AreaListValue"] != 0 && @TempData["ClassListValue"] != 0) {
             $("#createBtn").attr("disabled", false);
+            $("#sortBtn").attr("disabled", false);
         }
 
         /* Create a new row for insert item's detail */
@@ -118,6 +119,7 @@
             createItemForm();
             /* When Creating new item, disable other edit buttons */
             $("#createBtn").attr("disabled", true);
+            $("#sortBtn").attr("disabled", true);
             $(".editBtn").attr("disabled", true);
             document.getElementById("inputItemName").focus({ preventScroll: false });
         });
@@ -141,6 +143,16 @@
 
     .table {
         table-layout: fixed;
+    }
+
+    /* Style for layout. */
+    li a {
+        font-size: 14px;
+    }
+
+    /* The canel button and message for sorting (Hidden by Default) */
+    #sortBtnCanel, #sortMsg {
+        display: none;
     }
 </style>
 
@@ -174,11 +186,13 @@
 <hr />
 <div class="container">
     <button class="btn btn-primary" id="createBtn" disabled>新增項目</button>
+    <button class="btn btn-primary" id="sortBtn" disabled>排序</button>
+    <button class="btn btn-info" id="sortBtnCanel">取消排序</button>
 </div>
 <br />
 
 
-<table class="table" id="editTable">
+<table class="table table-hover" id="editTable">
     <tr>
         <th class="col-md-2">
             @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
@@ -192,79 +206,87 @@
         <th class="col-md-2">
             @Html.DisplayNameFor(model => model.ItemStatus)
         </th>
+        <th class="col-md-1">
+            @Html.DisplayNameFor(model => model.ItemOrder)
+        </th>
         <th class="col-md-2"></th>
-        <th class="col-md-2"></th>
+        <th class="col-md-1"></th>
     </tr>
 
-    @if (SearchResult == null)
-    {
-
-    }
-    else
-    {
-        /* 參數row做為各個編輯項目的編號 */
-        int row = 1;
-
-        foreach (var item in SearchResult)
+    <tbody id="sortItem">
+        @if (SearchResult == null)
         {
-            /* Give class name, ID to the display rows, edit rows and panels with each row */
-            string displayRow = "displayRow" + row;
-            string editRow = "editRow" + row;
-            string hideACIDNo = "hideACIDNo" + row;
-            string hideItemIDNo = "hideItemIDNo" + row;
-            string fieldPanelNo = "fieldPanelNo" + row;
-            int acid = item.ACID;
-            int itemid = item.ItemID;
-            int zoneNo = acid * 100 + itemid;
-            string fieldDivNo = "fieldDivNo" + zoneNo;
 
-            <tr>
-                @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-
-                    @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
-                    @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
-                    </td>
-                    <td class="col-md-2">
-                        <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
-                        <span class="@editRow hideEditItems">@Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })</span>
-                        @Html.ValidationMessageFor(modelItem => item.ItemName, "", new { @class = "text-danger" })
-                    </td>
-                    <td class="col-md-2">
-                        <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
-                        <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
-                    </td>
-                    <td class="col-md-2">
-                        <input type="button" class="btn editBtn" value="編輯" id="@row" />
-                        <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
-                        <a href="@Url.Action("Index")" class="btn btn-info @editRow hideEditItems">返回</a>
-                    </td>
-                }
-                <td class="col-md-2">
-                    <button class="btn fieldBtn" value="@row">欄位</button>
-                </td>
-            </tr>
-
-            /* 給TR及欄位的Panel皆定義fieldPanel與fieldPanelNo的class，作雙層slide的視覺表現 */
-            <tr class="fieldPanel @fieldPanelNo">
-                <td colspan=6>
-                    <div class="panel panel-info fieldPanel @fieldPanelNo">
-                        <div class="panel-heading">欄位</div>
-                        <div class="panel-body">
-                            <div class="fieldDiv" id="@fieldDivNo"></div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            row++;
         }
-    }
+        else
+        {
+            /* 參數row做為各個編輯項目的編號 */
+            int row = 1;
+
+            foreach (var item in SearchResult)
+            {
+                /* Give class name, ID to the display rows, edit rows and panels with each row */
+                string displayRow = "displayRow" + row;
+                string editRow = "editRow" + row;
+                string hideACIDNo = "hideACIDNo" + row;
+                string hideItemIDNo = "hideItemIDNo" + row;
+                string fieldPanelNo = "fieldPanelNo" + row;
+                int acid = item.ACID;
+                int itemid = item.ItemID;
+                int zoneNo = acid * 100 + itemid;
+                string fieldDivNo = "fieldDivNo" + zoneNo;
+
+                <tr>
+                    @using (Html.BeginForm("Edit", "InspectItems", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(modelItem => item.ACID, new { id = hideACIDNo })
+                        @Html.HiddenFor(modelItem => item.ItemID, new { id = hideItemIDNo })
+                        <td class="col-md-2">
+                            @Html.DisplayFor(modelItem => item.InspectAreas.AreaName)
+                        </td>
+                        <td class="col-md-2">
+                            @Html.DisplayFor(modelItem => item.InspectClasses.ClassName)
+                        </td>
+                        <td class="col-md-2">
+                            <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemName)</span>
+                            <span class="@editRow hideEditItems">@Html.EditorFor(modelItem => item.ItemName, new { htmlAttributes = new { @class = "form-control" } })</span>
+                            @Html.ValidationMessageFor(modelItem => item.ItemName, "", new { @class = "text-danger" })
+                        </td>
+                        <td class="col-md-2">
+                            <span class="@displayRow">@Html.DisplayFor(modelItem => item.ItemStatus)</span>
+                            <span class="@editRow hideEditItems">@Html.CheckBoxFor(modelItem => item.ItemStatus)</span>
+                        </td>
+                        <td class="col-md-1">
+                            @Html.DisplayFor(modelItem => item.ItemOrder)
+                        </td>
+                        <td class="col-md-2">
+                            <input type="button" class="btn editBtn" value="編輯" id="@row" />
+                            <input type="submit" class="@editRow hideEditItems btn btn-primary" value="儲存" />
+                            <a href="@Url.Action("Index")" class="btn btn-info @editRow hideEditItems">返回</a>
+                        </td>
+                    }
+                    <td class="col-md-1">
+                        <button class="btn fieldBtn" value="@row">欄位</button>
+                    </td>
+                </tr>
+
+                /* 給TR及欄位的Panel皆定義fieldPanel與fieldPanelNo的class，作雙層slide的視覺表現 */
+                <tr class="fieldPanel @fieldPanelNo">
+                    <td colspan=7>
+                        <div class="panel panel-info fieldPanel @fieldPanelNo">
+                            <div class="panel-heading">欄位</div>
+                            <div class="panel-body">
+                                <div class="fieldDiv" id="@fieldDivNo"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                row++;
+            }
+        }
+    </tbody>
 </table>
 
 @using (Html.BeginForm("Create", "InspectItems", FormMethod.Post))
@@ -274,4 +296,80 @@
     <table class="table" id="createTable"></table>
 }
 
-<hr />
+<div>
+    <p style="color: red" id="sortMsg">*拖曳項目以排序</p>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var ACID = 0;
+            @if (SearchResult != null) {
+                @:ACID = @SearchResult.FirstOrDefault().ACID;
+            }
+
+            $("#sortBtn").click(function () {
+
+                /* When sorting items, disable other buttons */
+                $("#createBtn").attr("disabled", true);
+                $("#sortBtn").attr("disabled", true);
+                $(".editBtn").attr("disabled", true);
+                $(".fieldBtn").attr("disabled", true);
+             
+                $("#sortBtnCanel").show();
+                $("#sortMsg").show();
+
+                /* While sorting, delete tr fields to sort items. */
+                $(".fieldPanel").remove();
+
+                /* enable item sorting. */
+                $("#sortItem").sortable({
+                    opacity: 0.6,
+                    cursor: 'move',
+                    axis: 'y',
+                    start: function (event, ui) {
+                        var start_pos = ui.item.index();
+                        console.log("start_pos:" + start_pos); //For debug
+                        ui.item.data('start_pos', start_pos);
+                    },
+                    update: function (event, ui) {
+                        //var productOrder = $(this).sortable('toArray').toString();
+                        var oldIndex = ui.item.data('start_pos');
+                        console.log("old:" + oldIndex); //For debug
+                        var newIndex = ui.item.index();
+                        console.log("new:" + newIndex); //For debug
+                        $.ajax({
+                            type: 'post',
+                            url: '/InspectItems/SetItemOrder',
+                            data: {
+                                oldIndex: oldIndex + 1,
+                                newIndex: newIndex + 1,
+                                acid: ACID,
+                                //page: currPage,
+                                //pageSize: pageSize
+                            },
+                            success: function (result) {
+                                console.log(result); //For debug
+                                window.location.reload(true);
+                            },
+                            error: function (msg) {
+                                alert(msg);
+                            }
+                        });
+                    }
+                });
+                $("#editTable").disableSelection();
+            });
+
+            $("#sortBtnCanel").click(function () {
+
+                /* Reload page. */
+                window.location.reload(true);
+            });
+           
+        });
+    </script>
+}
