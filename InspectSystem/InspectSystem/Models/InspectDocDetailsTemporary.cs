@@ -43,7 +43,7 @@ namespace InspectSystem.Models
         [Display(Name = "數值")]
         public string Value { get; set; }
         [Display(Name = "是否正常")]
-        public Boolean IsFunctional { get; set; }
+        public string IsFunctional { get; set; }
         [Display(Name = "備註說明")]
         public string ErrorDescription { get; set; }
         [Display(Name = "維修單號")]

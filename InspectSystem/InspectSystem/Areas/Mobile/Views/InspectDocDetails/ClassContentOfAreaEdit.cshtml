@@ -169,8 +169,8 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + j + "].FieldID" })
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldName", docItem.FieldName)
                                             <div class="col radioBtn">
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + j + "].IsFunctional", "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col">
@@ -199,11 +199,9 @@
     <div class="container">
         <input  type="submit" class="btn btn-primary btn-block btn-lg" value="暫時儲存" id="submitBtn" style="max-width:100%" />
     </div>
-    <hr />
 }
 
 <!--Modal for precautions of area.-->
-<hr />
 <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="precautionModal">

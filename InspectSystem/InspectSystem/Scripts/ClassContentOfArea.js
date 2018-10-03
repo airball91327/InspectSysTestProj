@@ -36,7 +36,7 @@ $(document).ready(function () {
                 $("." + id).html(result);
                 if (result != "") {
                     for (var j = 0; j < radios.length; j++) {
-                        if (radios[j].value == "False") {
+                        if (radios[j].value == "n") {
                             //console.log("自動切換至不正常"); //For debug
                             radios[j].checked = true;
                             document.getElementById(targetId).setAttribute("Required", "Required");

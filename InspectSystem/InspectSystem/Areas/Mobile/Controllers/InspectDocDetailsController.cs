@@ -116,7 +116,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                             var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
                             var isRequired = findField.IsRequired;
                             // If required field has no data.
-                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            if (isRequired == true && tempItem.Value == null)
                             {
                                 isDataCompleted = false;
                                 break;
@@ -146,7 +146,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 foreach (var item in ClassesOfAreas)
                 {
                     var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
-                                                               d.IsFunctional == false);
+                                                               d.IsFunctional == "n");
                     item.CountErrors = toFindErrors.Count();
                 }
             }
@@ -182,7 +182,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             {
                 foreach (var item in fieldsByACID)
                 {
-                    Boolean isFunctional = true; // Set default value.
+                    string isFunctional = null; // Set default value.
                     var itemName = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
                                                               i.ACID == item.ACID).First();
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
@@ -365,7 +365,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 foreach (var item in ClassesOfAreas)
                 {
                     var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
-                                                               d.IsFunctional == false);
+                                                               d.IsFunctional == "n");
                     item.CountErrors = toFindErrors.Count();
                 }
 

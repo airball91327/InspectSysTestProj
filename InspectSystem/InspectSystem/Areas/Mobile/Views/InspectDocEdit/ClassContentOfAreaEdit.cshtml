@@ -161,8 +161,8 @@
                                             @Html.Hidden("InspectDocDetails[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + j + "].FieldID" })
                                             @Html.Hidden("InspectDocDetails[" + j + "].FieldName", docItem.FieldName)
                                             <div class="col radioBtn">
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, true, new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })正常
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, false, new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })不正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })不正常
                                                 @Html.ValidationMessage("InspectDocDetails[" + j + "].IsFunctional", "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col">
@@ -191,7 +191,6 @@
     <div class="container">
         <input type="submit" class="btn btn-primary btn-block btn-lg" value="儲存修改資料" style="max-width:100%" />
     </div>
-    <hr />
 }
 
 <!-- Button for go to top-->

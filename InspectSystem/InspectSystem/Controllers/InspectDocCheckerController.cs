@@ -78,7 +78,7 @@ namespace InspectSystem.Controllers
             foreach(var item in ClassesOfAreas)
             {
                 var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
-                                                           d.IsFunctional == false);
+                                                           d.IsFunctional == "n");
                 item.CountErrors = toFindErrors.Count();
             }
             return View(ClassesOfAreas.ToList());
