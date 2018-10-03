@@ -43,7 +43,12 @@ namespace InspectSystem
                     count++;
                 }
                 // 指派角色到目前這個 HttpContext 的 User 物件去
-                //userRole[0] = "Usual"; // For Test
+
+                //if (userRoles[0] == "Admin")// For Test Change Admin to usual
+                //{
+                //    userRoles[0] = "Usual";
+                //}
+
                 Context.User = new GenericPrincipal(Context.User.Identity, userRoles);
             }
         }

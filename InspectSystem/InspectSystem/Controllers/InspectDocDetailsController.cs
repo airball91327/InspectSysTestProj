@@ -102,8 +102,13 @@ namespace InspectSystem.Controllers
                             var tFieldID = tempItem.FieldID;
                             var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
                             var isRequired = findField.IsRequired;
-                            // If required field has no data.
-                            if (isRequired == true && tempItem.Value == null)
+                            // If required field has no data or isFunctional didn't selected.
+                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            {
+                                isDataCompleted = false;
+                                break;
+                            }
+                            else if (findField.DataType == "boolean" && tempItem.IsFunctional == null) 
                             {
                                 isDataCompleted = false;
                                 break;

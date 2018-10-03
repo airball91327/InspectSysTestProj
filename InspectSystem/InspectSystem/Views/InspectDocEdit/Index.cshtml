@@ -18,6 +18,14 @@
     }
 }
 
+<script>
+    $(document).ready(function () {
+        $("#flowDocBtn").click(function () {
+            window.onbeforeunload = null;
+        });
+    });
+</script>
+
 <style>
     /* Style background-color for modal header and footer. */
     .modal-header, .modal-footer {

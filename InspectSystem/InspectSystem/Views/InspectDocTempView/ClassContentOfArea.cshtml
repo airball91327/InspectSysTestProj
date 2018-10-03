@@ -98,11 +98,11 @@
                                     if (fieldItem.DataType == "boolean")
                                     {
                                         <div class="col">
-                                            @if (docItem.IsFunctional == true)
+                                            @if (docItem.IsFunctional == "y")
                                             {
                                                 <p>正常</p>
                                             }
-                                            else if (docItem.IsFunctional == false)
+                                            else if (docItem.IsFunctional == "n")
                                             {
                                                 <p style="color: red;font-weight: bold">不正常</p>
                                             }

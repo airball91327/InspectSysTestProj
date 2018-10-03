@@ -207,6 +207,29 @@ namespace InspectSystem.Controllers
                     db.SaveChanges();
                 }
             }
+            else if(nextFlowStatusID == 2) // If doc closed.
+            {
+                /* New next flow for closed. */
+                InspectDocFlow nextDocFlow = new InspectDocFlow()
+                {
+                    DocID = docID,
+                    StepID = inspectDocFlow.StepID + 1,
+                    StepOwnerID = inspectDocFlow.WorkerID,
+                    WorkerID = inspectDocFlow.WorkerID,
+                    CheckerID = inspectDocFlow.CheckerID,
+                    Opinions = "",
+                    FlowStatusID = nextFlowStatusID,
+                    EditorID = inspectDocFlow.EditorID,
+                    EditorName = inspectDocFlow.EditorName,
+                    EditTime = inspectDocFlow.EditTime,
+                };
+
+                if (ModelState.IsValid)
+                {
+                    db.InspectDocFlows.Add(nextDocFlow);
+                    db.SaveChanges();
+                }
+            }
 
             if(ModelState.IsValid)
             {

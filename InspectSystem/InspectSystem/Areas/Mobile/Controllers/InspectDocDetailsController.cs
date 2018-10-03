@@ -107,7 +107,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     {
                         Boolean isDataCompleted = true; 
                         /* Check are all the required fields having data. */
-                        foreach(var tempItem in findDocTemps)
+                        foreach (var tempItem in findDocTemps)
                         {
                             // Set search variables.
                             var tACID = item.ACID;
@@ -115,14 +115,19 @@ namespace InspectSystem.Areas.Mobile.Controllers
                             var tFieldID = tempItem.FieldID;
                             var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
                             var isRequired = findField.IsRequired;
-                            // If required field has no data.
-                            if (isRequired == true && tempItem.Value == null)
+                            // If required field has no data or isFunctional didn't selected.
+                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            {
+                                isDataCompleted = false;
+                                break;
+                            }
+                            else if (findField.DataType == "boolean" && tempItem.IsFunctional == null)
                             {
                                 isDataCompleted = false;
                                 break;
                             }
                         }
-                        if(isDataCompleted == true)
+                        if (isDataCompleted == true)
                         {
                             item.IsSaved = true;
                         }
