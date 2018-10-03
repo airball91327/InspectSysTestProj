@@ -384,7 +384,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
 
             var findDoc = db.InspectDocs.Find(docID);
             int areaID = findDoc.AreaID;
-            int checkerID = db.InspectAreaCheckers.Where(i => i.AreaID == areaID).First().AreaID;
+            int checkerID = db.InspectAreaCheckers.Where(i => i.AreaID == areaID).First().CheckerID;
             var areaCheckers = db.InspectAreaCheckers.ToList();
             var areaCheckerNames = areaCheckers.GroupBy(a => a.CheckerName).Select(g => g.First()).ToList();
 
