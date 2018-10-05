@@ -9,6 +9,8 @@
 
 @{
     ViewBag.Title = "內容編輯";
+    var DocItems = ViewBag.itemsByDocDetails as List<InspectSystem.Models.InspectDocDetails>;
+    var DocFields = ViewBag.fieldsByDocDetails as List<InspectSystem.Models.InspectDocDetails>;
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -24,7 +26,7 @@
     var currentItemName = "0";
     int i = 0, j = 0;
     <div class="container">
-        @foreach (var item in Model.InspectItems)
+        @foreach (var item in DocItems)
         {
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
@@ -34,7 +36,7 @@
                         @Html.DisplayFor(modelItem => item.ItemName)
                     </div>
                     <div class="col-xs-12 mainCol">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -63,6 +65,11 @@
                                             @Html.Hidden("InspectDocDetails[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + i + "].FieldID" })
                                             @Html.Hidden("InspectDocDetails[" + i + "].FieldName", docItem.FieldName)
                                             @Html.Hidden("InspectDocDetails[" + i + "].IsFunctional", docItem.IsFunctional)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].ItemOrder", docItem.ItemOrder)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].DataType", docItem.DataType)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].MinValue", docItem.MinValue)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].MaxValue", docItem.MaxValue)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].IsRequired", docItem.IsRequired)
 
                                             switch (fieldItem.DataType)
                                             {
@@ -96,9 +103,10 @@
                                                     break;
 
                                                 case "dropdownlist":
-                                                    var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == fieldItem.ACID &&
-                                                                                                            m.ItemID == fieldItem.ItemID &&
-                                                                                                            m.FieldID == fieldItem.FieldID);
+                                                    var ACID = (docItem.AreaID) * 100 + docItem.ClassID;
+                                                    var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == ACID &&
+                                                                                                                m.ItemID == fieldItem.ItemID &&
+                                                                                                                m.FieldID == fieldItem.FieldID);
                                                     List<SelectListItem> dropDownList = new List<SelectListItem>();
                                                     foreach(var searchItem in searchList)
                                                     {
@@ -138,7 +146,7 @@
                         }
                     </div>
                     <div class="col-xs-12">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -160,6 +168,11 @@
                                             @Html.Hidden("InspectDocDetails[" + j + "].ItemName", docItem.ItemName)
                                             @Html.Hidden("InspectDocDetails[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetails[" + j + "].FieldID" })
                                             @Html.Hidden("InspectDocDetails[" + j + "].FieldName", docItem.FieldName)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].ItemOrder", docItem.ItemOrder)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].DataType", docItem.DataType)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].MinValue", docItem.MinValue)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].MaxValue", docItem.MaxValue)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].IsRequired", docItem.IsRequired)
                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetails[" + j + "].IsFunctional" })不正常
@@ -184,7 +197,7 @@
             {
                 currentItemName = item.ItemName;
             }
-            int countFields = Model.InspectFields.Count();
+            int countFields = DocFields.Count();
             <input type="hidden" id="countFields" value="@countFields" />
         }
     </div>

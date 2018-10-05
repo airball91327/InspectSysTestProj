@@ -63,6 +63,11 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + i + "].FieldID" })
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemOrder", docItem.ItemOrder)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DataType", docItem.DataType)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MinValue", docItem.MinValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
 
                                             switch (fieldItem.DataType)
                                             {
@@ -168,6 +173,11 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemName", docItem.ItemName)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + j + "].FieldID" })
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].FieldName", docItem.FieldName)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].ItemOrder", docItem.ItemOrder)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DataType", docItem.DataType)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MinValue", docItem.MinValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MaxValue", docItem.MaxValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].IsRequired", docItem.IsRequired)
                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常

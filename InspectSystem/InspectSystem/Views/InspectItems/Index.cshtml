@@ -307,9 +307,15 @@
     <script>
         $(document).ready(function () {
             var ACID = 0;
-            @if (SearchResult != null) {
+            @if (SearchResult == null)
+            {
+
+            }
+            else
+            {
                 @:ACID = @SearchResult.FirstOrDefault().ACID;
             }
+
 
             $("#sortBtn").click(function () {
 
@@ -318,7 +324,7 @@
                 $("#sortBtn").attr("disabled", true);
                 $(".editBtn").attr("disabled", true);
                 $(".fieldBtn").attr("disabled", true);
-             
+
                 $("#sortBtnCanel").show();
                 $("#sortMsg").show();
 
@@ -327,7 +333,7 @@
 
                 /* enable item sorting. */
                 $("#sortItem").sortable({
-                    opacity: 0.6,
+        opacity: 0.6,
                     cursor: 'move',
                     axis: 'y',
                     start: function (event, ui) {
@@ -360,16 +366,16 @@
                             }
                         });
                     }
-                });
+                    });
                 $("#editTable").disableSelection();
-            });
+                });
 
             $("#sortBtnCanel").click(function () {
 
-                /* Reload page. */
-                window.location.reload(true);
-            });
-           
+                    /* Reload page. */
+                    window.location.reload(true);
+                });
+
         });
     </script>
 }

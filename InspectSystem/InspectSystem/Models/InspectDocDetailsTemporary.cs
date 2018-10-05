@@ -32,6 +32,8 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "項目名稱")]
         public string ItemName { get; set; }
+        [Display(Name = "項目排列順序")]
+        public int ItemOrder { get; set; }
         [Key, Column(Order = 4)]
         [Required]
         [Display(Name = "欄位代碼")]
@@ -48,6 +50,16 @@ namespace InspectSystem.Models
         public string ErrorDescription { get; set; }
         [Display(Name = "維修單號")]
         public string RepairDocID { get; set; }
+        [Required]
+        [Display(Name = "資料型態")]
+        public string DataType { get; set; }
+        [Display(Name = "最小值")]
+        public double MinValue { get; set; }
+        [Display(Name = "最大值")]
+        public double MaxValue { get; set; }
+        [Required]
+        [Display(Name = "是否必填")]
+        public Boolean IsRequired { get; set; }
 
         public virtual InspectDocs InspectDocs { get; set; }
     }

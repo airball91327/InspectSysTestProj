@@ -44,7 +44,8 @@ namespace InspectSystem
                 }
                 // 指派角色到目前這個 HttpContext 的 User 物件去
 
-                //if (userRoles[0] == "Admin")// For Test Change Admin to usual
+                // For System Role Test ---> Change Admin to usual
+                //if (userRoles[0] == "Admin")
                 //{
                 //    userRoles[0] = "Usual";
                 //}

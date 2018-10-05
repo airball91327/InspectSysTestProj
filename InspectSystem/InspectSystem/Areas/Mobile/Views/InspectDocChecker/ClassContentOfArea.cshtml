@@ -6,6 +6,8 @@
 
 @{
     ViewBag.Title = "詳細內容";
+    var DocItems = ViewBag.itemsByDocDetails as List<InspectSystem.Models.InspectDocDetails>;
+    var DocFields = ViewBag.fieldsByDocDetails as List<InspectSystem.Models.InspectDocDetails>;
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -19,7 +21,7 @@
     int i = 0, j = 0;
 }
 <div class="container">
-    @foreach (var item in Model.InspectItems)
+    @foreach (var item in DocItems)
     {
         /* Display the ItemName when ItemName is not the same. */
         if (item.ItemName != currentItemName)
@@ -29,7 +31,7 @@
                     @Html.DisplayFor(modelItem => item.ItemName)
                 </div>
                 <div class="col-xs-12 mainCol">
-                    @foreach (var fieldItem in Model.InspectFields)
+                    @foreach (var fieldItem in DocFields)
                     {
                         /* Display all the FieldName belong the current Item. */
                         if (item.ItemID == fieldItem.ItemID)
@@ -90,7 +92,7 @@
                     }
                 </div>
                 <div class="col-xs-12">
-                    @foreach (var fieldItem in Model.InspectFields)
+                    @foreach (var fieldItem in DocFields)
                     {
                         /* Display all the FieldName belong the current Item. */
                         if (item.ItemID == fieldItem.ItemID)

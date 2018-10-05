@@ -19,15 +19,24 @@ namespace InspectSystem.Controllers
         // GET: InspectDocEdit
         public ActionResult Index(int docID)
         {
+            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
             var theEditDoc = db.InspectDocs.Find(docID);
             int areaID = theEditDoc.AreaID;
             ViewBag.AreaID = areaID;
             ViewBag.AreaName = theEditDoc.AreaName;
             ViewBag.DocID = docID;
-            var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.InspectClasses.ClassOrder);
+
+            /* Find Classes from DocDetails and set values to List<ClassesOfAreas> ClassList. */
+            var ClassesOfDocTemp = DocDetailList.GroupBy(c => c.ClassID).Select(g => g.FirstOrDefault()).ToList();
+            List<ClassesOfAreas> ClassList = new List<ClassesOfAreas>();
+            foreach (var itemClass in ClassesOfDocTemp)
+            {
+                var addClass = db.ClassesOfAreas.Where(c => c.AreaID == areaID && c.ClassID == itemClass.ClassID).FirstOrDefault();
+                ClassList.Add(addClass);
+            }
+            var ClassesOfAreas = ClassList.OrderBy(c => c.InspectClasses.ClassOrder);
+
             /* Count errors for every class, and set count result to "CountErrors". */
-            var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
             foreach (var item in ClassesOfAreas)
             {
                 var toFindErrors = DocDetailList.Where(d => d.ClassID == item.ClassID &&
@@ -42,15 +51,7 @@ namespace InspectSystem.Controllers
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
 
-            /* Get items and fields to display. */
-            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true)
-                                             .OrderBy(i => i.ItemOrder).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
-                                                        i.FieldStatus == true).ToList();
+            /* Get DropDown to display. */
             var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
 
             /* Find the doc details. */
@@ -58,11 +59,15 @@ namespace InspectSystem.Controllers
             var inspectDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
                                                                     i.ClassID == classID);
 
+            /* Get items and fields from DocDetails. */
+            ViewBag.itemsByDocDetails = inspectDocDetails.GroupBy(i => i.ItemID)
+                                                         .Select(g => g.FirstOrDefault())
+                                                         .OrderBy(s => s.ItemOrder).ToList();
+            ViewBag.fieldsByDocDetails = inspectDocDetails.ToList();
+
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetails = inspectDocDetails,
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID,
                 InspectFieldDropDowns = fieldDropDown
             };
 
@@ -127,8 +132,16 @@ namespace InspectSystem.Controllers
             ViewBag.AreaName = DocDetailList.First().AreaName;
             ViewBag.DocID = docID;
 
-            var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.InspectClasses.ClassOrder);
+            /* Find Classes from DocDetails and set values to List<ClassesOfAreas> ClassList. */
+            var ClassesOfDocTemp = DocDetailList.GroupBy(c => c.ClassID).Select(g => g.FirstOrDefault()).ToList();
+            List<ClassesOfAreas> ClassList = new List<ClassesOfAreas>();
+            foreach (var itemClass in ClassesOfDocTemp)
+            {
+                var addClass = db.ClassesOfAreas.Where(c => c.AreaID == areaID && c.ClassID == itemClass.ClassID).FirstOrDefault();
+                ClassList.Add(addClass);
+            }
+            var ClassesOfAreas = ClassList.OrderBy(c => c.InspectClasses.ClassOrder);
+
             /* Count errors for every class, and set count result to "CountErrors". */
             foreach (var item in ClassesOfAreas)
             {

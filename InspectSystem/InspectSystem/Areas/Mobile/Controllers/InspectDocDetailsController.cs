@@ -188,7 +188,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 foreach (var item in fieldsByACID)
                 {
                     string isFunctional = null; // Set default value.
-                    var itemName = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
+                    var itemOfFields = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
                                                               i.ACID == item.ACID).First();
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                     {
@@ -198,11 +198,16 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         ClassID = item.ClassesOfAreas.InspectClasses.ClassID,
                         ClassName = item.ClassesOfAreas.InspectClasses.ClassName,
                         ItemID = item.ItemID,
-                        ItemName = itemName.ItemName,
+                        ItemName = itemOfFields.ItemName,
+                        ItemOrder = itemOfFields.ItemOrder,
                         FieldID = item.FieldID,
                         FieldName = item.FieldName,
                         UnitOfData = item.UnitOfData,
-                        IsFunctional = isFunctional
+                        IsFunctional = isFunctional,
+                        DataType = item.DataType,
+                        MinValue = item.MinValue,
+                        MaxValue = item.MaxValue,
+                        IsRequired = item.IsRequired
                     });
                 }
             }
@@ -229,25 +234,20 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
             ViewBag.DocID = docID;
 
-            /* Get items and fields to display. */
-            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
-                                                        i.FieldStatus == true).ToList();
-
             /* Find the temp data. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetailsTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                                  i.ClassID == classID);
 
+            /* Get items and fields from DocDetails. */
+            ViewBag.itemsByDocDetails = inspectDocDetailsTemp.GroupBy(i => i.ItemID)
+                                                             .Select(g => g.FirstOrDefault())
+                                                             .OrderBy(s => s.ItemOrder).ToList();
+            ViewBag.fieldsByDocDetails = inspectDocDetailsTemp.ToList();
+
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetailsTemporary = inspectDocDetailsTemp.ToList(),
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID
             };
 
             return View(inspectDocDetailsViewModels);
@@ -346,6 +346,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
+        // Select Class for worker to View DocTemp.
         // GET: Mobile/InspectDocDetails/DocDetails
         public ActionResult DocDetails(int docID)
         {
@@ -364,8 +365,16 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 ViewBag.AreaName = DocDetailList.First().AreaName;
                 ViewBag.DocID = docID;
 
-                var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                      .OrderBy(c => c.InspectClasses.ClassOrder);
+                /* Find Classes from DocDetails and set values to List<ClassesOfAreas> ClassList. */
+                var ClassesOfDocTemp = DocDetailList.GroupBy(c => c.ClassID).Select(g => g.FirstOrDefault()).ToList();
+                List<ClassesOfAreas> ClassList = new List<ClassesOfAreas>();
+                foreach (var itemClass in ClassesOfDocTemp)
+                {
+                    var addClass = db.ClassesOfAreas.Where(c => c.AreaID == areaID && c.ClassID == itemClass.ClassID).FirstOrDefault();
+                    ClassList.Add(addClass);
+                }
+                var ClassesOfAreas = ClassList.OrderBy(c => c.InspectClasses.ClassOrder);
+
                 /* Count errors for every class, and set count result to "CountErrors". */
                 foreach (var item in ClassesOfAreas)
                 {
@@ -443,7 +452,12 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     Value = item.Value,
                     IsFunctional = item.IsFunctional,
                     ErrorDescription = item.ErrorDescription,
-                    RepairDocID = item.RepairDocID
+                    RepairDocID = item.RepairDocID,
+                    ItemOrder = item.ItemOrder,
+                    DataType = item.DataType,
+                    MinValue = item.MinValue,
+                    MaxValue = item.MaxValue,
+                    IsRequired = item.IsRequired
                 });
             }
 

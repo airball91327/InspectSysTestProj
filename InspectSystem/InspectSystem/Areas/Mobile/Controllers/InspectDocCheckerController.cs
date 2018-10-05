@@ -58,6 +58,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return View(CheckingDocs.ToList());
         }
 
+        // Select Classes for checker to view DocDetails
         // GET: Mobile/InspectDocChecker/DocDetails
         public ActionResult DocDetails(int docID)
         {
@@ -70,8 +71,15 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.AreaName = DocDetailList.First().AreaName;
             ViewBag.DocID = docID;
 
-            var ClassesOfAreas = db.ClassesOfAreas.Where(c => c.AreaID == areaID)
-                                                  .OrderBy(c => c.InspectClasses.ClassOrder);
+            /* Find Classes from DocDetails and set values to List<ClassesOfAreas> ClassList. */
+            var ClassesOfDocTemp = DocDetailList.GroupBy(c => c.ClassID).Select(g => g.FirstOrDefault()).ToList();
+            List<ClassesOfAreas> ClassList = new List<ClassesOfAreas>();
+            foreach (var itemClass in ClassesOfDocTemp)
+            {
+                var addClass = db.ClassesOfAreas.Where(c => c.AreaID == areaID && c.ClassID == itemClass.ClassID).FirstOrDefault();
+                ClassList.Add(addClass);
+            }
+            var ClassesOfAreas = ClassList.OrderBy(c => c.InspectClasses.ClassOrder);
 
             /* Count errors for every class, and set count result to "CountErrors". */
             foreach (var item in ClassesOfAreas)
@@ -89,26 +97,20 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
             ViewBag.DocID = docID;
 
-            /* Get items and fields to display. */
-            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true)
-                                             .OrderBy(i => i.ItemOrder).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
-                                                        i.FieldStatus == true).ToList();
-
             /* Find the data. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
                                                                     i.ClassID == classID);
 
+            /* Get items and fields from DocDetails. */
+            ViewBag.itemsByDocDetails = inspectDocDetails.GroupBy(i => i.ItemID)
+                                                         .Select(g => g.FirstOrDefault())
+                                                         .OrderBy(s => s.ItemOrder).ToList();
+            ViewBag.fieldsByDocDetails = inspectDocDetails.ToList();
+
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetails = inspectDocDetails.ToList(),
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID
             };
 
             return View(inspectDocDetailsViewModels);

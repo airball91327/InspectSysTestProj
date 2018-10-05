@@ -20,26 +20,20 @@ namespace InspectSystem.Areas.Mobile.Controllers
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
 
-            /* Get items and fields to display. */
-            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true)
-                                             .OrderBy(i => i.ItemOrder).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
-                                                        i.FieldStatus == true).ToList();
-
             /* Find the data. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetailsTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                     i.ClassID == classID);
 
+            /* Get items and fields from DocDetails. */
+            ViewBag.itemsByDocDetails = inspectDocDetailsTemp.GroupBy(i => i.ItemID)
+                                                             .Select(g => g.FirstOrDefault())
+                                                             .OrderBy(s => s.ItemOrder).ToList();
+            ViewBag.fieldsByDocDetails = inspectDocDetailsTemp.ToList();
+
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetailsTemporary = inspectDocDetailsTemp.ToList(),
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID
             };
 
             return View(inspectDocDetailsViewModels);
