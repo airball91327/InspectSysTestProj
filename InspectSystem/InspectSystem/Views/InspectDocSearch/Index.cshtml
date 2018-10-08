@@ -1,0 +1,91 @@
+﻿@model IEnumerable<InspectSystem.Models.InspectDocs>
+
+@{
+    ViewBag.Title = "巡檢表單搜尋";
+}
+
+<h2>巡檢表單搜尋</h2>
+
+<table class="table" id="docTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckerName)
+            </th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectAreas.AreaName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InspectFlowStatusTable.FlowStatusName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckerName)
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/DataTables/css/jquery.dataTables.min.css" />
+
+    <script>
+        $(document).ready(function () {
+
+            $("#docTable").DataTable({
+                processing: true,
+                serverSide: true,   //ServerSide模式
+                //searching: false, //filter功能
+                ajax: {
+                    method: "get",
+                    url: "/InspectDocSearch/GetData",
+                    "dataSrc": ""
+                },
+                columns: [ //Server端的DataBinding名稱
+                    { data: "AreaName" },
+                    { data: "FlowStatusName" },
+                    { data: "Date" },
+                    { data: "WorkerID" },
+                    { data: "WorkerName" },
+                    { data: "CheckerID" },
+                    { data: "CheckerName" }
+                ],
+                //deferLoading: 0, //初始化DataTable時，不發出ajax
+            });
+        });
+    </script>
+}
