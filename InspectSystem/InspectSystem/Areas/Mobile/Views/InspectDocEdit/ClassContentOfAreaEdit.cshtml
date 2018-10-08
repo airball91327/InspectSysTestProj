@@ -55,7 +55,7 @@
                                         if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
                                             fieldItem.DataType != "boolean")
                                         {
-                                            @Html.Hidden("InspectDocDetails[" + i + "].DocID", docItem.DocID)
+                                            @Html.Hidden("InspectDocDetails[" + i + "].DocID", docItem.DocID, new { id = "InspectDocDetails[" + i + "].DocID" })
                                             @Html.Hidden("InspectDocDetails[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetails[" + i + "].AreaID" })
                                             @Html.Hidden("InspectDocDetails[" + i + "].AreaName", docItem.AreaName)
                                             @Html.Hidden("InspectDocDetails[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetails[" + i + "].ClassID" })
@@ -159,7 +159,7 @@
                                     {
                                         if (fieldItem.DataType == "boolean")
                                         {
-                                            @Html.Hidden("InspectDocDetails[" + j + "].DocID", docItem.DocID)
+                                            @Html.Hidden("InspectDocDetails[" + j + "].DocID", docItem.DocID, new { id = "InspectDocDetails[" + i + "].DocID" })
                                             @Html.Hidden("InspectDocDetails[" + j + "].AreaID", docItem.AreaID, new { id = "InspectDocDetails[" + j + "].AreaID" })
                                             @Html.Hidden("InspectDocDetails[" + j + "].AreaName", docItem.AreaName)
                                             @Html.Hidden("InspectDocDetails[" + j + "].ClassID", docItem.ClassID, new { id = "InspectDocDetails[" + j + "].ClassID" })

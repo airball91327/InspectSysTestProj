@@ -5,6 +5,7 @@
 
         var id = $(this).attr("id");
         var value = $(this).val();
+        var docID = document.getElementById("InspectDocDetails[" + id + "].DocID").value;
         var areaID = document.getElementById("InspectDocDetails[" + id + "].AreaID").value;
         var classID = document.getElementById("InspectDocDetails[" + id + "].ClassID").value;
         var itemID = document.getElementById("InspectDocDetails[" + id + "].ItemID").value;
@@ -27,8 +28,8 @@
 
         $.ajax({
             type: "GET",
-            url: "/InspectDocDetails/CheckValue",
-            data: { AreaID: areaID, ClassID: classID, ItemID: itemID, FieldID: fieldID, Value: value },
+            url: "/InspectDocEdit/CheckValue",
+            data: { DocID: docID, ClassID: classID, ItemID: itemID, FieldID: fieldID, Value: value },
             success: function (result) {
                 //console.log(result); //For debug
                 //console.log(id); //For debug

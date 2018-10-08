@@ -97,29 +97,52 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index", new { DocID = docID });
         }
 
-        /*
-        // POST: InspectDocEdit/SaveBeforeSend
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveBeforeSend(List<InspectDocDetails> inspectDocDetails)
+        //GET: InspectDocEdit/CheckValue
+        /* Use ajax to check the min and max value for fields. */
+        public ActionResult CheckValue(int DocID, int ClassID, int ItemID, int FieldID, string Value)
         {
-            var areaID = inspectDocDetails.First().AreaID;
-            int docID = inspectDocDetails.First().DocID;
+            /* Get the min and max value for the check field. */
+            var SearchDoc = db.InspectDocDetails.Find(DocID, ClassID, ItemID, FieldID);
+            var FieldDataType = SearchDoc.DataType;
+            float MaxValue = System.Convert.ToSingle(SearchDoc.MaxValue);
+            float MinValue = System.Convert.ToSingle(SearchDoc.MinValue);
 
-            if (ModelState.IsValid)
+            /* Only float type will check. */
+            string msg = "";
+            if (FieldDataType == "float")
             {
-                foreach (var item in inspectDocDetails)
+                /* Check the input string can be convert to float. */
+                if (Single.TryParse(Value, out float inputValue))
                 {
-                    db.Entry(item).State = EntityState.Modified;
+                    // Check max and min value, and if doesn't set the min or max value, return nothing.
+                    if (inputValue >= MaxValue && MaxValue != 0)
+                    {
+                        msg = "<span style='color:red'>大於正常數值</span>";
+                    }
+                    else if (inputValue <= MinValue && MinValue != 0)
+                    {
+                        msg = "<span style='color:red'>小於正常數值</span>";
+                    }
+                    else if (MinValue == 0 && MaxValue == 0)
+                    {
+                        msg = "";
+                    }
+                    else
+                    {
+                        msg = "";
+                    }
                 }
-
-                db.SaveChanges();
-                return RedirectToAction("DocDetails", new { DocID = docID, AreaID = areaID });
+                else
+                {
+                    msg = "<span style='color:red'>請輸入數字</span>";
+                }
             }
-            TempData["SaveMsg"] = "傳送失敗";
-            return RedirectToAction("Index", new { DocID = docID });
+            else
+            {
+                msg = "";
+            }
+            return Json(msg, JsonRequestBehavior.AllowGet);
         }
-        */
 
         // GET: InspectDocDetails/DocDetails
         public ActionResult DocDetails(int docID)
