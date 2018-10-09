@@ -43,8 +43,9 @@ namespace InspectSystem.Controllers
         public ActionResult DocListForChecker()
         {
             int UserID = System.Convert.ToInt32(User.Identity.Name);
+            /* Find All not completed documents. */
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
-                                                         i.FlowStatusID == 1);
+                                                         i.FlowStatusID != 2);
 
             return View(CheckingDocs.ToList());
         }
@@ -53,9 +54,10 @@ namespace InspectSystem.Controllers
         public ActionResult DocListForWorker()
         {
             int UserID = System.Convert.ToInt32(User.Identity.Name);
+            /* Find all not completed or not send documents. */
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
-                                                         i.FlowStatusID == 0);
-
+                                                         i.FlowStatusID != 2 &&
+                                                         i.FlowStatusID != 1);
             return View(CheckingDocs.ToList());
         }
 
@@ -143,7 +145,6 @@ namespace InspectSystem.Controllers
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
                                             .OrderByDescending(i => i.StepID).First();
 
-            /* Use userID to find the user details. (Not Implement)*/
             flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
             flowDoc.Opinions = "";
 

@@ -78,8 +78,71 @@ namespace InspectSystem.Controllers
                     CheckerName = checkerName,
                     FlowStatusID = 3        // Default flow status:"編輯中"
                 };
-
                 db.InspectDocs.Add(inspectDocs);
+
+                /* New DocDetailsTemp and add to DB, when first into system. */
+                int firstACID = areaID * 100 + 1;
+                int nextACID = firstACID + 100;
+
+                var allItems = db.InspectItems.Where(i => i.ACID >= firstACID &&
+                                                          i.ACID < nextACID &&
+                                                          i.ItemStatus == true);
+                var allFields = db.InspectFields.Where(i => i.ACID >= firstACID &&
+                                                            i.ACID < nextACID &&
+                                                            i.FieldStatus == true);
+                var insertFields =
+                    from f in allFields
+                    join i in allItems on f.ACID equals i.ACID
+                    where f.ItemID == i.ItemID
+                    select new
+                    {
+                        f.ClassesOfAreas.AreaID,
+                        f.ClassesOfAreas.InspectAreas.AreaName,
+                        f.ClassesOfAreas.ClassID,
+                        f.ClassesOfAreas.InspectClasses.ClassName,
+                        f.ItemID,
+                        i.ItemName,
+                        i.ItemOrder,
+                        f.FieldID,
+                        f.FieldName,
+                        f.UnitOfData,
+                        f.DataType,
+                        f.MinValue,
+                        f.MaxValue,
+                        f.IsRequired
+                    };
+                //int countFields = insertFields.ToList().Count; // For Debug
+                var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
+                foreach(var item in insertFields)
+                {
+                    string isFunctional = null; // Set default value.
+
+                    inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
+                    {
+                        DocID = docID,
+                        AreaID = item.AreaID,
+                        AreaName = item.AreaName,
+                        ClassID = item.ClassID,
+                        ClassName = item.ClassName,
+                        ItemID = item.ItemID,
+                        ItemName = item.ItemName,
+                        FieldID = item.FieldID,
+                        FieldName = item.FieldName,
+                        UnitOfData = item.UnitOfData,
+                        IsFunctional = isFunctional,
+                        ItemOrder = item.ItemOrder,
+                        DataType = item.DataType,
+                        MinValue = item.MinValue,
+                        MaxValue = item.MaxValue,
+                        IsRequired = item.IsRequired
+                    });
+                }
+                /* Insert data to DocTemp DB. */
+                foreach(var item in inspectDocDetailsTemporary)
+                {
+                    db.InspectDocDetailsTemporary.Add(item);
+                }
+
                 db.SaveChanges();
             }
             else  // If found the InspectDoc.

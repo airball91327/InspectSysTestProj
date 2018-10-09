@@ -1,4 +1,9 @@
-﻿/* Style the scale of checkbox. */
+﻿/* Style the body. */
+body{
+    font-size: 175%;
+}
+
+/* Style the scale of checkbox. */
 input[type=checkbox] {
     -ms-transform: scale(2); /* IE */
     -moz-transform: scale(2); /* FireFox */
@@ -41,7 +46,7 @@ div.itemName {
 
 /* Style the row of items. */
 .itemRow {
-    background-color: aliceblue;
+    background-color: #b3ed9b;
 }
 
 #goToTopBtn {
@@ -104,5 +109,5 @@ div.itemName {
 /* Style the hr. */
 hr {
     border: 2px;
-    border-top: 1px solid black;
+    border-top: 1px solid white;
 }
