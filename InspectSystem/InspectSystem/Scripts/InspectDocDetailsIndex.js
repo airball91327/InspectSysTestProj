@@ -11,11 +11,11 @@ $(document).ready(function () {
         $("#sendToChecker").attr("disabled", true);
     }
 
-    /* Save inspect data to database. */
-    $("#sendToChecker").click(function () {
-        document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveBeforeSend");
-        document.getElementById("detailsForm").submit();
-    });
+    ///* Save inspect data to database. */
+    //$("#sendToChecker").click(function () {
+    //    document.getElementById("detailsForm").setAttribute("action", "/InspectDocDetails/SaveBeforeSend");
+    //    document.getElementById("detailsForm").submit();
+    //});
 
     //Default class content is first item from tablinks.
     var tabs = document.getElementsByClassName("tablinks");

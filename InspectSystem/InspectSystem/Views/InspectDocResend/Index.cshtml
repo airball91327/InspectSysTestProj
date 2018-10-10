@@ -2,13 +2,14 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script src="~/Scripts/InspectDocEditIndex.js"></script>
+<script src="~/Scripts/InspectDocDetailsIndex.js"></script>
 <script src="~/Scripts/ScrollToTop.js"></script>
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
-    ViewBag.Title = "內容編輯";
+    ViewBag.Title = "巡檢系統";
 
+    /* Show alert message. */
     if (TempData["SaveMsg"] != null)
     {
         <script>
@@ -20,31 +21,31 @@
 
 <script>
     $(document).ready(function () {
-        $("#flowDocBtn").click(function () {
-            window.onbeforeunload = null;
+        alert("test");
+        $(document).on("click", "#submitBtn", function () {
+            alert("test2");
+            document.getElementById("detailsForm").setAttribute("action", "/InspectDocResend/TempSave");
+            document.getElementById("detailsForm").submit();
         });
+        //$("#submitBtn").click(function () {
+        //    alert("test2");
+        //    document.getElementById("detailsForm").setAttribute("action", "/InspectDocResend/TempSave");
+        //    document.getElementById("detailsForm").submit();
+        //});
     });
 </script>
 
-<style>
-    /* Style background-color for modal header and footer. */
-    .modal-header, .modal-footer {
-        background-color: cornflowerblue;
-    }
-</style>
-
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-<div class="container">
-    <a class="btn btn-primary" href="@Url.Action("DocDetails", "InspectDocEdit", new { docID = ViewBag.DocID })">回詳細內容</a>
-</div>
-<hr />
-
 <div class="container">
     <div class="tab">
         @foreach (var item in Model)
         {
             <button class="tablinks" onclick="openClassContent(event, '@item.ACID', '@ViewBag.DocID')" id="@item.ClassID">
+                @if (item.IsSaved == true)
+                {
+                    <span class="glyphicon glyphicon-ok"></span>
+                }
                 @item.InspectClasses.ClassName
                 @if (item.CountErrors != 0)
                 {
@@ -52,9 +53,7 @@
                 }
             </button>
         }
-        <button class="tablinks" id="flowListBtn" onclick="getFlowList(event, '@ViewBag.DocID')">流程資訊</button>
-        <!-- Trigger the flowDoc modal with a button -->
-        <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn">簽核作業</button>
+        <button class="tablinks" id="sendToChecker" value="@ViewBag.AllSaved" onclick="location.href='@Url.Action("DocDetails", new { DocID = ViewBag.DocID })'">送出審核</button>
     </div>
 
     <div class="tabcontent" id="tabContent">
@@ -105,28 +104,6 @@
                     </div>
                 </div>
                 <div class="modal-footer"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <!-- Flow Doc Modal -->
-    <div class="modal fade" id="flowDocModal">
-        <div class="modal-dialog model-lg">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @Html.Action("FlowDocEditForWorker", "InspectDocChecker", new { docID = ViewBag.DocID })
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">關閉視窗</button>
-                </div>
             </div>
         </div>
     </div>

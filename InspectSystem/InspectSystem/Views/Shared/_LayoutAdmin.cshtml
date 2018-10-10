@@ -23,7 +23,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("巡檢作業", "SelectAreas", "InspectDocDetails")</li>
-                    <li>@Html.ActionLink("審核作業", "Index", "InspectDocChecker")</li>
+                    <li>@Html.ActionLink("工程師審核作業", "DocListForWorker", "InspectDocChecker")</li>
+                    <li>@Html.ActionLink("主管審核作業", "DocListForChecker", "InspectDocChecker")</li>
                     <li>@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")</li>
                     <li>@Html.ActionLink("巡檢類別維護", "Index", "InspectClasses")</li>
                     <li>@Html.ActionLink("巡檢項目維護", "Index", "InspectItems")</li>

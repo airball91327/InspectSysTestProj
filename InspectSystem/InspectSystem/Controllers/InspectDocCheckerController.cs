@@ -17,28 +17,6 @@ namespace InspectSystem.Controllers
     {
         private BMEDcontext db = new BMEDcontext();
 
-        public ActionResult Index()
-        {
-            /* Get current user. */
-            //var userId = User.Identity.GetUserId();
-            //var userName = User.Identity.Name;
-            var userName = WebSecurity.CurrentUserName;
-
-            if (User.IsInRole("Admin") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            }
-            else if (User.IsInRole("MedMgr") == true || 
-                     User.IsInRole("Manager") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker");
-            }
-            else
-            {
-                return RedirectToAction("DocListForWorker", "InspectDocChecker");
-            }
-        }
-
         // GET: InspectDocChecker/DocListForChecker
         public ActionResult DocListForChecker()
         {
@@ -61,8 +39,8 @@ namespace InspectSystem.Controllers
             return View(CheckingDocs.ToList());
         }
 
-        // GET: InspectDocChecker/DocDetails
-        public ActionResult DocDetails(int docID)
+        // GET: InspectDocChecker/DocDetailsChecker
+        public ActionResult DocDetailsChecker(int docID)
         {
             /* Set variables from DB. */
             var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
@@ -138,8 +116,8 @@ namespace InspectSystem.Controllers
             return PartialView(flowList.ToList());
         }
 
-        // GET: InspectDocChecker/FlowDoc
-        public ActionResult FlowDoc(int docID)
+        // GET: InspectDocChecker/FlowDocEditForChecker
+        public ActionResult FlowDocEditForChecker(int docID)
         {
             /* Find FlowDoc and set step to next. */
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
@@ -158,17 +136,30 @@ namespace InspectSystem.Controllers
             string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
             flowDoc.EditorName = roles.Last();
 
-            /* According user role to retrun views. */
-            if ( User.IsInRole("MedMgr") == true || 
-                 User.IsInRole("Manager") == true || 
-                 User.IsInRole("Admin") == true)
-            {
-                return PartialView("FlowDocEditForChecker", flowDoc);
-            }
-            else 
-            {
-                return PartialView("FlowDocEditForWorker", flowDoc);
-            }
+            return PartialView("FlowDocEditForChecker", flowDoc);
+        }
+
+        // GET: InspectDocChecker/FlowDocEditForWorker
+        public ActionResult FlowDocEditForWorker(int docID)
+        {
+            /* Find FlowDoc and set step to next. */
+            var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
+                                            .OrderByDescending(i => i.StepID).First();
+
+            flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
+            flowDoc.Opinions = "";
+
+            // Get real name.
+            // 先取得該使用者的 FormsIdentity
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            // 再取出使用者的 FormsAuthenticationTicket
+            FormsAuthenticationTicket ticket = id.Ticket;
+            // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
+            char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
+            string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+            flowDoc.EditorName = roles.Last();
+
+            return PartialView("FlowDocEditForWorker", flowDoc);
         }
 
         // POST: InspectDocChecker/FlowDocEditForChecker

@@ -6,6 +6,8 @@
 
 @{
     ViewBag.Title = "ClassContentOfArea";
+    var DocItems = ViewBag.itemsByDocDetails as List<InspectSystem.Models.InspectDocDetailsTemporary>;
+    var DocFields = ViewBag.fieldsByDocDetails as List<InspectSystem.Models.InspectDocDetailsTemporary>;
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -17,7 +19,7 @@
     var currentItemName = "0";
     int i = 0, j = 0;
     <div class="container col-md-12">
-        @foreach (var item in Model.InspectItems)
+        @foreach (var item in DocItems)
         {
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
@@ -27,7 +29,7 @@
                         @Html.DisplayFor(modelItem => item.ItemName)
                     </div>
                     <div class="col-md-6 mainCol">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -84,7 +86,7 @@
                                                 @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i, type = "number", step = "0.0001" } })
                                                 @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                                <br /><span class="@i col-xs-offset-3"></span>
+                                                <br /><span class="@i col-xs-offset-3" style="margin-left: 0%"></span>
                                             </span>
                                             break;
 
@@ -102,9 +104,10 @@
                                             break;
 
                                         case "dropdownlist":
-                                            var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == fieldItem.ACID &&
-                                                                                                    m.ItemID == fieldItem.ItemID &&
-                                                                                                    m.FieldID == fieldItem.FieldID);
+                                            var ACID = (docItem.AreaID) * 100 + docItem.ClassID;
+                                            var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == ACID &&
+                                                                                                m.ItemID == fieldItem.ItemID &&
+                                                                                                m.FieldID == fieldItem.FieldID);
                                             List<SelectListItem> dropDownList = new List<SelectListItem>();
                                             foreach (var searchItem in searchList)
                                             {
@@ -144,7 +147,7 @@
                         }
                     </div>
                     <div class="col-md-4">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -195,7 +198,7 @@
             {
                 currentItemName = item.ItemName;
             }
-            int countFields = Model.InspectFields.Count();
+            int countFields = DocFields.Count();
             <input type="hidden" id="countFields" value="@countFields" />
         }
         <div class="text-center">

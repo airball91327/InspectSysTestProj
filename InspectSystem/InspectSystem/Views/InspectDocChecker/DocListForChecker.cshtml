@@ -68,7 +68,7 @@
                     @Html.DisplayFor(modelItem => item.CheckerName)
                 </td>
                 <td>
-                    <a class="btn btn-primary" href="@Url.Action("DocDetails", new { docID = item.DocID })">詳細內容</a>
+                    <a class="btn btn-primary" href="@Url.Action("DocDetailsChecker", new { docID = item.DocID })">詳細內容</a>
                 </td>
             </tr>
         }
@@ -122,7 +122,6 @@
                     @Html.DisplayFor(modelItem => item.CheckerName)
                 </td>
                 <td>
-                    @*<a class="btn btn-primary" href="@Url.Action("DocDetails", "InspectDocEdit", new { docID = item.DocID })">詳細內容</a>*@
                 </td>
             </tr>
         }
@@ -176,7 +175,6 @@
                     @Html.DisplayFor(modelItem => item.CheckerName)
                 </td>
                 <td>
-                    @*<a class="btn btn-primary" href="@Url.Action("", "", new { docID = item.DocID })">詳細內容</a>*@
                 </td>
             </tr>
         }

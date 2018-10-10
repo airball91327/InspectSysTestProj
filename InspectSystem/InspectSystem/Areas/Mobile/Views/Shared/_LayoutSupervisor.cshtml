@@ -13,7 +13,6 @@
             text-align: center;
             font-size: 18px;
         }
-
     </style>
 </head>
 <body>
@@ -30,7 +29,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("巡檢作業", "SelectAreas", "InspectDocDetails", new { area = "Mobile" }, null)</li>
-                    <li>@Html.ActionLink("審核作業", "DocListForWorker", "InspectDocChecker", new { area = "Mobile" }, null)</li>
+                    <li>@Html.ActionLink("工程師審核作業", "DocListForWorker", "InspectDocChecker", new { area = "Mobile" }, null)</li>
+                    <li>@Html.ActionLink("主管審核作業", "DocListForChecker", "InspectDocChecker", new { area = "Mobile" }, null)</li>
                 </ul>
                 @Html.Partial("~/Views/Shared/_LoginPartial.cshtml")
             </div>

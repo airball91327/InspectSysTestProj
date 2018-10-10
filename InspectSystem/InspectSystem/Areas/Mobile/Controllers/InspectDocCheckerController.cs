@@ -17,34 +17,14 @@ namespace InspectSystem.Areas.Mobile.Controllers
     {
         private BMEDcontext db = new BMEDcontext();
 
-        public ActionResult Index()
-        {
-            /* Get current user. */
-            //var userId = User.Identity.GetUserId();
-            var userName = WebSecurity.CurrentUserName;
-
-            if (User.IsInRole("Admin") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            }
-            else if (User.IsInRole("MedMgr") == true || 
-                     User.IsInRole("Manager") == true)
-            {
-                return RedirectToAction("DocListForChecker", "InspectDocChecker", new { Area = "Mobile" });
-            }
-            else
-            {
-                return RedirectToAction("DocListForWorker", "InspectDocChecker", new { Area = "Mobile" });
-            }
-        }
-
         // GET: Mobile/InspectDocChecker/DocListForChecker
         public ActionResult DocListForChecker()
         {
             int UserID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
+            /* Find All not completed documents. */
             var CheckingDocs = db.InspectDocs.Where(i => i.CheckerID == UserID &&
-                                                         i.FlowStatusID == 1);
-          
+                                                         i.FlowStatusID != 2);
+
             return View(CheckingDocs.ToList());
         }
 
@@ -52,15 +32,17 @@ namespace InspectSystem.Areas.Mobile.Controllers
         public ActionResult DocListForWorker()
         {
             int UserID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
+            /* Find all not completed or not send documents. */
             var CheckingDocs = db.InspectDocs.Where(i => i.WorkerID == UserID &&
-                                                         i.FlowStatusID == 0);
-            
+                                                         i.FlowStatusID != 2 &&
+                                                         i.FlowStatusID != 1);
+
             return View(CheckingDocs.ToList());
         }
 
         // Select Classes for checker to view DocDetails
-        // GET: Mobile/InspectDocChecker/DocDetails
-        public ActionResult DocDetails(int docID)
+        // GET: Mobile/InspectDocChecker/DocDetailsChecker
+        public ActionResult DocDetailsChecker(int docID)
         {
             /* Set variables from DB. */
             var DocDetailList = db.InspectDocDetails.Where(i => i.DocID == docID).ToList();
@@ -137,8 +119,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return View(flowList.ToList());
         }
 
-        // GET: Mobile/InspectDocChecker/FlowDoc
-        public ActionResult FlowDoc(int docID)
+        // GET: Mobile/InspectDocChecker/FlowDocEditForChecker
+        public ActionResult FlowDocEditForChecker(int docID)
         {
             /* Find FlowDoc and set step to next. */
             var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
@@ -160,26 +142,33 @@ namespace InspectSystem.Areas.Mobile.Controllers
             string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
             flowDoc.EditorName = roles.Last();
 
-            /* According user role to retrun views. */
-            if (User.IsInRole("MedMgr") == true || 
-                User.IsInRole("Manager") == true || 
-                User.IsInRole("Admin") == true)
-            {
-                return View("FlowDocEditForChecker", flowDoc);
-            }
-            else
-            {
-                return View("FlowDocEditForWorker", flowDoc);
-            }
-            // For testing
-            //if (WebSecurity.CurrentUserName == "344027")
-            //{
-            //    return View("FlowDocEditForChecker", flowDoc);
-            //}
-            //else
-            //{
-            //    return View("FlowDocEditForWorker", flowDoc);
-            //}
+            return View("FlowDocEditForChecker", flowDoc);
+        }
+
+        // GET: Mobile/InspectDocChecker/FlowDocEditForWorker
+        public ActionResult FlowDocEditForWorker(int docID)
+        {
+            /* Find FlowDoc and set step to next. */
+            var flowDoc = db.InspectDocFlows.Where(i => i.DocID == docID)
+                                            .OrderByDescending(i => i.StepID).First();
+
+            ViewBag.AreaID = flowDoc.InspectDocs.AreaID;
+
+            /* Use userID to find the user details.*/
+            flowDoc.EditorID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
+            flowDoc.Opinions = "";
+
+            // Get real name.
+            // 先取得該使用者的 FormsIdentity
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            // 再取出使用者的 FormsAuthenticationTicket
+            FormsAuthenticationTicket ticket = id.Ticket;
+            // 將儲存在 FormsAuthenticationTicket 中的角色定義取出，並轉成字串陣列
+            char[] charSpilt = new char[] { ',', '{', '}', '[', ']', '"', ':', '\\' };
+            string[] roles = ticket.UserData.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+            flowDoc.EditorName = roles.Last();
+
+            return View("FlowDocEditForWorker", flowDoc);
         }
 
         // POST: Mobile/InspectDocChecker/FlowDocEditForChecker

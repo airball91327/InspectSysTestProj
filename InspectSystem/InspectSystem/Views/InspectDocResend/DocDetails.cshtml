@@ -2,41 +2,18 @@
 
 @Scripts.Render("~/bundles//jquery")
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script src="~/Scripts/InspectDocEditIndex.js"></script>
+<script src="~/Scripts/InspectDocTempView.js"></script>
 <script src="~/Scripts/ScrollToTop.js"></script>
 <link rel="stylesheet" href="~/Content/MyStyleForDocDetail.css">
 
 @{
-    ViewBag.Title = "內容編輯";
-
-    if (TempData["SaveMsg"] != null)
-    {
-        <script>
-            var message = @Html.Raw(Json.Encode(TempData["SaveMsg"]));
-            alert(message);
-        </script>
-    }
+    ViewBag.Title = "詳細內容";
 }
-
-<script>
-    $(document).ready(function () {
-        $("#flowDocBtn").click(function () {
-            window.onbeforeunload = null;
-        });
-    });
-</script>
-
-<style>
-    /* Style background-color for modal header and footer. */
-    .modal-header, .modal-footer {
-        background-color: cornflowerblue;
-    }
-</style>
 
 <h3 style="font-weight: bold">@ViewBag.AreaName</h3>
 <hr />
-<div class="container">
-    <a class="btn btn-primary" href="@Url.Action("DocDetails", "InspectDocEdit", new { docID = ViewBag.DocID })">回詳細內容</a>
+<div class="container" style="padding-top: 20px">
+    <a class="btn btn-primary" href="@Url.Action("Index", new { docID = ViewBag.DocID })">回到編輯畫面</a>
 </div>
 <hr />
 
@@ -52,40 +29,11 @@
                 }
             </button>
         }
-        <button class="tablinks" id="flowListBtn" onclick="getFlowList(event, '@ViewBag.DocID')">流程資訊</button>
         <!-- Trigger the flowDoc modal with a button -->
-        <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn">簽核作業</button>
+        <button class="tablinks" data-toggle="modal" data-target="#flowDocModal" id="flowDocBtn" style="margin-top: 50px">簽核作業</button>
     </div>
 
     <div class="tabcontent" id="tabContent">
-    </div>
-</div>
-
-<!--Modal for precautions of area.-->
-<hr />
-<div class="container">
-    <!-- Trigger the modal with a button -->
-    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#precautionModal">注意事項</button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="precautionModal">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h2 class="modal-title">注意事項</h2>
-                </div>
-                <div class="modal-body">
-                    @Html.Action("AreaPrecautions", "InspectDocDetails", new { areaID = ViewBag.AreaID })
-                </div>
-                <div class="modal-footer">
-                    <div style="text-align:center">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -122,7 +70,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @Html.Action("FlowDocEditForWorker", "InspectDocChecker", new { docID = ViewBag.DocID })
+                    @Html.Action("FlowDocEdit", "InspectDocDetails", new { docID = ViewBag.DocID })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">關閉視窗</button>
@@ -133,3 +81,4 @@
 </div>
 
 <button onclick="topFunction()" id="goToTopBtn" title="Go to top">回頁首</button>
+

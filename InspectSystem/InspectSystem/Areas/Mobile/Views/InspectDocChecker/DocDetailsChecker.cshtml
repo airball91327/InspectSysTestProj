@@ -5,19 +5,14 @@
 
 @{
     ViewBag.Title = "項目選擇";
+    string backToList = Url.Action("DocListForChecker", new { area = "Mobile" }).ToString();
 }
 
-<style>
-    h3 {
-        font-weight: bold;
-        text-align: center;
-    }
-</style>
 
-<h3>@ViewBag.AreaName - 預覽</h3>
+<h3>@ViewBag.AreaName</h3>
 <hr />
 <div class="container">
-    <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("SelectClass", new { area = "Mobile", areaID = ViewBag.AreaID })">回到編輯畫面</a>
+    <a class="btn btn-primary btn-block btn-lg" href="@backToList">回到列表</a>
 </div>
 <hr />
 
@@ -25,10 +20,6 @@
     @foreach (var item in Model)
     {
         <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("ClassContentOfArea", new { area = "Mobile", acid = @item.ACID, docID = @ViewBag.DocID })" id="@item.ClassID">
-            @*@if (item.IsSaved == true)
-            {
-                <span class="glyphicon glyphicon-ok"></span>
-            }*@
             @item.InspectClasses.ClassName
             @if (item.CountErrors != 0)
             {
@@ -36,5 +27,6 @@
             }
         </a>
     }
-    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" style="margin-top: 50px" href="@Url.Action("FlowDocEdit", new { area = "Mobile", docID = ViewBag.DocID })">簽核作業</a>
+    <a class="btn btn-primary btn-block btn-lg" id="flowListBtn" href="@Url.Action("GetFlowList", new { area = "Mobile", docID = ViewBag.DocID })">流程資訊</a>
+    <a class="btn btn-primary btn-block btn-lg" id="flowDocBtn" href="@Url.Action("FlowDocEditForChecker", new { area = "Mobile", docID = ViewBag.DocID })">簽核作業</a>
 </div>

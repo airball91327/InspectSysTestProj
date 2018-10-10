@@ -182,7 +182,7 @@
     <Compile Include="Areas\Mobile\Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Areas\Mobile\Controllers\InspectDocDetailsController.cs" />
     <Compile Include="Areas\Mobile\Controllers\InspectDocEditController.cs" />
-    <Compile Include="Areas\Mobile\Controllers\InspectDocTempViewController.cs" />
+    <Compile Include="Areas\Mobile\Controllers\InspectDocResendController.cs" />
     <Compile Include="Areas\Mobile\MobileAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -192,6 +192,7 @@
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
     <Compile Include="Controllers\InspectDocEditController.cs" />
+    <Compile Include="Controllers\InspectDocResendController.cs" />
     <Compile Include="Controllers\InspectDocsController.cs" />
     <Compile Include="Controllers\InspectDocSearchController.cs" />
     <Compile Include="Controllers\InspectDocTempViewController.cs" />
@@ -510,10 +511,9 @@
     </Content>
     <Content Include="Areas\Mobile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Mobile\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocChecker\Index.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\DocListForChecker.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\DocListForWorker.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocChecker\DocDetails.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocChecker\DocDetailsChecker.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\ClassContentOfArea.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\GetFlowList.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocChecker\FlowDocEditForChecker.cshtml" />
@@ -528,7 +528,6 @@
     <Content Include="Areas\Mobile\Views\InspectDocEdit\Index.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfAreaEdit.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\DocDetails.cshtml" />
-    <Content Include="Areas\Mobile\Views\InspectDocTempView\ClassContentOfArea.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocDetails\SelectClass.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\ClassContentOfArea.cshtml" />
     <Content Include="Areas\Mobile\Views\InspectDocEdit\GetFlowList.cshtml" />
@@ -536,6 +535,13 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Areas\Mobile\Views\Shared\_LayoutSupervisor.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\Index.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\ClassContentOfAreaEdit.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\DocDetails.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\ClassContentOfArea.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\FlowDocEdit.cshtml" />
+    <Content Include="Areas\Mobile\Views\InspectDocResend\AfterSendDoc.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ClassContentOfArea.js" />
@@ -695,7 +701,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\InspectDocChecker\Index.cshtml" />
-    <Content Include="Views\InspectDocChecker\DocDetails.cshtml" />
+    <Content Include="Views\InspectDocChecker\DocDetailsChecker.cshtml" />
     <Content Include="Views\InspectDocDetails\DocDetails.cshtml" />
     <Content Include="Views\InspectDocChecker\ClassContentOfArea.cshtml" />
     <Content Include="Views\InspectDocTempView\ClassContentOfArea.cshtml" />
@@ -719,6 +725,8 @@
     <Content Include="Views\InspectAreaCheckers\Create.cshtml" />
     <Content Include="Views\InspectAreaCheckers\Delete.cshtml" />
     <Content Include="Views\InspectDocSearch\Index.cshtml" />
+    <Content Include="Views\InspectDocResend\Index.cshtml" />
+    <Content Include="Views\InspectDocResend\DocDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
