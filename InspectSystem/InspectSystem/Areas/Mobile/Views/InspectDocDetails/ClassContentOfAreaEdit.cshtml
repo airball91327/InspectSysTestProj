@@ -17,6 +17,7 @@
 <!-- Trigger the precautions modal with the button -->
 <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#precautionModal" id="modalBtn">注意事項</button>
 <hr />
+<hr />
 @using (Html.BeginForm("TempSave", "InspectDocDetails", new { area = "Mobile" }, FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()

@@ -44,9 +44,14 @@ div.itemName {
     padding-left: 0%;
 }
 
-/* Style the row of items. */
-.itemRow {
-    background-color: #b3ed9b;
+/* Style the odd row of items. */
+.itemRow:nth-child(odd) {
+    background-color: #c6c6c6;
+}
+
+/* Style the even row of items. */
+.itemRow:nth-child(even) {
+    background-color: lightblue;
 }
 
 #goToTopBtn {
@@ -110,4 +115,6 @@ div.itemName {
 hr {
     border: 2px;
     border-top: 1px solid white;
+    margin-bottom: 0px;
+    margin-top: 10px;
 }

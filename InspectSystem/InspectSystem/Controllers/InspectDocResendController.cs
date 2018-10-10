@@ -96,6 +96,7 @@ namespace InspectSystem.Controllers
             }
 
             /* Find Classes from DocDetailsTemp and set values to List<ClassesOfAreas> ClassList. */
+            DocDetailList = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID).ToList();
             var ClassesOfDocTemp = DocDetailList.GroupBy(c => c.ClassID).Select(g => g.FirstOrDefault()).ToList();
             List<ClassesOfAreas> ClassList = new List<ClassesOfAreas>();
             foreach (var itemClass in ClassesOfDocTemp)

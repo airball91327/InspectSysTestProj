@@ -19,6 +19,7 @@
     <a class="btn btn-primary btn-block btn-lg" href="@Url.Action("Index", new { area = "Mobile", docID = ViewBag.DocID })">回到上頁</a>
 </div>
 <hr />
+<hr />
 @using (Html.BeginForm("TempSave", "InspectDocResend", new { area = "Mobile" }, FormMethod.Post, new { id = "detailsForm" }))
 {
     @Html.AntiForgeryToken()

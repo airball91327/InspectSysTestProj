@@ -20,7 +20,7 @@
 </h2>
 <hr />
 
-<h4 class="text-center">審核退回</h4>
+<h4 class="text-center"><b>審核退回</b></h4>
 @foreach (var item in Model)
 {
     if (item.FlowStatusID == 0)
@@ -63,7 +63,7 @@
     }
 }
 
-<h4 class="text-center">尚未送出</h4>
+<h4 class="text-center"><b>尚未送出</b></h4>
 @foreach (var item in Model)
 {
     if (item.FlowStatusID == 3)
