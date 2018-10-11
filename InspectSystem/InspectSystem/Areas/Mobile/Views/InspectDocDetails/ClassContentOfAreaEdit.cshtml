@@ -9,6 +9,8 @@
 
 @{
     ViewBag.Title = "詳細內容";
+    var DocItems = ViewBag.itemsByDocDetails as List<InspectSystem.Models.InspectDocDetailsTemporary>;
+    var DocFields = ViewBag.fieldsByDocDetails as List<InspectSystem.Models.InspectDocDetailsTemporary>;
 }
 
 <h3>@ViewBag.ClassName</h3>
@@ -25,7 +27,7 @@
     var currentItemName = "0";
     int i = 0, j = 0;
     <div class="container col-xs-12">
-        @foreach (var item in Model.InspectItems)
+        @foreach (var item in DocItems)
         {
             /* Display the ItemName when ItemName is not the same. */
             if (item.ItemName != currentItemName)
@@ -35,7 +37,7 @@
                         @Html.DisplayFor(modelItem => item.ItemName)
                     </div>
                     <div class="col-xs-12 mainCol">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -69,6 +71,7 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MinValue", docItem.MinValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DropDownItems", docItem.DropDownItems)
 
                                             switch (fieldItem.DataType)
                                             {
@@ -110,18 +113,17 @@
                                                     break;
 
                                                 case "dropdownlist":
-                                                    var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == fieldItem.ACID &&
-                                                                                                            m.ItemID == fieldItem.ItemID &&
-                                                                                                            m.FieldID == fieldItem.FieldID);
+                                                    char[] charSpilt = new char[] { ';' };
+                                                    string[] dropDownSpilt = docItem.DropDownItems.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
                                                     List<SelectListItem> dropDownList = new List<SelectListItem>();
-                                                    foreach(var searchItem in searchList)
+                                                    foreach(var searchItem in dropDownSpilt)
                                                     {
-                                                        if(searchItem.Value == docItem.Value)
+                                                        if(searchItem == docItem.Value)
                                                         {
                                                             dropDownList.Add(new SelectListItem()
                                                             {
-                                                                Text = searchItem.Value,
-                                                                Value = searchItem.Value,
+                                                                Text = searchItem,
+                                                                Value = searchItem,
                                                                 Selected = true
                                                             });
                                                         }
@@ -129,8 +131,8 @@
                                                         {
                                                             dropDownList.Add(new SelectListItem()
                                                             {
-                                                                Text = searchItem.Value,
-                                                                Value = searchItem.Value
+                                                                Text = searchItem,
+                                                                Value = searchItem
                                                             });
                                                         }
                                                     }
@@ -152,7 +154,7 @@
                         }
                     </div>
                     <div class="col-xs-12">
-                        @foreach (var fieldItem in Model.InspectFields)
+                        @foreach (var fieldItem in DocFields)
                         {
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
@@ -179,6 +181,7 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MinValue", docItem.MinValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DropDownItems", docItem.DropDownItems)
                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
@@ -203,7 +206,7 @@
             {
                 currentItemName = item.ItemName;
             }
-            int countFields = Model.InspectFields.Count();
+            int countFields = DocFields.Count();
             <input type="hidden" id="countFields" value="@countFields" />
         }
     </div>

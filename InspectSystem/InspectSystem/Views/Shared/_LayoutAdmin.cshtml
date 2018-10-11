@@ -8,6 +8,15 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <style>
+        body {
+            padding-top: 200px;
+        }
+        .navbar-layout-content {
+            font-size: 15px;
+        }
+    </style>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,7 +30,7 @@
                 @Html.ActionLink("巡檢系統", "Index", "InspectDocChecker", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-layout-content">
                     <li>@Html.ActionLink("巡檢作業", "SelectAreas", "InspectDocDetails")</li>
                     <li>@Html.ActionLink("工程師審核作業", "DocListForWorker", "InspectDocChecker")</li>
                     <li>@Html.ActionLink("主管審核作業", "DocListForChecker", "InspectDocChecker")</li>
@@ -31,6 +40,7 @@
                     <li>@Html.ActionLink("各區審核主管維護", "Index", "InspectAreaCheckers")</li>
                     <li>@Html.ActionLink("注意事項維護", "Index", "InspectPrecautions")</li>
                     <li>@Html.ActionLink("巡檢文件編輯", "Index", "InspectDocs")</li>
+                    @*<li>@Html.ActionLink("新增巡檢文件", "Create", "InspectDocs")</li>*@
                     @*<li>@Html.ActionLink("巡檢文件搜尋", "Index", "InspectDocSearch")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -89,7 +89,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     WorkerName = workerName,
                     CheckerID = checkerID,
                     CheckerName = checkerName,
-                    FlowStatusID = 3        // Default flow status:"編輯中"
+                    FlowStatusID = 3        // Default flow status:"巡檢中"
                 };
                 db.InspectDocs.Add(inspectDocs);
 
@@ -130,6 +130,20 @@ namespace InspectSystem.Areas.Mobile.Controllers
                 {
                     string isFunctional = null; // Set default value.
 
+                    string dropDownItems = null;
+                    /* If field is dropdown, set dropdownlist items to string and save to DB. */
+                    if (item.DataType == "dropdownlist")
+                    {
+                        int itemACID = (item.AreaID) * 100 + item.ClassID;
+                        var itemDropDownList = db.InspectFieldDropDown.Where(i => i.ACID == itemACID &&
+                                                                              i.ItemID == item.ItemID &&
+                                                                              i.FieldID == item.FieldID).ToList();
+                        foreach (var dropItem in itemDropDownList)
+                        {
+                            dropDownItems += dropItem.Value.ToString() + ";";
+                        }
+                    }
+
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                     {
                         DocID = docID,
@@ -147,7 +161,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         DataType = item.DataType,
                         MinValue = item.MinValue,
                         MaxValue = item.MaxValue,
-                        IsRequired = item.IsRequired
+                        IsRequired = item.IsRequired,
+                        DropDownItems = dropDownItems
                     });
                 }
                 /* Insert data to DocTemp DB. */
@@ -172,19 +187,13 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         /* Check are all the required fields having data. */
                         foreach (var tempItem in findDocTemps)
                         {
-                            // Set search variables.
-                            var tACID = item.ACID;
-                            var tItemID = tempItem.ItemID;
-                            var tFieldID = tempItem.FieldID;
-                            var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
-                            var isRequired = findField.IsRequired;
                             // If required field has no data or isFunctional didn't selected.
-                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            if (tempItem.IsRequired == true && tempItem.DataType != "boolean" && tempItem.Value == null)
                             {
                                 isDataCompleted = false;
                                 break;
                             }
-                            else if (findField.DataType == "boolean" && tempItem.IsFunctional == null)
+                            else if (tempItem.DataType == "boolean" && tempItem.IsFunctional == null)
                             {
                                 isDataCompleted = false;
                                 break;
@@ -227,64 +236,19 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
             ViewBag.AreaID = db.ClassesOfAreas.Find(ACID).AreaID;
 
-            /* Get items and fields to display. */
-            var inspectFields = db.InspectFields.Include(i => i.ClassesOfAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectAreas)
-                                                .Include(i => i.ClassesOfAreas.InspectClasses);
-            var itemsByACID = db.InspectItems.Where(i => i.ACID == ACID &&
-                                                         i.ItemStatus == true)
-                                             .OrderBy(i => i.ItemOrder).ToList();
-            var fieldsByACID = inspectFields.Where(i => i.ACID == ACID &&
-                                                        i.FieldStatus == true).ToList();
-            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
-
-            /* Create a list for user to insert values, and add some known value first. */
-            var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
-
             /* Find the temp data. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetailsTemp = db.InspectDocDetailsTemporary.Where(i => i.DocID == docID &&
                                                                                  i.ClassID == classID);
-            /* If temp data is not found, set values to list. */
-            if (inspectDocDetailsTemp.Any() == false)
-            {
-                foreach (var item in fieldsByACID)
-                {
-                    string isFunctional = null; // Set default value.
-                    var itemOfFields = db.InspectItems.Where(i => i.ItemID == item.ItemID &&
-                                                              i.ACID == item.ACID).First();
-                    inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
-                    {
-                        DocID = docID,
-                        AreaID = item.ClassesOfAreas.InspectAreas.AreaID,
-                        AreaName = item.ClassesOfAreas.InspectAreas.AreaName,
-                        ClassID = item.ClassesOfAreas.InspectClasses.ClassID,
-                        ClassName = item.ClassesOfAreas.InspectClasses.ClassName,
-                        ItemID = item.ItemID,
-                        ItemName = itemOfFields.ItemName,
-                        ItemOrder = itemOfFields.ItemOrder,
-                        FieldID = item.FieldID,
-                        FieldName = item.FieldName,
-                        UnitOfData = item.UnitOfData,
-                        IsFunctional = isFunctional,
-                        DataType = item.DataType,
-                        MinValue = item.MinValue,
-                        MaxValue = item.MaxValue,
-                        IsRequired = item.IsRequired
-                    });
-                }
-            }
-            else
-            {
-                inspectDocDetailsTemporary = inspectDocDetailsTemp.ToList();
-            }
+            /* Get items and fields from DocDetails. */
+            ViewBag.itemsByDocDetails = inspectDocDetailsTemp.GroupBy(i => i.ItemID)
+                                                             .Select(g => g.FirstOrDefault())
+                                                             .OrderBy(s => s.ItemOrder).ToList();
+            ViewBag.fieldsByDocDetails = inspectDocDetailsTemp.ToList();
 
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
-                InspectDocDetailsTemporary = inspectDocDetailsTemporary,
-                InspectFields = fieldsByACID,
-                InspectItems = itemsByACID,
-                InspectFieldDropDowns = fieldDropDown
+                InspectDocDetailsTemporary = inspectDocDetailsTemp
             };
 
             return View(inspectDocDetailsViewModels);
@@ -520,7 +484,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     DataType = item.DataType,
                     MinValue = item.MinValue,
                     MaxValue = item.MaxValue,
-                    IsRequired = item.IsRequired
+                    IsRequired = item.IsRequired,
+                    DropDownItems = item.DropDownItems
                 });
             }
 

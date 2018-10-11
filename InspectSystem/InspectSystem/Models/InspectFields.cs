@@ -31,7 +31,7 @@ namespace InspectSystem.Models
         public string FieldName { get; set; }
         [Required]
         [Display(Name = "資料型態")]
-        public string DataType { get; set; }
+        public string DataType { get; set; }        //"string", "float", "boolean", "checkbox", "dropdownlist"
         [Display(Name = "單位")]
         public string UnitOfData { get; set; }
         [Display(Name = "最小值")]

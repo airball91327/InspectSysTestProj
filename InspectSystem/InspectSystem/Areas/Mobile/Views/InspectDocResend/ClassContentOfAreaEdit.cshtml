@@ -71,6 +71,7 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MinValue", docItem.MinValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DropDownItems", docItem.DropDownItems)
 
                                             switch (fieldItem.DataType)
                                             {
@@ -112,19 +113,17 @@
                                                     break;
 
                                                 case "dropdownlist":
-                                                    var ACID = (docItem.AreaID) * 100 + docItem.ClassID;
-                                                    var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == ACID &&
-                                                                                                                m.ItemID == fieldItem.ItemID &&
-                                                                                                                m.FieldID == fieldItem.FieldID);
+                                                    char[] charSpilt = new char[] { ';' };
+                                                    string[] dropDownSpilt = docItem.DropDownItems.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
                                                     List<SelectListItem> dropDownList = new List<SelectListItem>();
-                                                    foreach (var searchItem in searchList)
+                                                    foreach (var searchItem in dropDownSpilt)
                                                     {
-                                                        if (searchItem.Value == docItem.Value)
+                                                        if (searchItem == docItem.Value)
                                                         {
                                                             dropDownList.Add(new SelectListItem()
                                                             {
-                                                                Text = searchItem.Value,
-                                                                Value = searchItem.Value,
+                                                                Text = searchItem,
+                                                                Value = searchItem,
                                                                 Selected = true
                                                             });
                                                         }
@@ -132,8 +131,8 @@
                                                         {
                                                             dropDownList.Add(new SelectListItem()
                                                             {
-                                                                Text = searchItem.Value,
-                                                                Value = searchItem.Value
+                                                                Text = searchItem,
+                                                                Value = searchItem
                                                             });
                                                         }
                                                     }
@@ -182,6 +181,7 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MinValue", docItem.MinValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DropDownItems", docItem.DropDownItems)
                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常

@@ -34,115 +34,114 @@
                             /* Display all the FieldName belong the current Item. */
                             if (item.ItemID == fieldItem.ItemID)
                             {
-                        <div class="col-md clearfix">
-                            <span class="col-xs-3 fieldTitle">
-                                @if (fieldItem.FieldName != null)
-                                {
-                                    @Html.DisplayFor(modelItem => fieldItem.FieldName)
-                                }
-                            </span>
+                                <div class="col-md clearfix">
+                                    <span class="col-xs-3 fieldTitle">
+                                        @if (fieldItem.FieldName != null)
+                                        {
+                                            @Html.DisplayFor(modelItem => fieldItem.FieldName)
+                                        }
+                                    </span>
 
-                            @foreach (var docItem in Model.InspectDocDetailsTemporary)
-                            {
-                                /* Display textbox or checkbox for all fields, except boolean type. */
-                                if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
-                                    fieldItem.DataType != "boolean")
-                                {
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + i + "].AreaID" })
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetailsTemporary[" + i + "].ClassID" })
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassName", docItem.ClassName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID, new { id = "InspectDocDetailsTemporary[" + i + "].ItemID" })
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + i + "].FieldID" })
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemOrder", docItem.ItemOrder)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DataType", docItem.DataType)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MinValue", docItem.MinValue)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
-                                    @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
-
-                                    switch (fieldItem.DataType)
+                                    @foreach (var docItem in Model.InspectDocDetailsTemporary)
                                     {
-                                        case "string":
-                                            <span>
-                                                @if (fieldItem.IsRequired == true)
-                                                {
-                                                    <span style="color: red">*</span>
-                                                }
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
-                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                            </span>
-                                            break;
+                                        /* Display textbox or checkbox for all fields, except boolean type. */
+                                        if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                            fieldItem.DataType != "boolean")
+                                        {
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DocID", docItem.DocID)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaID", docItem.AreaID, new { id = "InspectDocDetailsTemporary[" + i + "].AreaID" })
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].AreaName", docItem.AreaName)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassID", docItem.ClassID, new { id = "InspectDocDetailsTemporary[" + i + "].ClassID" })
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ClassName", docItem.ClassName)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemID", docItem.ItemID, new { id = "InspectDocDetailsTemporary[" + i + "].ItemID" })
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemName", docItem.ItemName)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldID", docItem.FieldID, new { id = "InspectDocDetailsTemporary[" + i + "].FieldID" })
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].FieldName", docItem.FieldName)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsFunctional", docItem.IsFunctional)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].ItemOrder", docItem.ItemOrder)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DataType", docItem.DataType)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MinValue", docItem.MinValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DropDownItems", docItem.DropDownItems)
 
-                                        case "float":
-                                            <span>
-                                                @if (fieldItem.IsRequired == true)
-                                                {
-                                                    <span style="color: red">*</span>
-                                                }
-                                                @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i, type = "number", step = "0.0001" } })
-                                                @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
-                                                @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                                <br /><span class="@i col-xs-offset-3" style="margin-left: 0%"></span>
-                                            </span>
-                                            break;
-
-                                        case "checkbox":
-                                            <span>
-                                                @if (docItem.Value == "true")
-                                                {
-                                                    @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", true)
-                                                }
-                                                else
-                                                {
-                                                    @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", false)
-                                                }
-                                            </span>
-                                            break;
-
-                                        case "dropdownlist":
-                                            var ACID = (docItem.AreaID) * 100 + docItem.ClassID;
-                                            var searchList = Model.InspectFieldDropDowns.Where(m => m.ACID == ACID &&
-                                                                                                m.ItemID == fieldItem.ItemID &&
-                                                                                                m.FieldID == fieldItem.FieldID);
-                                            List<SelectListItem> dropDownList = new List<SelectListItem>();
-                                            foreach (var searchItem in searchList)
+                                            switch (fieldItem.DataType)
                                             {
-                                                if (searchItem.Value == docItem.Value)
-                                                {
-                                                    dropDownList.Add(new SelectListItem()
+                                                case "string":
+                                                    <span>
+                                                        @if (fieldItem.IsRequired == true)
+                                                        {
+                                                            <span style="color: red">*</span>
+                                                        }
+                                                        @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value" } })
+                                                        @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                                    </span>
+                                                    break;
+
+                                                case "float":
+                                                    <span>
+                                                        @if (fieldItem.IsRequired == true)
+                                                        {
+                                                            <span style="color: red">*</span>
+                                                        }
+                                                        @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i, type = "number", step = "0.0001" } })
+                                                        @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
+                                                        @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
+                                                        <br /><span class="@i col-xs-offset-3" style="margin-left: 0%"></span>
+                                                    </span>
+                                                    break;
+
+                                                case "checkbox":
+                                                    <span>
+                                                        @if (docItem.Value == "true")
+                                                        {
+                                                            @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", true)
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", false)
+                                                        }
+                                                    </span>
+                                                    break;
+
+                                                case "dropdownlist":
+                                                    char[] charSpilt = new char[] { ';' };
+                                                    string[] dropDownSpilt = docItem.DropDownItems.Split(charSpilt, StringSplitOptions.RemoveEmptyEntries);
+                                                    List<SelectListItem> dropDownList = new List<SelectListItem>();
+                                                    foreach (var searchItem in dropDownSpilt)
                                                     {
-                                                        Text = searchItem.Value,
-                                                        Value = searchItem.Value,
-                                                        Selected = true
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    dropDownList.Add(new SelectListItem()
-                                                    {
-                                                        Text = searchItem.Value,
-                                                        Value = searchItem.Value
-                                                    });
-                                                }
+                                                        if (searchItem == docItem.Value)
+                                                        {
+                                                            dropDownList.Add(new SelectListItem()
+                                                            {
+                                                                Text = searchItem,
+                                                                Value = searchItem,
+                                                                Selected = true
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            dropDownList.Add(new SelectListItem()
+                                                            {
+                                                                Text = searchItem,
+                                                                Value = searchItem
+                                                            });
+                                                        }
+                                                    }
+                                                    <span>
+                                                        @Html.DropDownList("InspectDocDetailsTemporary[" + i + "].Value", (IEnumerable<SelectListItem>)dropDownList, new { @class = "form-control", style = "width: 50%" })
+                                                    </span>
+                                                    break;
                                             }
-                                            <span>
-                                                @Html.DropDownList("InspectDocDetailsTemporary[" + i + "].Value", (IEnumerable<SelectListItem>)dropDownList, new { @class = "form-control", style = "width: 50%" })
-                                            </span>
-                                            break;
+                                            i++;
+                                        }
+                                        else if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
+                                                 fieldItem.DataType == "boolean")
+                                        {
+                                            i++; // Skip an array space to let the boolean type insert later.
+                                        }
                                     }
-                                    i++;
-                                }
-                                else if (docItem.ItemID == item.ItemID && docItem.FieldID == fieldItem.FieldID &&
-                                         fieldItem.DataType == "boolean")
-                                {
-                                    i++; // Skip an array space to let the boolean type insert later.
-                                }
-                            }
-                        </div>
+                                </div>
                             }
                         }
                     </div>
@@ -174,6 +173,7 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MinValue", docItem.MinValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].IsRequired", docItem.IsRequired)
+                                            @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DropDownItems", docItem.DropDownItems)
                                             <div class="col radioBtn">
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
                                                 @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常

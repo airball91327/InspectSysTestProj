@@ -11,7 +11,7 @@ namespace InspectSystem.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Required]
         [Display(Name = "ACID")]
-        public int ACID { get; set; }
+        public int ACID { get; set; }       // ACID = areaID * 100 + classID
         [Required]
         [ForeignKey("InspectAreas")]
         [Display(Name = "區域代碼")]

@@ -55,9 +55,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
             ViewBag.DocID = docID;
             ViewBag.ACID = ACID;
 
-            /* Get DropDown to display. */
-            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
-
             /* Find the doc details. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
@@ -72,7 +69,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetails = inspectDocDetails,
-                InspectFieldDropDowns = fieldDropDown
             };
 
             return View(inspectDocDetailsViewModels);
@@ -149,28 +145,5 @@ namespace InspectSystem.Areas.Mobile.Controllers
             return View(flowList.ToList());
         }
 
-        /*
-        // POST: Mobile/InspectDocEdit/SaveBeforeSend
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveBeforeSend(List<InspectDocDetails> inspectDocDetails)
-        {
-            var areaID = inspectDocDetails.First().AreaID;
-            int docID = inspectDocDetails.First().DocID;
-
-            if (ModelState.IsValid)
-            {
-                foreach (var item in inspectDocDetails)
-                {
-                    db.Entry(item).State = EntityState.Modified;
-                }
-
-                db.SaveChanges();
-                return RedirectToAction("DocDetails", new { DocID = docID, AreaID = areaID });
-            }
-            TempData["SaveMsg"] = "傳送失敗";
-            return RedirectToAction("Index", new { DocID = docID });
-        }
-        */
     }
 }

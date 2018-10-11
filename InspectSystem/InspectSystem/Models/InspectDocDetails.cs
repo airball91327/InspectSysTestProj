@@ -11,7 +11,7 @@ namespace InspectSystem.Models
         [ForeignKey("InspectDocs")]
         [Required]
         [Display(Name = "表單編號")]
-        public int DocID { get; set; }
+        public int DocID { get; set; }      //docID = date(yyyy/MM/DD) * 100 + areaID;
         [Required]
         [Display(Name = "區域代碼")]
         public int AreaID { get; set; }
@@ -52,7 +52,7 @@ namespace InspectSystem.Models
         public string RepairDocID { get; set; }
         [Required]
         [Display(Name = "資料型態")]
-        public string DataType { get; set; }
+        public string DataType { get; set; }    //"string", "float", "boolean", "checkbox", "dropdownlist"
         [Display(Name = "最小值")]
         public double MinValue { get; set; }
         [Display(Name = "最大值")]
@@ -60,6 +60,8 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "是否必填")]
         public Boolean IsRequired { get; set; }
+        [Display(Name = "下拉選單元件")]
+        public string DropDownItems { get; set; }
 
         public virtual InspectDocs InspectDocs { get; set; }
     }

@@ -52,7 +52,7 @@ namespace InspectSystem.Models
         public string RepairDocID { get; set; }
         [Required]
         [Display(Name = "資料型態")]
-        public string DataType { get; set; }
+        public string DataType { get; set; }    //"string", "float", "boolean", "checkbox", "dropdownlist"
         [Display(Name = "最小值")]
         public double MinValue { get; set; }
         [Display(Name = "最大值")]
@@ -60,6 +60,8 @@ namespace InspectSystem.Models
         [Required]
         [Display(Name = "是否必填")]
         public Boolean IsRequired { get; set; }
+        [Display(Name = "下拉選單元件")]
+        public string DropDownItems { get; set; }
 
         public virtual InspectDocs InspectDocs { get; set; }
     }

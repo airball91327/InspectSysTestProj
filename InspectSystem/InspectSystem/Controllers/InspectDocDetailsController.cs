@@ -117,6 +117,20 @@ namespace InspectSystem.Controllers
                 {
                     string isFunctional = null; // Set default value.
 
+                    string dropDownItems = null;
+                    /* If field is dropdown, set dropdownlist items to string and save to DB. */
+                    if (item.DataType == "dropdownlist")
+                    {
+                        int itemACID = (item.AreaID) * 100 + item.ClassID;
+                        var itemDropDownList = db.InspectFieldDropDown.Where(i => i.ACID == itemACID &&
+                                                                              i.ItemID == item.ItemID &&
+                                                                              i.FieldID == item.FieldID).ToList();
+                        foreach(var dropItem in itemDropDownList)
+                        {
+                            dropDownItems += dropItem.Value.ToString() + ";";
+                        }
+                    }
+
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                     {
                         DocID = docID,
@@ -134,7 +148,8 @@ namespace InspectSystem.Controllers
                         DataType = item.DataType,
                         MinValue = item.MinValue,
                         MaxValue = item.MaxValue,
-                        IsRequired = item.IsRequired
+                        IsRequired = item.IsRequired,
+                        DropDownItems = dropDownItems
                     });
                 }
                 /* Insert data to DocTemp DB. */
@@ -159,19 +174,13 @@ namespace InspectSystem.Controllers
                         /* Check are all the required fields having data. */
                         foreach (var tempItem in findDocTemps)
                         {
-                            // Set search variables.
-                            var tACID = item.ACID;
-                            var tItemID = tempItem.ItemID;
-                            var tFieldID = tempItem.FieldID;
-                            var findField = db.InspectFields.Find(tACID, tItemID, tFieldID);
-                            var isRequired = findField.IsRequired;
                             // If required field has no data or isFunctional didn't selected.
-                            if (isRequired == true && findField.DataType != "boolean" && tempItem.Value == null)
+                            if (tempItem.IsRequired == true && tempItem.DataType != "boolean" && tempItem.Value == null)
                             {
                                 isDataCompleted = false;
                                 break;
                             }
-                            else if (findField.DataType == "boolean" && tempItem.IsFunctional == null) 
+                            else if (tempItem.DataType == "boolean" && tempItem.IsFunctional == null)
                             {
                                 isDataCompleted = false;
                                 break;
@@ -229,14 +238,10 @@ namespace InspectSystem.Controllers
                                                              .Select(g => g.FirstOrDefault())
                                                              .OrderBy(s => s.ItemOrder).ToList();
             ViewBag.fieldsByDocDetails = inspectDocDetailsTemp.ToList();
-
-            /* Get DropDown to display. */
-            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
             
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                     InspectDocDetailsTemporary = inspectDocDetailsTemp,
-                    InspectFieldDropDowns = fieldDropDown
             };
 
             return PartialView(inspectDocDetailsViewModels);
@@ -482,7 +487,8 @@ namespace InspectSystem.Controllers
                     DataType = item.DataType,
                     MinValue = item.MinValue,
                     MaxValue = item.MaxValue,
-                    IsRequired = item.IsRequired
+                    IsRequired = item.IsRequired,
+                    DropDownItems = item.DropDownItems
                 });
             }
             

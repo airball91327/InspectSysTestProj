@@ -21,17 +21,12 @@
 
 <script>
     $(document).ready(function () {
-        alert("test");
+
+        /* Set the ClassContentOfArea's submit target to InspectDocResend/TempSave. */
         $(document).on("click", "#submitBtn", function () {
-            alert("test2");
             document.getElementById("detailsForm").setAttribute("action", "/InspectDocResend/TempSave");
             document.getElementById("detailsForm").submit();
         });
-        //$("#submitBtn").click(function () {
-        //    alert("test2");
-        //    document.getElementById("detailsForm").setAttribute("action", "/InspectDocResend/TempSave");
-        //    document.getElementById("detailsForm").submit();
-        //});
     });
 </script>
 

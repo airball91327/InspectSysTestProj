@@ -51,9 +51,6 @@ namespace InspectSystem.Controllers
         {
             ViewBag.ClassName = db.ClassesOfAreas.Find(ACID).InspectClasses.ClassName;
 
-            /* Get DropDown to display. */
-            var fieldDropDown = db.InspectFieldDropDown.Where(i => i.ACID == ACID).ToList();
-
             /* Find the doc details. */
             var classID = db.ClassesOfAreas.Find(ACID).ClassID;
             var inspectDocDetails = db.InspectDocDetails.Where(i => i.DocID == docID &&
@@ -68,7 +65,6 @@ namespace InspectSystem.Controllers
             InspectDocDetailsViewModels inspectDocDetailsViewModels = new InspectDocDetailsViewModels()
             {
                 InspectDocDetails = inspectDocDetails,
-                InspectFieldDropDowns = fieldDropDown
             };
 
             return PartialView(inspectDocDetailsViewModels);
