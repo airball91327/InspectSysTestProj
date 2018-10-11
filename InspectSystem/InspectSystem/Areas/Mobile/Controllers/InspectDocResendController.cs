@@ -378,7 +378,8 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     DataType = item.DataType,
                     MinValue = item.MinValue,
                     MaxValue = item.MaxValue,
-                    IsRequired = item.IsRequired
+                    IsRequired = item.IsRequired,
+                    DropDownItems = item.DropDownItems
                 });
             }
 
