@@ -54,7 +54,7 @@ function openClassContent(evt, acid, docID) {
                     $("#loadingModal").modal("hide");
                 },
                 success: function (result) {
-                    console.log(result); //For debug
+                    //console.log(result); //For debug
                     $("#tabContent").html(result);
                 },
                 error: function (msg) {
@@ -86,7 +86,7 @@ function openClassContent(evt, acid, docID) {
                 $("#loadingModal").modal("hide");
             },
             success: function (result) {
-                console.log(result); //For debug
+                //console.log(result); //For debug
                 $("#tabContent").html(result);
             },
             error: function (msg) {
@@ -125,7 +125,7 @@ function getFlowList(evt, docID) {
                     $("#loadingModal").modal("hide");
                 },
                 success: function (result) {
-                    console.log(result); //For debug
+                    //console.log(result); //For debug
                     $("#tabContent").html(result);
                 },
                 error: function (msg) {
@@ -156,7 +156,7 @@ function getFlowList(evt, docID) {
                 $("#loadingModal").modal("hide");
             },
             success: function (result) {
-                console.log(result); //For debug
+                //console.log(result); //For debug
                 $("#tabContent").html(result);
             },
             error: function (msg) {

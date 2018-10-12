@@ -218,6 +218,7 @@
     <Compile Include="Models\InspectFields.cs" />
     <Compile Include="Models\InspectItems.cs" />
     <Compile Include="Models\InspectFlowStatusTable.cs" />
+    <Compile Include="Models\InspectMemberAreas.cs" />
     <Compile Include="Models\InspectMembers.cs" />
     <Compile Include="Models\InspectPrecautions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

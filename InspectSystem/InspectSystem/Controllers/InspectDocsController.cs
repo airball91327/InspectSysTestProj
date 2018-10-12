@@ -61,6 +61,7 @@ namespace InspectSystem.Controllers
         public ActionResult Create()
         {
             ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName");
+            ViewBag.MemberID = new SelectList(db.InspectMembers, "MemberID", "MemberName");
             return View();
         }
 
@@ -87,6 +88,7 @@ namespace InspectSystem.Controllers
             }
 
             ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectDocs.AreaID);
+            ViewBag.MemberID = new SelectList(db.InspectMembers, "MemberID", "MemberName");
             return View(inspectDocs);
         }
 

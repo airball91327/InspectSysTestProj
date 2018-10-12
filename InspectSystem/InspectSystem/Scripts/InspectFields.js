@@ -56,7 +56,7 @@ function ChangeAttrByRaioBtn() {
     for (i = 0; i < dataType.length; i++) {
         if (dataType[i].checked) {
             checkValue = dataType[i].value;
-            console.log(checkValue); // For debug
+            //console.log(checkValue); // For debug
         }
     }
 

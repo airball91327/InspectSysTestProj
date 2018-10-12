@@ -18,7 +18,7 @@
             url: "/InspectFields/Edit",
             data: { acid: ACID, itemid: itemID, fieldid: fieldID },
             success: function (result) {
-                console.log(result); //For debug
+                //console.log(result); //For debug
                 $(".createModalContent").html("<p></p>"); //Clean other create modal's html content to prevent radio button's error.
                 $("#" + editModalContentNo).html(result);
             },
@@ -44,7 +44,7 @@
             url: "/InspectFields/Create",
             data: { acid: ACID, itemid: itemID },
             success: function (result) {
-                console.log(result); //For debug
+                //console.log(result); //For debug
                 $(".editModalContent").html("<p></p>");  //Clean other edit modal's html content to prevent radio button's error.
                 $("#" + createModalContentNo).html(result);
             },

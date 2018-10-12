@@ -65,15 +65,15 @@
                 axis: 'y',
                 start: function (event, ui) {
                     var start_pos = ui.item.index();
-                    console.log("start_pos:" + start_pos);
+                    //console.log("start_pos:" + start_pos); //For debug
                     ui.item.data('start_pos', start_pos);
                 },
                 update: function (event, ui) {
                     //var productOrder = $(this).sortable('toArray').toString();
                     var oldIndex = ui.item.data('start_pos');
-                    console.log("old:" + oldIndex);
+                    //console.log("old:" + oldIndex); //For debug
                     var newIndex = ui.item.index();
-                    console.log("new:" + newIndex);
+                    //console.log("new:" + newIndex); //For debug
                     $.ajax({
                         type: 'post',
                         url: '/InspectClasses/SetClassOrder',
@@ -84,7 +84,7 @@
                             //pageSize: pageSize
                         },
                         success: function (result) {
-                            console.log(result); //For debug
+                            //console.log(result); //For debug
                             window.location.reload(true);
                         },
                         error: function (msg) {
