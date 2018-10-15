@@ -61,8 +61,15 @@ namespace InspectSystem.Controllers
         // GET: InspectDocs/Create
         public ActionResult Create()
         {
+            /* Set default selected area and the members of area. */
             ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName");
-            ViewBag.MemberID = new SelectList(db.InspectMembers, "MemberID", "MemberName");
+            var membersOfArea = db.InspectMemberAreas.Where(i => i.AreaId == db.InspectAreas.FirstOrDefault().AreaID);
+            var defaultMembers = membersOfArea.Select(m => new
+            {
+                MemberId = m.MemberId,
+                MemberName = m.InspectMembers.MemberName
+            });
+            ViewBag.MemberID = new SelectList(defaultMembers, "MemberID", "MemberName");
             return View();
         }
 
@@ -71,25 +78,49 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Date,AreaID,WorkerID,WorkerName")] InspectDocs inspectDocs)
+        public ActionResult Create(InspectDocs inspectDocs)
         {
-            if (ModelState.IsValid)
+            /* Find data from DB and set to variables. */
+            var workerID = System.Convert.ToInt32(Request.Form["MemberID"]);
+            var findAreaChecker = db.InspectAreaCheckers.Where(i => i.AreaID == inspectDocs.AreaID).First();
+            var findWorkerName = db.InspectMembers.Find(workerID).MemberName;
+            string date = inspectDocs.Date.ToString("yyyyMMdd");
+            int docID = System.Convert.ToInt32(date) * 100 + inspectDocs.AreaID;
+
+            /* Check doc is exist or not. */
+            var isDocExist = db.InspectDocs.Find(docID);
+            if(isDocExist == null)
             {
-                var findAreaChecker = db.InspectAreaCheckers.Where(i => i.AreaID == inspectDocs.AreaID).First();
                 /* Set doc details.*/
-                inspectDocs.DocID = System.Convert.ToInt32(inspectDocs.Date) * 100 + inspectDocs.AreaID;
-                inspectDocs.AreaName = inspectDocs.InspectAreas.AreaName;
+                inspectDocs.DocID = docID;
+                inspectDocs.AreaName = db.InspectAreas.Find(inspectDocs.AreaID).AreaName;
+                inspectDocs.WorkerID = workerID;
+                inspectDocs.WorkerName = findWorkerName;
                 inspectDocs.CheckerID = findAreaChecker.CheckerID;
                 inspectDocs.CheckerName = findAreaChecker.CheckerName;
                 inspectDocs.FlowStatusID = 3;        // Default flow status:"編輯中"
 
-                db.InspectDocs.Add(inspectDocs);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.InspectDocs.Add(inspectDocs);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            else
+            {
+                ModelState.AddModelError("","已有相同文件存在!");
+            }           
 
-            ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectDocs.AreaID);
-            ViewBag.MemberID = new SelectList(db.InspectMembers, "MemberID", "MemberName");
+            /* Set default selected area and the members of area. */
+            ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName");
+            var membersOfArea = db.InspectMemberAreas.Where(i => i.AreaId == inspectDocs.AreaID);
+            var defaultMembers = membersOfArea.Select(m => new
+            {
+                MemberId = m.MemberId,
+                MemberName = m.InspectMembers.MemberName
+            });
+            ViewBag.MemberID = new SelectList(defaultMembers, "MemberID", "MemberName");
             return View(inspectDocs);
         }
 
