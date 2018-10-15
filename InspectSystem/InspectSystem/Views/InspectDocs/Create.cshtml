@@ -66,8 +66,28 @@
             var memberID = $("#dropDownMembers").val();
             $("#memberID").html(memberID);
 
-            $("#dropDownMembers").change(function () {
+            var url = '@Url.Action("GetMembers", "InspectDocs")'; // Don't hard code your url's!
+            var members = $("#dropDownMembers"); // cache it
+            var i = 0;
+            $("#dropDownAreas").change(function () {
+                areaId = $(this).val();     // Use $(this) so you don't traverse the DOM again
+                $.getJSON(url, { AreaId: areaId }, function (response) {
+                    members.empty();        // remove any existing options
+                    $.each(response, function (index, item) { // item is now an object containing properties ID and Text
+                        if (i == 0) {
+                            members.append($('<option></option>').text(item.MemberName).val(item.MemberId));
+                        }
+                        members.append($('<option></option>').text(item.MemberName).val(item.MemberId));
+                        i++;
+                    });
+                });
+
                 memberID = $("#dropDownMembers").val();
+                $("#memberID").html(memberID);
+            });
+
+            $("#dropDownMembers").change(function () {
+                memberID = $(this).val();
                 $("#memberID").html(memberID);
             });
         });

@@ -10,6 +10,7 @@ using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class InspectDocsController : Controller
     {
         private BMEDcontext db = new BMEDcontext();
@@ -90,6 +91,18 @@ namespace InspectSystem.Controllers
             ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectDocs.AreaID);
             ViewBag.MemberID = new SelectList(db.InspectMembers, "MemberID", "MemberName");
             return View(inspectDocs);
+        }
+
+        // GET: InspectDocs/GetMembers
+        public JsonResult GetMembers(int areaId)
+        {
+            var membersOfArea = db.InspectMemberAreas.Where(i => i.AreaId == areaId);
+            var members = membersOfArea.Select(m => new
+            {
+                MemberId = m.MemberId,
+                MemberName = m.InspectMembers.MemberName
+            });
+            return Json(members, JsonRequestBehavior.AllowGet);
         }
 
         //// GET: InspectDocs1/Delete/5
