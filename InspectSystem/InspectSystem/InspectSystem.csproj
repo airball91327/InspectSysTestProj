@@ -198,6 +198,7 @@
     <Compile Include="Controllers\InspectDocTempViewController.cs" />
     <Compile Include="Controllers\InspectFieldsController.cs" />
     <Compile Include="Controllers\InspectItemsController.cs" />
+    <Compile Include="Controllers\InspectMembersController.cs" />
     <Compile Include="Controllers\InspectPrecautionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,6 +221,7 @@
     <Compile Include="Models\InspectFlowStatusTable.cs" />
     <Compile Include="Models\InspectMemberAreas.cs" />
     <Compile Include="Models\InspectMembers.cs" />
+    <Compile Include="Models\InspectMembersViewModel.cs" />
     <Compile Include="Models\InspectPrecautions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -810,6 +812,11 @@
     <Content Include="Views\InspectDocResend\Index.cshtml" />
     <Content Include="Views\InspectDocResend\DocDetails.cshtml" />
     <Content Include="Views\InspectDocs\Create.cshtml" />
+    <Content Include="Views\InspectMembers\Create.cshtml" />
+    <Content Include="Views\InspectMembers\Delete.cshtml" />
+    <Content Include="Views\InspectMembers\Details.cshtml" />
+    <Content Include="Views\InspectMembers\Edit.cshtml" />
+    <Content Include="Views\InspectMembers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

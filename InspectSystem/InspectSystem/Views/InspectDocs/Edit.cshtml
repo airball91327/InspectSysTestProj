@@ -1,7 +1,7 @@
 ﻿@model InspectSystem.Models.InspectDocs
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "巡檢人員編輯";
 }
 
 <h2 style="font-weight: bold">巡檢人員編輯</h2>
@@ -9,9 +9,8 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>InspectDocs</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.DocID)
@@ -22,19 +21,26 @@
         @Html.HiddenFor(model => model.CheckerID)
         @Html.HiddenFor(model => model.CheckerName)
         @Html.HiddenFor(model => model.FlowStatusID)
+        @Html.HiddenFor(model => model.WorkerName)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InspectAreas.AreaName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-top: 7px">
+                @Html.DisplayFor(model => model.InspectAreas.AreaName)
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.WorkerID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.WorkerID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.WorkerID, "", new { @class = "text-danger" })
+                <p id="showWorkerID" style="padding-top: 7px"></p>
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.WorkerName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.WorkerName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("WorkerID", null, htmlAttributes: new { @class = "form-control", id = "dropDownMembers" })
                 @Html.ValidationMessageFor(model => model.WorkerName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -50,3 +56,30 @@
 <div>
     @Html.ActionLink("回到列表", "Index")
 </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+
+    <script>
+        $(document).ready(function () {
+
+            /* Default value for dropdowns. */
+            var memberID = $("#dropDownMembers").val();
+            var memberName = $("#dropDownMembers").find("option:selected").text();
+            $("#showWorkerID").html(memberID);
+            //console.log("ID:" + memberID + "name:" + memberName); //For debug
+            var members = $("#dropDownMembers"); // Get dropdown
+
+            /* When user selected a member, update memberId. */
+            $("#dropDownMembers").change(function () {
+                memberID = $(this).val();
+                memberName = $(this).find("option:selected").text();
+                //console.log("ID:" + memberID + "name:" + memberName); //For debug
+                $("#showWorkerID").html(memberID);
+                $("#WorkerName").val(memberName);
+            });
+        });
+    </script>
+}

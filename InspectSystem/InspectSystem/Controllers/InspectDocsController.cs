@@ -35,8 +35,14 @@ namespace InspectSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectDocs.AreaID);
-            ViewBag.FlowStatusID = new SelectList(db.InspectFlowStatusTable, "FlowStatusID", "FlowStatusName", inspectDocs.FlowStatusID);
+            /* Find members of the area. */
+            var workersOfArea = db.InspectMemberAreas.Where(i => i.AreaId == inspectDocs.AreaID);
+            var workerList = workersOfArea.Select(w => new
+            {
+                WorkerID = w.MemberId,
+                WorkerName = w.InspectMembers.MemberName
+            });
+            ViewBag.WorkerID = new SelectList(workerList, "WorkerID", "WorkerName", inspectDocs.WorkerID);
             return View(inspectDocs);
         }
 
@@ -53,8 +59,14 @@ namespace InspectSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AreaID = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectDocs.AreaID);
-            ViewBag.FlowStatusID = new SelectList(db.InspectFlowStatusTable, "FlowStatusID", "FlowStatusName", inspectDocs.FlowStatusID);
+            /* Find members of the area. */
+            var workersOfArea = db.InspectMemberAreas.Where(i => i.AreaId == inspectDocs.AreaID);
+            var workerList = workersOfArea.Select(w => new
+            {
+                WorkerID = w.MemberId,
+                WorkerName = w.InspectMembers.MemberName
+            });
+            ViewBag.WorkerID = new SelectList(workerList, "WorkerID", "WorkerName", inspectDocs.WorkerID);
             return View(inspectDocs);
         }
 
