@@ -27,7 +27,18 @@ namespace InspectSystem.Areas.Mobile.Controllers
         // GET: Mobile/InspectDocDetails/SelectAreas
         public ActionResult SelectAreas()
         {
-            return View(db.InspectAreas.ToList());
+            /* Get the user's inspect areas. */
+            int workerID = System.Convert.ToInt32(WebSecurity.CurrentUserName);
+            var getInspectAreas = db.InspectMemberAreas.Where(i => i.MemberId == workerID).ToList();
+            List<InspectAreas> inspectAreasList = new List<InspectAreas>();
+            foreach (var item in getInspectAreas)
+            {
+                var areaId = db.InspectAreas.Find(item.AreaId).AreaID;
+                var areaName = db.InspectAreas.Find(item.AreaId).AreaName;
+                inspectAreasList.Add(new InspectAreas { AreaID = areaId, AreaName = areaName });
+            }
+
+            return View(inspectAreasList);
         }
 
         // GET: Mobile/InspectDocDetails/SelectClass

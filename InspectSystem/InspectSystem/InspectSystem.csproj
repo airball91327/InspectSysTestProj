@@ -814,9 +814,9 @@
     <Content Include="Views\InspectDocs\Create.cshtml" />
     <Content Include="Views\InspectMembers\Create.cshtml" />
     <Content Include="Views\InspectMembers\Delete.cshtml" />
-    <Content Include="Views\InspectMembers\Details.cshtml" />
     <Content Include="Views\InspectMembers\Edit.cshtml" />
     <Content Include="Views\InspectMembers\Index.cshtml" />
+    <Content Include="Views\InspectMembers\EditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

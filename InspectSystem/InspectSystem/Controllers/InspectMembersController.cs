@@ -26,6 +26,7 @@ namespace InspectSystem.Controllers
                 InspectMemberAreas = inspectMemberAreas.ToList(),
                 InspectMembers = inspectMembers.ToList()
             };
+            ViewBag.CountAreas = db.InspectAreas.Count();
             return View(inspectMembersViewModel);
         }
 
@@ -44,12 +45,29 @@ namespace InspectSystem.Controllers
             return View(inspectMemberAreas);
         }
 
-        // GET: InspectMembers/Create
-        public ActionResult Create()
+        // GET: InspectMembers/Create/5
+        public ActionResult Create(int? id)
         {
-            ViewBag.AreaId = new SelectList(db.InspectAreas, "AreaID", "AreaName");
-            ViewBag.MemberId = new SelectList(db.InspectMembers, "MemberId", "MemberName");
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            /* New a InspectMemberAreas. */
+            InspectMemberAreas inspectMemberAreas = new InspectMemberAreas();
+            inspectMemberAreas.MemberId = db.InspectMembers.Find(id).MemberId;
+            inspectMemberAreas.InspectMembers = db.InspectMembers.Find(id);
+
+            /* Find the AreaIDs which is not already exist. */
+            var q = ( from a in db.InspectAreas select a.AreaID )
+                    .Except( from m in db.InspectMemberAreas where m.MemberId == id select m.AreaId );
+            /* Insert Areas into dropdownlist. */
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach(var item in q)
+            {
+                areaList.Add(db.InspectAreas.Find(item));
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName");
+            return View(inspectMemberAreas);
         }
 
         // POST: InspectMembers/Create
@@ -66,25 +84,56 @@ namespace InspectSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AreaId = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectMemberAreas.AreaId);
-            ViewBag.MemberId = new SelectList(db.InspectMembers, "MemberId", "MemberName", inspectMemberAreas.MemberId);
+            /* Find the AreaIDs which is not already exist. */
+            var id = inspectMemberAreas.MemberId;
+            var q = (from a in db.InspectAreas select a.AreaID)
+                    .Except(from m in db.InspectMemberAreas where m.MemberId == id select m.AreaId);
+            /* Insert Areas into dropdownlist. */
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach (var item in q)
+            {
+                areaList.Add(db.InspectAreas.Find(item));
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName");
+            inspectMemberAreas.InspectMembers = db.InspectMembers.Find(id);
             return View(inspectMemberAreas);
         }
 
+        // Get: InspectMembers/EditList/5
+        public ActionResult EditList(int? id)
+        {
+            var inspectMemberAreas = db.InspectMemberAreas.Where(i => i.MemberId == id);
+            if(inspectMemberAreas.Count() == 1)
+            {
+                return RedirectToAction("Edit", new { id = id, areaID = inspectMemberAreas.First().AreaId });
+            }
+            return View(inspectMemberAreas.ToList());
+        }
+
         // GET: InspectMembers/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? areaID)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id);
+            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id, areaID);
             if (inspectMemberAreas == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AreaId = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectMemberAreas.AreaId);
-            ViewBag.MemberId = new SelectList(db.InspectMembers, "MemberId", "MemberName", inspectMemberAreas.MemberId);
+
+            /* Find the AreaIDs which is not already exist and selected. */
+            var q = (from a in db.InspectAreas select a.AreaID)
+                    .Except(from m in db.InspectMemberAreas where m.MemberId == id && 
+                                                                  m.AreaId != areaID select m.AreaId);
+            /* Insert Areas into dropdownlist. */
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach (var item in q)
+            {
+                areaList.Add(db.InspectAreas.Find(item));
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName", areaID);
             return View(inspectMemberAreas);
         }
 
@@ -93,27 +142,49 @@ namespace InspectSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MemberId,AreaId")] InspectMemberAreas inspectMemberAreas)
+        public ActionResult Edit([Bind(Include = "MemberId,AreaId")] InspectMemberAreas inspectMemberAreas, int originAreaID)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(inspectMemberAreas).State = EntityState.Modified;
+                if(inspectMemberAreas.AreaId == originAreaID)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    /* Add a InspectMemberAreas. */
+                    db.InspectMemberAreas.Add(inspectMemberAreas);
+                    /* Delete old area. */
+                    InspectMemberAreas deleteMemberAreas = db.InspectMemberAreas.Find(inspectMemberAreas.MemberId, originAreaID);
+                    db.InspectMemberAreas.Remove(deleteMemberAreas);
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AreaId = new SelectList(db.InspectAreas, "AreaID", "AreaName", inspectMemberAreas.AreaId);
-            ViewBag.MemberId = new SelectList(db.InspectMembers, "MemberId", "MemberName", inspectMemberAreas.MemberId);
+            /* Find the AreaIDs which is not already exist. */
+            var id = inspectMemberAreas.MemberId;
+            int areaID = originAreaID;
+            var q = (from a in db.InspectAreas select a.AreaID)
+                    .Except(from m in db.InspectMemberAreas where m.MemberId == id &&
+                                                                  m.AreaId != areaID select m.AreaId);
+            /* Insert Areas into dropdownlist. */
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach (var item in q)
+            {
+                areaList.Add(db.InspectAreas.Find(item));
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName", areaID);
             return View(inspectMemberAreas);
         }
 
         // GET: InspectMembers/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? areaID)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id);
+            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id, areaID);
             if (inspectMemberAreas == null)
             {
                 return HttpNotFound();
@@ -124,9 +195,9 @@ namespace InspectSystem.Controllers
         // POST: InspectMembers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int areaID)
         {
-            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id);
+            InspectMemberAreas inspectMemberAreas = db.InspectMemberAreas.Find(id, areaID);
             db.InspectMemberAreas.Remove(inspectMemberAreas);
             db.SaveChanges();
             return RedirectToAction("Index");
