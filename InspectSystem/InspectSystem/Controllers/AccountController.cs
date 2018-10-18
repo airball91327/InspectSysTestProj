@@ -23,11 +23,17 @@ namespace InspectSystem.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
+            else
+            {
+                // Clear the existing external cookie to ensure a clean login process
+                FormsAuthentication.SignOut();
+            }
+            ViewBag.ReturnUrl = returnUrl;
+
             return View();
         }
 
@@ -84,12 +90,12 @@ namespace InspectSystem.Controllers
                     // Set authentication cookie with userName, and userData(real name and user role)
                     //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     var authTicket = new FormsAuthenticationTicket(
-                    1,                             // version
-                    model.UserName,                // user name
-                    DateTime.Now,                  // created
-                    DateTime.Now.AddMinutes(60),   // expires
-                    model.RememberMe,              // persistent set "true" is accroding to matches the form authentication timeout attribute.
-                    userData,                      // can be used to store roles
+                    1,                                              // version
+                    model.UserName,                                 // user name
+                    DateTime.UtcNow.AddHours(08),                   // created
+                    DateTime.UtcNow.AddHours(08).AddMinutes(480),   // expires
+                    true,                                           // persistent 
+                    userData,                                       // can be used to store roles
                     FormsAuthentication.FormsCookiePath
                     );
 
