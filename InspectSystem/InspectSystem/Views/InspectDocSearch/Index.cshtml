@@ -4,7 +4,57 @@
     ViewBag.Title = "巡檢表單搜尋";
 }
 
-<h2>巡檢表單搜尋</h2>
+<style>
+    .control-label {
+        padding: 6px 2px 6px 2px;
+        text-align: center;
+    }
+
+    .dateForm {
+        padding: 6px 2px 6px 2px;
+    }
+</style>
+
+<h2>
+    <b>巡檢表單搜尋</b>
+</h2>
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <form name="searchForm" action="" method="post">
+            <div class="form-inline">
+
+                <div class="form-group col-md-5">
+                    <label class="control-label col-md-2">日期:</label>
+                    <div class="col-md-10">
+                        <input class="form-control dateForm" type="date" name="startDate" />
+                        <span> ~ </span>
+                        <input class="form-control dateForm" type="date" name="endDate" />
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label col-md-3">區域:</label>
+                    <div class="col-md-9">
+                        @Html.DropDownList("AreaID", null, "選擇區域", htmlAttributes: new { @class = "form-control", id = "AreaID" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label col-md-5">流程狀態:</label>
+                    <div class="col-md-7">
+                        @Html.DropDownList("FlowStatusID", null, "選擇狀態", htmlAttributes: new { @class = "form-control", id = "FlowStatusID" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-1">
+                    <input type="button" class="btn btn-primary" id="btnQuery" value="查詢" style="width: 120%"/>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
 
 <table class="table" id="docTable">
     <thead>
@@ -66,26 +116,53 @@
     <script>
         $(document).ready(function () {
 
-            $("#docTable").DataTable({
-                processing: true,
-                serverSide: true,   //ServerSide模式
-                //searching: false, //filter功能
-                ajax: {
-                    method: "get",
-                    url: "/InspectDocSearch/GetData",
-                    "dataSrc": ""
-                },
-                columns: [ //Server端的DataBinding名稱
-                    { data: "AreaName" },
-                    { data: "FlowStatusName" },
-                    { data: "Date" },
-                    { data: "WorkerID" },
-                    { data: "WorkerName" },
-                    { data: "CheckerID" },
-                    { data: "CheckerName" }
-                ],
-                //deferLoading: 0, //初始化DataTable時，不發出ajax
+            let dataTable =
+                $("#docTable").DataTable({
+                    processing: true,
+                    serverSide: true,   //ServerSide模式
+                    searching: true,   //filter功能
+                    language: {
+                        url: "@Url.Content("~/Content/DataTables/DataTable-Chinese-traditional.json")"  
+                    },
+                    ajax: {
+                        method: "get",
+                        url: "/InspectDocSearch/GetData",
+                        "dataSrc": "data",
+                        data: function (d) {
+                            d.startDate = $("input[name=startDate]").val().toString();
+                            d.endDate = $("input[name=endDate]").val().toString();
+                            d.areaId = $("#AreaID").val();
+                            d.flowStatusId = $("#FlowStatusID").val();
+                        }
+                    },
+                    columns: [ //Server端的DataBinding名稱
+                        { data: "AreaName" },
+                        { data: "FlowStatusName" },
+                        { data: "Date" },
+                        { data: "WorkerID" },
+                        { data: "WorkerName" },
+                        { data: "CheckerID" },
+                        { data: "CheckerName" }
+                    ],
+                    //deferLoading: 0,      //初始化DataTable時，不發出ajax
+                    order: [[5, "asc"]],    //預設排序資料行(由0算起)
+                });
+
+            $("#btnQuery").click(function () {
+
+                /* For debug. */
+                var startDate = $("input[name=startDate]").val().toString();
+                var endDate = $("input[name=endDate]").val().toString();
+                var areaId = $("#AreaID").val();
+                var flowStatusId = $("#FlowStatusID").val();
+                console.log("startDate:" + startDate + "\n" + "endDate:" + endDate + "\n" + "areaId:" + areaId + "\n" + "flowStatusId:" + flowStatusId);
+                /* For debug. */
+
+                //按下表單的查詢按鈕後才發出Ajax載入資料
+                dataTable.draw(); //或dataTable.ajax.reload();
+
             });
+
         });
     </script>
 }
