@@ -126,13 +126,16 @@
             // Set default value to startDate and endDate.
             document.getElementById("startDate").defaultValue = "@DateTime.UtcNow.AddHours(08).ToString("yyyy-MM-dd")";
             document.getElementById("endDate").defaultValue = "@DateTime.UtcNow.AddHours(08).ToString("yyyy-MM-dd")";
-
+            
             // Setting DataTable.
             var table =
                 $("#docTable").DataTable({
                     processing: true,
                     serverSide: true,   //ServerSide模式
-                    searching: true,   //filter功能
+                    searching: false,   //filter功能
+                    ordering: true,     //排序功能
+                    order: [[2, "asc"]],//初始排序
+                    deferLoading: 0,    //初始化DataTable時，不發出ajax
                     language: {
                         url: "@Url.Content("~/Content/DataTables/DataTable-Chinese-traditional.json")"
                     },
@@ -158,11 +161,10 @@
                         {
                             targets: -1,
                             data: null,
-                            defaultContent: "<button class='btn btn-primary'>詳細內容</button>"
+                            defaultContent: "<button class='btn btn-primary'>詳細內容</button>",
+                            orderable: false
                         }
                     ],
-                    deferLoading: 0,        //初始化DataTable時，不發出ajax
-                    order: [[0, "asc"]],    //預設排序資料行(由0算起)
                 });
 
             // Search button click.
@@ -183,7 +185,19 @@
 
             //
             $('#docTable tbody').on('click', 'button', function () {
-                var data = table.row( $(this).parents('tr') ).data();
+                var data = table.row($(this).parents('tr')).data();
+
+                if (data.FlowStatusID == 3) // Worker is editing.
+                {
+                    var url = "@Url.Action("DocTempIndex")" + "?DocID=" + data.DocID;
+                    window.location = url;
+                }
+                else
+                {
+                    var url = "@Url.Action("DocDetailsIndex")" + "?DocID=" + data.DocID;
+                    window.location = url;
+                }
+
                 //console.log("DocID is: " + data.DocID +
                 //    " AreaID is: " + data.AreaID +
                 //    " FlowStatusID is: " + data.FlowStatusID);    // For Debug.
