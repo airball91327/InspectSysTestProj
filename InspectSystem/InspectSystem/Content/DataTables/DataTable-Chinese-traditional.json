@@ -1,6 +1,6 @@
 {
   "emptyTable": "無資料...",
-  "processing": "處理中...",
+  "processing": "<img src='/Content/datatable-loader.gif'/>",
   "loadingRecords": "載入中...",
   "lengthMenu": "顯示 _MENU_ 項結果",
   "zeroRecords": "沒有符合的結果",

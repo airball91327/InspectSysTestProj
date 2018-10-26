@@ -241,6 +241,7 @@
     <Content Include="Content\Building1.JPG" />
     <Content Include="Content\Building4.jpg" />
     <Content Include="Content\Building5.JPG" />
+    <Content Include="Content\datatable-loader.gif" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />

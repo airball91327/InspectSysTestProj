@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.AspNet.Identity;
 using InspectSystem.Models;
+using System.Web.Routing;
 
 namespace InspectSystem.Controllers
 {
@@ -23,6 +24,13 @@ namespace InspectSystem.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //將顯示用訊息從 TempData 取出
+            var errmsg = TempData["Timeout"] as string;
+            if (!string.IsNullOrWhiteSpace(errmsg))
+            {
+                ViewBag.Timeout = errmsg;//將顯示訊息放入 ViewBag 供 view 使用
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -31,6 +39,10 @@ namespace InspectSystem.Controllers
             {
                 // Clear the existing external cookie to ensure a clean login process
                 FormsAuthentication.SignOut();
+
+                HttpCookie cookie = new HttpCookie("ASP.NET_SessionId", "");
+                cookie.Expires = DateTime.Now.AddYears(-1);
+                HttpContext.Response.Cookies.Add(cookie);
             }
             ViewBag.ReturnUrl = returnUrl;
 
@@ -40,6 +52,7 @@ namespace InspectSystem.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [AntiForgeryErrorHandler(ExceptionType = typeof(HttpAntiForgeryException), View = "Login", Controller = "Account", ErrorMessage = "連線預時，回到登入畫面")]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             if (ModelState.IsValid)
@@ -123,7 +136,45 @@ namespace InspectSystem.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+
+            //清除所有 session
+            Session.RemoveAll();
+
+            HttpCookie cookie = new HttpCookie("ASP.NET_SessionId", "");
+            cookie.Expires = DateTime.Now.AddYears(-1);
+            HttpContext.Response.Cookies.Add(cookie);
+
             return RedirectToAction("Login", "Account");
+        }
+
+
+        public class AntiForgeryErrorHandlerAttribute : HandleErrorAttribute
+        {
+            //用來指定 redirect 的目標 controller
+            public string Controller { get; set; }
+            //用來儲存想要顯示的訊息
+            public string ErrorMessage { get; set; }
+            //覆寫預設發生 exception 時的動作
+            public override void OnException(ExceptionContext filterContext)
+            {
+                //如果發生的 exception 是 HttpAntiForgeryException 就轉導至設定的 controller、action (action 在 base HandleErrorAttribute已宣告)
+                if (filterContext.Exception is HttpAntiForgeryException)
+                {
+                    //這個屬性要設定為 true 才能接手處理 exception 也才可以 redirect
+                    filterContext.ExceptionHandled = true;
+                    //將 errormsg 使用 TempData 暫存 (ViewData 與 ViewBag 因為生命週期的關係都無法正確傳遞)
+                    filterContext.Controller.TempData.Add("Timeout", ErrorMessage);
+                    //指定 redirect 的 controller 偶 action
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary
+                        {
+                            { "action", View },
+                            { "controller", Controller},
+                        });
+                }
+                else
+                    base.OnException(filterContext);// exception 不是 HttpAntiForgeryException 就照 mvc 預設流程
+            }
         }
 
         protected override void Dispose(bool disposing)
