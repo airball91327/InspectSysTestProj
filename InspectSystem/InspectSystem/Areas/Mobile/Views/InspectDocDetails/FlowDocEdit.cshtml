@@ -1,6 +1,7 @@
 ﻿@model InspectSystem.Models.InspectDocFlow
 
 @Scripts.Render("~/bundles//jquery")
+<link rel="stylesheet" href="~/Content/MyStyleForPostLoader.css" />
 
 @{
     ViewBag.Title = "簽核作業";
@@ -10,10 +11,14 @@
     $(document).ready(function () {
 
         $('.combobox').combobox();
+
+        $("#submitForm").submit(function () {
+            $("#postLoading").modal("show");
+        });
     });
 </script>
 
-@using (Html.BeginForm("SendDocToChecker", "InspectDocDetails", new { area = "Mobile" }, FormMethod.Post))
+@using (Html.BeginForm("SendDocToChecker", "InspectDocDetails", new { area = "Mobile" }, FormMethod.Post, new { id = "submitForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -65,3 +70,19 @@
         </div>
     </div>
 }
+
+<!-- Post Loading Modal -->
+<div class="modal fade" id="postLoading" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Loading image for Ajax. -->
+                <div id="loadingIMG" style="text-align: center">
+                    <img src="~/Content/post-loader.gif" />
+                    <p>儲存中，請稍後。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

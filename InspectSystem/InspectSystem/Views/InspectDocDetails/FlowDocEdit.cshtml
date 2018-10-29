@@ -1,11 +1,20 @@
 ﻿@model InspectSystem.Models.InspectDocFlow
 
 @Scripts.Render("~/bundles/jqueryval")
+<link rel="stylesheet" href="~/Content/MyStyleForPostLoader.css" />
 
 <script type="text/javascript">
     $(document).ready(function () {
 
         $('.combobox').combobox();
+
+        $("#submitForm").submit(function () {
+            $("#postLoading").modal("show");
+            document.getElementById("flowDocModal").classList.remove("fade");
+            document.getElementById("flowDocModal").classList.remove("in");
+            document.getElementById("flowDocModal").setAttribute("data-backdrop", "static");
+            document.getElementById("flowDocModal").setAttribute("data-keyboard", "false");
+        });
     });
 </script>
 
@@ -15,7 +24,7 @@
     }
 </style>
 
-@using (Html.BeginForm("SendDocToChecker", "InspectDocDetails"))
+@using (Html.BeginForm("SendDocToChecker", "InspectDocDetails", FormMethod.Post, new { id = "submitForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -61,3 +70,19 @@
         </div>
     </div>
 }
+
+<!-- Post Loading Modal -->
+<div class="modal fade" id="postLoading" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Loading image for Ajax. -->
+                <div id="loadingIMG" style="text-align: center">
+                    <img src="~/Content/post-loader.gif" />
+                    <p>儲存中，請稍後。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

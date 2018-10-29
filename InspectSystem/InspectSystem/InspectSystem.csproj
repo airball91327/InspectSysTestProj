@@ -406,6 +406,8 @@
     <Content Include="Content\myDataTableStyle.css" />
     <Content Include="Content\MyStyleForClassContentOfArea.css" />
     <Content Include="Content\MyStyleForDocDetail.css" />
+    <Content Include="Content\MyStyleForPostLoader.css" />
+    <Content Include="Content\post-loader.gif" />
     <Content Include="Content\TestPic.jpg" />
     <Content Include="Content\w3.css" />
     <Content Include="favicon.ico" />
