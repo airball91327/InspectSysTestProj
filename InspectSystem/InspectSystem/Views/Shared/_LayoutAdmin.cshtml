@@ -7,11 +7,9 @@
     <title>@ViewBag.Title -  巡檢系統</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="~/Content/MyMegaDropDownStyle.css" />
 
     <style>
-        body {
-            padding-top: 200px;
-        }
         .navbar-layout-content {
             font-size: 15px;
         }
@@ -34,15 +32,40 @@
                     <li>@Html.ActionLink("巡檢作業", "SelectAreas", "InspectDocDetails")</li>
                     <li>@Html.ActionLink("工程師審核作業", "DocListForWorker", "InspectDocChecker")</li>
                     <li>@Html.ActionLink("主管審核作業", "DocListForChecker", "InspectDocChecker")</li>
-                    <li>@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")</li>
-                    <li>@Html.ActionLink("巡檢類別維護", "Index", "InspectClasses")</li>
-                    <li>@Html.ActionLink("巡檢項目維護", "Index", "InspectItems")</li>
-                    <li>@Html.ActionLink("各區審核主管維護", "Index", "InspectAreaCheckers")</li>
-                    <li>@Html.ActionLink("注意事項維護", "Index", "InspectPrecautions")</li>
-                    <li>@Html.ActionLink("巡檢文件編輯", "Index", "InspectDocs")</li>
-                    <li>@Html.ActionLink("新增巡檢文件", "Create", "InspectDocs")</li>
-                    <li>@Html.ActionLink("巡檢人員列表", "Index", "InspectMembers")</li>
                     <li>@Html.ActionLink("巡檢文件搜尋", "Index", "InspectDocSearch")</li>
+                    <li class="dropdown mega-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            後台維護功能
+                            <span class="caret" id="dropdownSymbol"></span>
+                        </a>
+                        <ul class="dropdown-menu mega-dropdown-menu">
+                            <li class="col-sm-offset-2 col-sm-3">
+                                <ul>
+                                    <li class="dropdown-header">表單維護</li>
+                                    <li>@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")</li>
+                                    <li>@Html.ActionLink("巡檢類別維護", "Index", "InspectClasses")</li>
+                                    <li>@Html.ActionLink("巡檢項目維護", "Index", "InspectItems")</li>
+                                    <li>@Html.ActionLink("注意事項維護", "Index", "InspectPrecautions")</li>
+                                </ul>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <ul>
+                                    <li class="dropdown-header">人員維護</li>
+                                    <li>@Html.ActionLink("巡檢人員列表", "Index", "InspectMembers")</li>
+                                    <li>@Html.ActionLink("各區審核主管維護", "Index", "InspectAreaCheckers")</li>
+                                </ul>
+                            </li>
+
+                            <li class="col-sm-3">
+                                <ul>
+                                    <li class="dropdown-header">文件維護</li>
+                                    <li>@Html.ActionLink("巡檢文件編輯", "Index", "InspectDocs")</li>
+                                    <li>@Html.ActionLink("新增巡檢文件", "Create", "InspectDocs")</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -59,5 +82,20 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
 </body>
 </html>

@@ -404,6 +404,7 @@
     <Content Include="Content\MobileStyle\MyStyleForClassContentOfArea.css" />
     <Content Include="Content\MobileStyle\MyStyleForDocDetail.css" />
     <Content Include="Content\myDataTableStyle.css" />
+    <Content Include="Content\MyMegaDropDownStyle.css" />
     <Content Include="Content\MyStyleForClassContentOfArea.css" />
     <Content Include="Content\MyStyleForDocDetail.css" />
     <Content Include="Content\MyStyleForPostLoader.css" />
