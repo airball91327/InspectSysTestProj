@@ -23,7 +23,7 @@ namespace InspectSystem.Models
         [Display(Name = "類別代碼")]
         public int ClassID { get; set; }
         [Required]
-        [Display(Name = "區域名稱")]
+        [Display(Name = "類別名稱")]
         public string ClassName { get; set; }
         [Key, Column(Order = 3)]
         [Required]
