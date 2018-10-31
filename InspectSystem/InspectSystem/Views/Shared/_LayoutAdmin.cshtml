@@ -39,7 +39,7 @@
                             <span class="caret" id="dropdownSymbol"></span>
                         </a>
                         <ul class="dropdown-menu mega-dropdown-menu">
-                            <li class="col-sm-offset-2 col-sm-3">
+                            <li class="col-sm-offset-1 col-sm-2">
                                 <ul>
                                     <li class="dropdown-header">表單維護</li>
                                     <li>@Html.ActionLink("巡檢區域維護", "Index", "InspectAreas")</li>
@@ -57,11 +57,18 @@
                                 </ul>
                             </li>
 
-                            <li class="col-sm-3">
+                            <li class="col-sm-2">
                                 <ul>
                                     <li class="dropdown-header">文件維護</li>
                                     <li>@Html.ActionLink("巡檢文件編輯", "Index", "InspectDocs")</li>
                                     <li>@Html.ActionLink("新增巡檢文件", "Create", "InspectDocs")</li>
+                                </ul>
+                            </li>
+
+                            <li class="col-sm-2">
+                                <ul>
+                                    <li class="dropdown-header">報表功能(設計中)</li>
+                                    <li>@Html.ActionLink("報表輸出", "Index", "InspectReports")</li>
                                 </ul>
                             </li>
                         </ul>

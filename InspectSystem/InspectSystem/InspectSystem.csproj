@@ -203,6 +203,7 @@
     <Compile Include="Controllers\InspectItemsController.cs" />
     <Compile Include="Controllers\InspectMembersController.cs" />
     <Compile Include="Controllers\InspectPrecautionsController.cs" />
+    <Compile Include="Controllers\InspectReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -828,6 +829,7 @@
     <Content Include="Views\InspectMembers\EditList.cshtml" />
     <Content Include="Views\InspectDocSearch\DocDetailsIndex.cshtml" />
     <Content Include="Views\InspectDocSearch\DocTempIndex.cshtml" />
+    <Content Include="Views\InspectReports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
