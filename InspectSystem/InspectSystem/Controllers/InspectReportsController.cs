@@ -20,7 +20,7 @@ namespace InspectSystem.Controllers
         // GET: InspectReports
         public ActionResult Index()
         {
-            var testSource = db.InspectDocDetails.Where(i => i.ClassID == 6);
+            var reportSource = db.InspectDocDetails.Where(i => i.ClassID == 6);
 
             //建立ReportViewer物件
             var reportViewer = new ReportViewer()
@@ -33,7 +33,7 @@ namespace InspectSystem.Controllers
             };
 
             reportViewer.LocalReport.ReportPath = $"{Request.MapPath(Request.ApplicationPath)}Report\\Rdlc\\WaterSystemReport_M.rdlc";
-            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet_WaterSystem", testSource.ToList()));
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet_WaterSystem", reportSource.ToList()));
             return View(reportViewer);
         }
     }
