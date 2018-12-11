@@ -121,8 +121,21 @@ namespace InspectSystem.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "登入無效.");
-                    return View(model);
+                    if (rstr.Contains("密碼錯誤"))
+                    {
+                        ModelState.AddModelError(string.Empty, "密碼錯誤.");
+                        return View(model);
+                    }
+                    else if (rstr.Contains("無此員工"))
+                    {
+                        ModelState.AddModelError(string.Empty, "無此帳號.");
+                        return View(model);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "登入無效.");
+                        return View(model);
+                    }
                 }
             }
 
