@@ -75,7 +75,6 @@ namespace InspectSystem.Controllers
                 }
 
                 /* If the UserName and the Password are legal. */
-
                 if (rstr.Contains("成功"))
                 {
                     // Get user role
