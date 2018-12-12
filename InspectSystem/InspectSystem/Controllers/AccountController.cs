@@ -62,7 +62,8 @@ namespace InspectSystem.Controllers
                 //
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
-                string url = "WebApi/Accounts/CheckPasswd?id=" + model.UserName;
+                //string url = "WebApi/Accounts/CheckPasswd?id=" + model.UserName;
+                string url = "WebApi/Accounts/CheckPasswdForCch?id=" + model.UserName;
                 url += "&pwd=" + HttpUtility.UrlEncode(model.Password, Encoding.GetEncoding("UTF-8"));
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
