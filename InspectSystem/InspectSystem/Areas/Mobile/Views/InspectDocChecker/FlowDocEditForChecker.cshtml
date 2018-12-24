@@ -6,6 +6,16 @@
     ViewBag.Title = "簽核作業";
 }
 
+<style>
+    /* Style the scale of checkbox. */
+    input[type=radio] {
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FireFox */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+    }
+</style>
+
 <script>
     $(document).ready(function () {
 
@@ -63,8 +73,8 @@
         <div class="form-group">
             <label class="control-label col-xs-3">審核結果</label>
             <div class="col-xs-9" style="margin-top : 7px">
-                @Html.RadioButton("NextFlowStatusID", "0")退回文件
-                @Html.RadioButton("NextFlowStatusID", "2")結案
+                @Html.RadioButton("NextFlowStatusID", "0")<span style="margin:2.5%">退回文件</span>
+                @Html.RadioButton("NextFlowStatusID", "2")<span style="margin:2.5%">結案</span>
                 <p id="errorMsg" style="color: red"></p>
             </div>
         </div>

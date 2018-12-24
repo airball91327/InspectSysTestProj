@@ -24,7 +24,7 @@ h3  {
 /* Style the display of item name. */
 div.itemName {
     font-weight: bold;
-    padding-bottom: 5%;
+    padding-top: 8px;
     /*background-color:bisque;*/
 }
 
@@ -41,4 +41,15 @@ div.itemName {
 /* Style the row of items. */
 .itemRow {
     background-color: aliceblue;
+}
+
+/* Style the table with no border. */
+.table.no-border tr td, .table.no-border tr th {
+    border-width: 0px;
+}
+
+/* Style the hr. */
+hr{
+    margin-top:1%;
+    margin-bottom:1%;
 }
