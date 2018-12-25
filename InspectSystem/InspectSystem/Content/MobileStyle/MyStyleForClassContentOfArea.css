@@ -4,7 +4,7 @@ body{
 }
 
 /* Style the scale of checkbox. */
-input[type=checkbox] {
+input[type=checkbox], input[type=radio] {
     -ms-transform: scale(2); /* IE */
     -moz-transform: scale(2); /* FireFox */
     -webkit-transform: scale(2); /* Safari and Chrome */
@@ -13,7 +13,7 @@ input[type=checkbox] {
 
 /* Style the input type textbox.*/
 input[type=text], input[type=number] {
-    width: 50%;
+    width: 70%;
     height: 30px;
     box-sizing: border-box;
     border: 1px solid #ccc;

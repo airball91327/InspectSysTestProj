@@ -46,7 +46,7 @@ namespace InspectSystem.Models
         public Boolean IsRequired { get; set; }
         [Display(Name = "顯示昨日數值")]
         [NotMapped]
-        public Boolean ShowPassValue { get; set; }
+        public Boolean ShowPastValue { get; set; }
 
         public virtual ClassesOfAreas ClassesOfAreas { get; set; }
     }

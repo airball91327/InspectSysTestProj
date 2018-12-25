@@ -62,10 +62,35 @@ namespace InspectSystem.Models
         public Boolean IsRequired { get; set; }
         [Display(Name = "下拉選單元件")]
         public string DropDownItems { get; set; }
-        [Display(Name = "昨日數值")]
-        [NotMapped]
-        public string PassValue { get; set; }
 
         public virtual InspectDocs InspectDocs { get; set; }
+
+        /* Check that this field is needed to show past value or not. */
+        public Boolean ToShowPastValue()
+        {           
+            BMEDcontext db = new BMEDcontext();
+            Boolean checkResult = false;
+            var acid = (AreaID) * 100 + ClassID;
+            checkResult = db.InspectFields.Find(acid, ItemID, FieldID).ShowPastValue;
+
+            //checkResult = true; // For debug.
+            return checkResult;
+        }
+
+        /* Get the past value of the field. */
+        public string PastValue()
+        {
+            BMEDcontext db = new BMEDcontext();
+            var pastValue = "";
+            var targetDocId = DocID - 100;
+            var findDocDetails = db.InspectDocDetails.Find(targetDocId, ClassID, ItemID, FieldID);
+            // If has past value
+            if (findDocDetails != null)
+            {
+                pastValue = findDocDetails.Value;
+            }
+
+            return pastValue;
+        }
     }
 }

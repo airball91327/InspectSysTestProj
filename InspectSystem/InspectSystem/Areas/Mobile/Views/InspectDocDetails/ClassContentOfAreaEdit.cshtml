@@ -43,7 +43,7 @@
                             if (item.ItemID == fieldItem.ItemID)
                             {
                                 <div class="col-xs clearfix">
-                                    <span class="col-xs-3 fieldTitle">
+                                    <span class="col-xs-3 fieldTitle  clearfix">
                                         @if (fieldItem.FieldName != null)
                                         {
                                             @Html.DisplayFor(modelItem => fieldItem.FieldName)
@@ -73,12 +73,11 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].MaxValue", docItem.MaxValue)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].IsRequired", docItem.IsRequired)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + i + "].DropDownItems", docItem.DropDownItems)
-                                            @Html.Hidden("InspectDocDetailsTemporary[" + i + "].PassValue", docItem.PassValue)
 
                                             switch (fieldItem.DataType)
                                             {
                                                 case "string":
-                                                    <span>
+                                                    <span class="col-xs-9">
                                                         @if (fieldItem.IsRequired == true)
                                                         {
                                                             <span style="color: red">*</span>
@@ -89,24 +88,24 @@
                                                     break;
 
                                                 case "float":
-                                                    <span>
+                                                    <span class="col-xs-9">
                                                         @if (fieldItem.IsRequired == true)
                                                         {
                                                             <span style="color: red">*</span>
                                                         }
                                                         @Html.EditorFor(modelItem => docItem.Value, new { htmlAttributes = new { @Name = "InspectDocDetailsTemporary[" + i + "].Value", @class = "inputValue", id = i, type = "number", step = "0.0001" } })
                                                         @Html.DisplayFor(modelItem => fieldItem.UnitOfData)
-                                                        @if (fieldItem.PassValue != null || fieldItem.PassValue != "")
-                                                        {
-                                                            <br /><span>昨日數值 : </span>@Html.DisplayFor(modelItem => fieldItem.PassValue)
-                                                        }
                                                         @Html.ValidationMessage("InspectDocDetailsTemporary[" + i + "].Value", "", new { @class = "text-danger" })
-                                                        <br /><span class="@i"></span>
+                                                        <br /><span class="@i clearfix"></span>
+                                                        @if (fieldItem.ToShowPastValue() == true)
+                                                        {
+                                                            <span>昨日數值 : @fieldItem.PastValue()</span>
+                                                        }
                                                     </span>
                                                     break;
 
                                                 case "checkbox":
-                                                    <span class="checkboxStyle">
+                                                    <span class="checkboxStyle col-xs-9">
                                                         @if (docItem.Value == "true")
                                                         {
                                                             @Html.CheckBox("InspectDocDetailsTemporary[" + i + "].Value", true)
@@ -142,8 +141,8 @@
                                                             });
                                                         }
                                                     }
-                                                    <span class="dropDownListStyle">
-                                                        @Html.DropDownList("InspectDocDetailsTemporary[" + i + "].Value", (IEnumerable<SelectListItem>)dropDownList, new { @class = "form-control", style = "width: 50%" })
+                                                    <span class="dropDownListStyle col-xs-9">
+                                                        @Html.DropDownList("InspectDocDetailsTemporary[" + i + "].Value", (IEnumerable<SelectListItem>)dropDownList, new { @class = "form-control", style = "width: 70%" })
                                                     </span>
                                                     break;
                                             }
@@ -190,8 +189,8 @@
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].IsRequired", docItem.IsRequired)
                                             @Html.Hidden("InspectDocDetailsTemporary[" + j + "].DropDownItems", docItem.DropDownItems)
                                             <div class="col radioBtn">
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })正常
-                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })不正常
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "y", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })<span style="margin:1.5%">正常</span>
+                                                @Html.RadioButtonFor(modelItem => docItem.IsFunctional, "n", new { @Name = "InspectDocDetailsTemporary[" + j + "].IsFunctional" })<span style="margin:1.5%">不正常</span>
                                                 @Html.ValidationMessage("InspectDocDetailsTemporary[" + j + "].IsFunctional", "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col">

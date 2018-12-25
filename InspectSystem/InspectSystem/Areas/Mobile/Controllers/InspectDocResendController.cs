@@ -60,8 +60,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         f.DataType,
                         f.MinValue,
                         f.MaxValue,
-                        f.IsRequired,
-                        f.ShowPassValue
+                        f.IsRequired
                     };
                 //int countFields = insertFields.ToList().Count; // For Debug
                 var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
@@ -83,14 +82,6 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         }
                     }
 
-                    /* Get the pass value if needed. */
-                    string passValue = null;
-                    if (item.ShowPassValue == true)
-                    {
-                        var targetDocId = docID - 100;
-                        passValue = db.InspectDocDetails.Find(targetDocId, item.ClassID, item.ItemID, item.FieldID).Value;
-                    }
-
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                     {
                         DocID = docID,
@@ -109,8 +100,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                         MinValue = item.MinValue,
                         MaxValue = item.MaxValue,
                         IsRequired = item.IsRequired,
-                        DropDownItems = dropDownItems,
-                        PassValue = passValue
+                        DropDownItems = dropDownItems
                     });
                 }
                 /* Insert data to DocTemp DB. */
@@ -389,8 +379,7 @@ namespace InspectSystem.Areas.Mobile.Controllers
                     MinValue = item.MinValue,
                     MaxValue = item.MaxValue,
                     IsRequired = item.IsRequired,
-                    DropDownItems = item.DropDownItems,
-                    PassValue = item.PassValue
+                    DropDownItems = item.DropDownItems
                 });
             }
 
