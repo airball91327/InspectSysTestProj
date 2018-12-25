@@ -59,7 +59,8 @@ namespace InspectSystem.Controllers
                         f.DataType,
                         f.MinValue,
                         f.MaxValue,
-                        f.IsRequired
+                        f.IsRequired,
+                        f.ShowPassValue
                     };
                 //int countFields = insertFields.ToList().Count; // For Debug
                 var inspectDocDetailsTemporary = new List<InspectDocDetailsTemporary>();
@@ -81,6 +82,14 @@ namespace InspectSystem.Controllers
                         }
                     }
 
+                    /* Get the pass value if needed. */
+                    string passValue = null;
+                    if (item.ShowPassValue == true)
+                    {
+                        var targetDocId = docID - 100;
+                        passValue = db.InspectDocDetails.Find(targetDocId, item.ClassID, item.ItemID, item.FieldID).Value;
+                    }
+
                     inspectDocDetailsTemporary.Add(new InspectDocDetailsTemporary()
                     {
                         DocID = docID,
@@ -99,7 +108,8 @@ namespace InspectSystem.Controllers
                         MinValue = item.MinValue,
                         MaxValue = item.MaxValue,
                         IsRequired = item.IsRequired,
-                        DropDownItems = dropDownItems
+                        DropDownItems = dropDownItems,
+                        PassValue = passValue
                     });
                 }
                 /* Insert data to DocTemp DB. */

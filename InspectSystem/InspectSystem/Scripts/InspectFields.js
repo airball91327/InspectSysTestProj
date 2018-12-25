@@ -64,11 +64,13 @@ function ChangeAttrByRaioBtn() {
         $("#UnitOfData").attr("disabled", false);
         $("#MinValue").attr("disabled", false);
         $("#MaxValue").attr("disabled", false);
+        $("#ShowPassValue").attr("disabled", false);
     }
     else {
         $("#UnitOfData").attr("disabled", true); /* If a element set disabled, it won't return values.*/
         $("#MinValue").attr("disabled", true);
         $("#MaxValue").attr("disabled", true); 
+        $("#ShowPassValue").attr("disabled", true);
     }
 
     /* for datatype dropdownlist. */

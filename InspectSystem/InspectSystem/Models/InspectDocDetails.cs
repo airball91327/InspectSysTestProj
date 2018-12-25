@@ -62,6 +62,9 @@ namespace InspectSystem.Models
         public Boolean IsRequired { get; set; }
         [Display(Name = "下拉選單元件")]
         public string DropDownItems { get; set; }
+        [Display(Name = "昨日數值")]
+        [NotMapped]
+        public string PassValue { get; set; }
 
         public virtual InspectDocs InspectDocs { get; set; }
     }
