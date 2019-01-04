@@ -73,7 +73,6 @@ namespace InspectSystem.Models
             var acid = (AreaID) * 100 + ClassID;
             checkResult = db.InspectFields.Find(acid, ItemID, FieldID).ShowPastValue;
 
-            //checkResult = true; // For debug.
             return checkResult;
         }
 

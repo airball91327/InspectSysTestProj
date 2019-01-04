@@ -209,7 +209,7 @@
     </tr>
 
     <tbody id="sortItem">
-        @if (SearchResult == null)
+        @if (SearchResult == null) /* Not starting to search. */
         {
 
         }
@@ -301,14 +301,21 @@
 
     <script>
         $(document).ready(function () {
-            var ACID = 0;
-            @if (SearchResult == null)
+            var ACID;
+            @if (SearchResult == null) /* Not starting to search. */
             {
-
+                @:ACID = 0;
             }
             else
             {
-                @:ACID = @SearchResult.FirstOrDefault().ACID;
+                if (SearchResult.Count() == 0) /* Search result is 0. */
+                {
+                    @:ACID = 0;
+                }
+                else
+                {
+                    @:ACID = @SearchResult.FirstOrDefault().ACID;
+                }
             }
 
 
