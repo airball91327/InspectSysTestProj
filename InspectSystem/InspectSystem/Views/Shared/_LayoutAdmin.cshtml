@@ -13,8 +13,23 @@
         .navbar-layout-content {
             font-size: 15px;
         }
-    </style>
 
+        .layout-dropdown-menu {
+            background-color: #222;
+        }
+
+        .layout-dropdown-menu  > li > a {
+            color: #9d9d9d;
+            padding: 7px 15px;
+            font-size: 16px;
+        }
+
+        .layout-dropdown-menu  > li > a:hover,
+        .layout-dropdown-menu  > li > a:focus {
+            color: #ffffff;
+            background-color: #ff0000;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -32,7 +47,13 @@
                     <li>@Html.ActionLink("巡檢作業", "SelectAreas", "InspectDocDetails")</li>
                     <li>@Html.ActionLink("工程師審核作業", "DocListForWorker", "InspectDocChecker")</li>
                     <li>@Html.ActionLink("主管審核作業", "DocListForChecker", "InspectDocChecker")</li>
-                    <li>@Html.ActionLink("巡檢文件搜尋", "Index", "InspectDocSearch")</li>
+                    <li class="dropdown">
+                        <a href="@Url.Action("Index", "InspectDocSearch")">搜尋<span class="caret"></span></a>
+                        <ul class="dropdown-menu layout-dropdown-menu">
+                            <li>@Html.ActionLink("巡檢表單搜尋", "Index", "InspectDocSearch")</li>
+                            <li>@Html.ActionLink("欄位數值搜尋", "Index", "InspectDocDtlValSearch")</li>
+                        </ul>
+                    </li>
                     <li class="dropdown mega-dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             後台維護功能

@@ -221,6 +221,7 @@
     <Compile Include="Controllers\InspectClassesController.cs" />
     <Compile Include="Controllers\InspectDocCheckerController.cs" />
     <Compile Include="Controllers\InspectDocDetailsController.cs" />
+    <Compile Include="Controllers\InspectDocDtlValSearchController.cs" />
     <Compile Include="Controllers\InspectDocEditController.cs" />
     <Compile Include="Controllers\InspectDocResendController.cs" />
     <Compile Include="Controllers\InspectDocsController.cs" />
@@ -880,6 +881,7 @@
     <Content Include="Views\InspectDocSearch\DocDetailsIndex.cshtml" />
     <Content Include="Views\InspectDocSearch\DocTempIndex.cshtml" />
     <Content Include="Views\InspectReports\Index.cshtml" />
+    <Content Include="Views\InspectDocDtlValSearch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
