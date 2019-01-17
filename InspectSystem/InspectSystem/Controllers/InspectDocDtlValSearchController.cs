@@ -56,12 +56,17 @@ namespace InspectSystem.Controllers
                 }
                 var searchList = db.InspectDocDetails.Where(i => i.DocID >= fromDoc && i.DocID <= toDoc);
 
-                /* 查詢區域、類別、項目 */
+                /* 查詢區域、類別 */
                 searchList = searchList.Where(s => s.AreaID == areaId &&
-                                                   s.ClassID == classId &&
-                                                   s.ItemID == itemId);
+                                                   s.ClassID == classId);
+                /* 查詢類別 */
+                if (itemId != 0)
+                {
+                    searchList = searchList.Where(s => s.ItemID == itemId);
+                }
+
                 /* 查詢欄位關鍵字 */
-                if(fieldSearchText != "")
+                if (fieldSearchText != "")
                 {
                     searchList = searchList.Where(s => s.FieldName.Contains(fieldSearchText));
                 }               

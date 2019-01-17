@@ -254,6 +254,7 @@
                         var defaultOption = 0;
                         var i = 0;
                         select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
                         $.each(response, function (index, item) {
                             if (i == defaultOption) {
                                 select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
@@ -285,6 +286,7 @@
                         var defaultOption = 0;
                         var i = 0;
                         select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
                         $.each(response, function (index, item) {
                             if (i == defaultOption) {
                                 select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
@@ -339,6 +341,7 @@
                         var defaultOption = 0;
                         var i = 0;
                         select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
                         $.each(response, function (index, item) {
                             if (i == defaultOption) {
                                 select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
