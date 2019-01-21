@@ -13,6 +13,9 @@
     .dateForm {
         padding: 6px 2px 6px 2px;
     }
+    .excelBtn{
+        margin-bottom: 10px;
+    }
 </style>
 
 <h2>
@@ -132,7 +135,11 @@
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jszip/jszip.min.js"></script> 
+    <script type="text/javascript" src="~/Scripts/DataTables/buttons.html5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="~/Content/DataTables/css/jquery.dataTables.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/Content/DataTables/css/buttons.dataTables.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/Content/myDataTableStyle.css" />
 
     <script>
@@ -149,9 +156,9 @@
                     serverSide: true,   //ServerSide模式
                     searching: false,   //filter功能
                     ordering: true,     //排序功能
-                    order: [[1, "asc"]],//初始排序
+                    order: [[0, "asc"]],//初始排序
                     deferLoading: 0,    //初始化DataTable時，不發出ajax
-                    lengthMenu: [25, 50, 100, 200], //顯示資料數量
+                    lengthMenu: [ [25, 50, 100, 200, -1], ['25', '50', '100', '200', '所有'] ], //顯示資料數量
                     language: {
                         emptyTable: "無資料...",
                         processing: "<img src='/Content/datatable-loader.gif'/>",
@@ -174,6 +181,19 @@
                           sortDescending: ": 降冪排列"
                         }
                     },
+                    dom: 'Blfrtip',
+                    buttons: [
+                        {
+                            extend: 'excel',
+                            text: '匯出Excel',
+                            className: 'btn btn-primary excelBtn',
+                            exportOptions: {
+                                modifier: {
+                                    page: 'all'
+                                }
+                            }
+                        }
+                    ],
                     ajax: {
                         method: "get",
                         url: "/InspectDocDtlValSearch/GetData",
@@ -228,7 +248,7 @@
                         var defaultOption = 0;
                         var i = 0;
                         select.empty();                           // remove any existing options
-                        $.each(response, function (index, item) { 
+                        $.each(response, function (index, item) {
                             if (i == defaultOption) {
                                 select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
                             }

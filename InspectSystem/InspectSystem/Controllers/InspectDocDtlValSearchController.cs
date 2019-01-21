@@ -105,6 +105,12 @@ namespace InspectSystem.Controllers
 
                 recordsTotal = resultList.Count();//查詢後的總筆數
 
+                // 分頁處理
+                if(length != -1) //-1為顯示所有資料
+                {
+                    resultList = resultList.Skip(start ?? 0).Take(length).ToList();   //分頁後的資料 
+                }
+
                 //回傳Json資料
                 var returnObj =
                     new
@@ -112,7 +118,7 @@ namespace InspectSystem.Controllers
                         draw = draw,
                         recordsTotal = recordsTotal,
                         recordsFiltered = recordsTotal,
-                        data = resultList.Skip(start ?? 0).Take(length)   //分頁後的資料 
+                        data = resultList
                     };
                 return Json(returnObj, JsonRequestBehavior.AllowGet);
             }

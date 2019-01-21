@@ -774,6 +774,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jszip\jszip.min.js" />
     <Content Include="Scripts\Mobile\CheckErrorDescription.js" />
     <Content Include="Scripts\Mobile\CheckFormModified.js" />
     <Content Include="Scripts\Mobile\InspectDocDetailsSelectClass.js" />
