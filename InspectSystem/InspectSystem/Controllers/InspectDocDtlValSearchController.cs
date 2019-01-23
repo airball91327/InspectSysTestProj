@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 using InspectSystem.Models;
 
 namespace InspectSystem.Controllers
@@ -59,7 +61,7 @@ namespace InspectSystem.Controllers
                 /* 查詢區域、類別 */
                 searchList = searchList.Where(s => s.AreaID == areaId &&
                                                    s.ClassID == classId);
-                /* 查詢類別 */
+                /* 查詢項目 */
                 if (itemId != 0)
                 {
                     searchList = searchList.Where(s => s.ItemID == itemId);
@@ -158,6 +160,75 @@ namespace InspectSystem.Controllers
                     });
                 });
             return Json(list);
+        }
+        public ActionResult ExportToExcel(DateTime startDate, DateTime endDate, int areaId, int classId, int itemId, string fieldSearchText)
+        {
+            /* 查詢日期 */
+            int fromDate = System.Convert.ToInt32(startDate.ToString("yyyyMMdd"));
+            int toDate = System.Convert.ToInt32(endDate.ToString("yyyyMMdd"));
+            int fromDoc, toDoc;     // Set doc search range.
+            if (fromDate > toDate)
+            {
+                fromDoc = (toDate * 100) + 1;
+                toDoc = (fromDate * 100) + 99;
+            }
+            else
+            {
+                fromDoc = (fromDate * 100) + 1;
+                toDoc = (toDate * 100) + 99;
+            }
+            var searchList = db.InspectDocDetails.Where(i => i.DocID >= fromDoc && i.DocID <= toDoc);
+
+            /* 查詢區域、類別 */
+            searchList = searchList.Where(s => s.AreaID == areaId &&
+                                               s.ClassID == classId);
+            /* 查詢項目 */
+            if (itemId != 0)
+            {
+                searchList = searchList.Where(s => s.ItemID == itemId);
+            }
+
+            /* 查詢欄位關鍵字 */
+            if (fieldSearchText != "")
+            {
+                searchList = searchList.Where(s => s.FieldName.Contains(fieldSearchText));
+            }
+
+            //ClosedXML的用法 先new一個Excel Workbook
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                //取得要塞入Excel內的資料
+                var data = searchList.Select(c => new {c.DocID, c.AreaName, c.ClassName, c.ItemName, c.FieldName,
+                                                       c.UnitOfData, c.Value, c.IsFunctional, c.ErrorDescription});
+
+                //一個wrokbook內至少會有一個worksheet,並將資料Insert至這個位於A1這個位置上
+                var ws = workbook.Worksheets.Add("sheet1", 1);
+
+                //Title
+                ws.Cell(1, 1).Value = "表單編號";
+                ws.Cell(1, 2).Value = "區域名稱";
+                ws.Cell(1, 3).Value = "類別名稱";
+                ws.Cell(1, 4).Value = "項目名稱";
+                ws.Cell(1, 5).Value = "欄位名稱";
+                ws.Cell(1, 6).Value = "單位";
+                ws.Cell(1, 7).Value = "數值";
+                ws.Cell(1, 8).Value = "是否正常";
+                ws.Cell(1, 9).Value = "備註說明";
+
+                //如果是要塞入Query後的資料該資料一定要變成是data.AsEnumerable()
+                ws.Cell(2, 1).InsertData(data);
+
+                //因為是用Query的方式,這個地方要用串流的方式來存檔
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    workbook.SaveAs(memoryStream);
+                    //請注意 一定要加入這行,不然Excel會是空檔
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    //注意Excel的ContentType,是要用這個"application/vnd.ms-excel"
+                    string fileName = "數值搜尋_" + DateTime.Now.ToString("yyyy-MM-dd") + ".xlsx";
+                    return this.File(memoryStream.ToArray(), "application/vnd.ms-excel", fileName);
+                }
+            }
         }
     }
 }

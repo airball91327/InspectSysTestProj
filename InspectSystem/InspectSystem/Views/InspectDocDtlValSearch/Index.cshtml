@@ -80,6 +80,11 @@
     </div>
 </div>
 
+<div>
+    <input type="button" class="btn btn-primary" id="exportBtn" value="匯出Excel檔案" />
+</div>
+<br />
+
 <table class="table table-hover table-striped" id="docTable">
     <thead>
         <tr>
@@ -135,11 +140,10 @@
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="~/Scripts/jszip/jszip.min.js"></script> 
-    <script type="text/javascript" src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/DataTables/buttons.html5.min.js"></script>*@
     <link rel="stylesheet" type="text/css" href="~/Content/DataTables/css/jquery.dataTables.min.css" />
-    @*<link rel="stylesheet" type="text/css" href="~/Content/DataTables/css/buttons.dataTables.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/Content/myDataTableStyle.css" />
 
     <script>
@@ -181,19 +185,19 @@
                           sortDescending: ": 降冪排列"
                         }
                     },
-                    dom: 'Blfrtip',
-                    buttons: [
-                        {
-                            extend: 'excel',
-                            text: '匯出Excel',
-                            className: 'btn btn-primary excelBtn',
-                            exportOptions: {
-                                modifier: {
-                                    page: 'all'
-                                }
-                            }
-                        }
-                    ],
+                    //dom: 'Blfrtip',
+                    //buttons: [
+                    //    {
+                    //        extend: 'excel',
+                    //        text: '匯出Excel',
+                    //        className: 'btn btn-primary excelBtn',
+                    //        exportOptions: {
+                    //            modifier: {
+                    //                page: 'all'
+                    //            }
+                    //        }
+                    //    }
+                    //],
                     ajax: {
                         method: "get",
                         url: "/InspectDocDtlValSearch/GetData",
@@ -375,6 +379,35 @@
                 });
                 $.ajaxSettings.async = true; // Set this ajax async back to true.
             }
+
+            $("#exportBtn").click(function () {
+                var StartDate = $("input[name=startDate]").val();
+                var EndDate = $("input[name=endDate]").val();
+                var AreaId = $("#AreaID").val();
+                var ClassId = $("#classId").val();
+                var ItemId = $("#itemId").val();
+                var FieldSearchText = $("#fieldSearchText").val();
+
+                $.ajax({
+                    url: "@Url.Action("ExportToExcel")",
+                    data: {
+                        startDate: StartDate,
+                        endDate: EndDate,
+                        areaId: AreaId,
+                        classId: ClassId,
+                        itemId: ItemId,
+                        fieldSearchText: FieldSearchText
+                    },
+                    success: function (response, textStatus, jqXHR) {
+
+                        window.location.href = '@Url.Action("ExportToExcel")' + '?startDate=' + StartDate + '&endDate=' + EndDate
+                            + '&areaId=' + AreaId + '&classId=' + ClassId + '&itemId=' + ItemId + '&fieldSearchText=' + FieldSearchText;
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            });
         });
     </script>
 }
