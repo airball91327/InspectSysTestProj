@@ -208,7 +208,15 @@ namespace InspectSystem.Controllers
                     Mail mail = new Mail();
                     string body = "";
                     mail.from = inspectDocFlow.CheckerID + "@cch.org.tw";
-                    mail.to = inspectDocFlow.WorkerID + "@cch.org.tw";
+                    //For Test
+                    if(inspectDocFlow.WorkerID == 344027)
+                    {
+                        mail.to = "airball91327@gmail.com";
+                    }
+                    else
+                    {
+                        mail.to = inspectDocFlow.WorkerID + "@cch.org.tw";
+                    }
                     mail.subject = "巡檢系統[退件通知]";
                     body += "<p>表單編號：" + inspectDoc.DocID + "</p>";
                     body += "<p>日期：" + inspectDoc.Date.ToString("yyyy/MM/dd") + "</p>";
