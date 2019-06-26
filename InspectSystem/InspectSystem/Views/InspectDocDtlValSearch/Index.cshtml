@@ -54,9 +54,11 @@
                 </div>
 
                 <div class="form-group col-md-3">
-                    <label class="control-label col-md-4">欄位關鍵字:</label>
-                    <div class="col-md-8">
-                        <input class="form-control" id="fieldSearchText" type="text" style="width: 100%" />
+                    <label class="control-label col-md-2">欄位:</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="fieldId">
+                            <option>請先選擇區域</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -208,7 +210,7 @@
                             d.areaId = $("#AreaID").val();
                             d.classId = $("#classId").val();
                             d.itemId = $("#itemId").val();
-                            d.fieldSearchText = $("#fieldSearchText").val();
+                            d.fieldId = $("#fieldId").val();
                         }
                     },
                     columns: [ //Server端的DataBinding名稱
@@ -237,7 +239,7 @@
                 table.draw(); //或dataTable.ajax.reload();
             });
 
-            // Get class and item according to area.
+            // Get class, item and field according to area.
             $('#AreaID').change(function () {
 
                 $.ajax({
@@ -290,10 +292,36 @@
                         });
                     }
                 });
+
+                var itemId = $('#itemId').val();
+                $.ajax({
+                    url: '../../InspectDocDtlValSearch/GetFields',
+                    type: "POST",
+                    dataType: "json",
+                    data: { AreaID: areaId, ClassID: classId, ItemID: itemId },
+                    async: false,
+                    success: function (response) {
+                        console.log(response); // ForDebug
+                        var select = $('#fieldId');
+                        var defaultOption = 0;
+                        var i = 0;
+                        select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
+                        $.each(response, function (index, item) {
+                            if (i == defaultOption) {
+                                select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
+                            }
+                            else {
+                                select.append($('<option></option>').text(item.Text).val(item.Value));
+                            }
+                            i++;
+                        });
+                    }
+                });
                 $.ajaxSettings.async = true; // Set this ajax async back to true.
             });
 
-            /* While class dropdown is changed, get items of the class. */
+            /* While class dropdown is changed, get items and fields of the class. */
             $('#classId').change(function () {
 
                 var areaId = $("#AreaID").val();
@@ -307,6 +335,65 @@
                     success: function (response) {
                         //console.log(response); // ForDebug
                         var select = $('#itemId');
+                        var defaultOption = 0;
+                        var i = 0;
+                        select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
+                        $.each(response, function (index, item) {
+                            if (i == defaultOption) {
+                                select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
+                            }
+                            else {
+                                select.append($('<option></option>').text(item.Text).val(item.Value));
+                            }
+                            i++;
+                        });
+                    }
+                });
+
+                var itemId = $('#itemId').val();
+                $.ajax({
+                    url: '../../InspectDocDtlValSearch/GetFields',
+                    type: "POST",
+                    dataType: "json",
+                    data: { AreaID: areaId, ClassID: classId, ItemID: itemId },
+                    async: false,
+                    success: function (response) {
+                        console.log(response); // ForDebug
+                        var select = $('#fieldId');
+                        var defaultOption = 0;
+                        var i = 0;
+                        select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
+                        $.each(response, function (index, item) {
+                            if (i == defaultOption) {
+                                select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
+                            }
+                            else {
+                                select.append($('<option></option>').text(item.Text).val(item.Value));
+                            }
+                            i++;
+                        });
+                    }
+                });
+                $.ajaxSettings.async = true; // Set this ajax async back to true.
+            });
+
+            /* While item dropdown is changed, get fields of the item. */
+            $('#itemId').change(function () {
+
+                var areaId = $("#AreaID").val();
+                var classId = $("#classId").val();
+                var itemId = $(this).val();
+                $.ajax({
+                    url: '../../InspectDocDtlValSearch/GetFields',
+                    type: "POST",
+                    dataType: "json",
+                    data: { AreaID: areaId, ClassID: classId, ItemID: itemId },
+                    async: false,
+                    success: function (response) {
+                        console.log(response); // ForDebug
+                        var select = $('#fieldId');
                         var defaultOption = 0;
                         var i = 0;
                         select.empty();                           // remove any existing options
@@ -377,6 +464,32 @@
                         });
                     }
                 });
+
+                var itemId = $('#itemId').val();
+                $.ajax({
+                    url: '../../InspectDocDtlValSearch/GetFields',
+                    type: "POST",
+                    dataType: "json",
+                    data: { AreaID: areaId, ClassID: classId, ItemID: itemId },
+                    async: false,
+                    success: function (response) {
+                        console.log(response); // ForDebug
+                        var select = $('#fieldId');
+                        var defaultOption = 0;
+                        var i = 0;
+                        select.empty();                           // remove any existing options
+                        select.append($('<option></option>').text('所有項目').val(0));
+                        $.each(response, function (index, item) {
+                            if (i == defaultOption) {
+                                select.append($('<option selected="selected"></option>').text(item.Text).val(item.Value));
+                            }
+                            else {
+                                select.append($('<option></option>').text(item.Text).val(item.Value));
+                            }
+                            i++;
+                        });
+                    }
+                });
                 $.ajaxSettings.async = true; // Set this ajax async back to true.
             }
 
@@ -386,7 +499,7 @@
                 var AreaId = $("#AreaID").val();
                 var ClassId = $("#classId").val();
                 var ItemId = $("#itemId").val();
-                var FieldSearchText = $("#fieldSearchText").val();
+                var FieldId = $("#fieldId").val();
 
                 $.ajax({
                     url: "@Url.Action("ExportToExcel")",
@@ -396,12 +509,12 @@
                         areaId: AreaId,
                         classId: ClassId,
                         itemId: ItemId,
-                        fieldSearchText: FieldSearchText
+                        fieldId: FieldId
                     },
                     success: function (response, textStatus, jqXHR) {
 
                         window.location.href = '@Url.Action("ExportToExcel")' + '?startDate=' + StartDate + '&endDate=' + EndDate
-                            + '&areaId=' + AreaId + '&classId=' + ClassId + '&itemId=' + ItemId + '&fieldSearchText=' + FieldSearchText;
+                            + '&areaId=' + AreaId + '&classId=' + ClassId + '&itemId=' + ItemId + '&fieldId=' + FieldId;
                     },
                     error: function (xhr, status, error) {
                         alert(error);

@@ -28,7 +28,7 @@ namespace InspectSystem.Controllers
         // GET: InspectDocDtlValSearch/GetData          
         public JsonResult GetData(int? draw, int? start, int length,    //←此三個為DataTables自動傳遞參數
                                   DateTime startDate, DateTime endDate, int areaId, int classId,
-                                  int itemId, string fieldSearchText)
+                                  int itemId, int fieldId)
                                   //↑為表單的查詢條件
         {
             //查詢&排序後的總筆數
@@ -67,14 +67,20 @@ namespace InspectSystem.Controllers
                     searchList = searchList.Where(s => s.ItemID == itemId);
                 }
 
-                /* 查詢欄位關鍵字 */
-                if (fieldSearchText != "")
+                /* 查詢欄位 */
+                if (fieldId != 0)
                 {
-                    searchList = searchList.Where(s => s.FieldName.Contains(fieldSearchText));
-                }               
+                    searchList = searchList.Where(s => s.FieldID == fieldId);
+                }
+
+                ///* 查詢欄位關鍵字 */
+                //if (fieldSearchText != "")
+                //{
+                //    searchList = searchList.Where(s => s.FieldName.Contains(fieldSearchText));
+                //}               
 
                 /* 處理儲存正常或不正常的欄位，把Value拿來顯示是否正常. */
-                foreach(var item in searchList)
+                foreach (var item in searchList)
                 {
                     if( item.DataType == "boolean" )
                     {
@@ -161,7 +167,30 @@ namespace InspectSystem.Controllers
                 });
             return Json(list);
         }
-        public ActionResult ExportToExcel(DateTime startDate, DateTime endDate, int areaId, int classId, int itemId, string fieldSearchText)
+
+        // POST: InspectDocDtlValSearch/GetFields
+        [HttpPost]
+        public JsonResult GetFields(int AreaID, string ClassID, string ItemID)
+        {
+            int classId = System.Convert.ToInt32(ClassID);
+            int itemId = System.Convert.ToInt32(ItemID);
+            int ACID = (AreaID * 100) + classId;
+            List<SelectListItem> list = new List<SelectListItem>();
+            db.InspectFields.Where(i => i.ACID == ACID && i.ItemID == itemId).ToList()
+                .ForEach(i => {
+                    if(i.FieldName != null && i.FieldName != "" && i.FieldStatus != false)   //擷取有輸入名稱、後台設定為顯示的欄位
+                    {
+                        list.Add(new SelectListItem
+                        {
+                            Text = i.FieldName,
+                            Value = i.FieldID.ToString()
+                        });
+                    }
+                });
+            return Json(list);
+        }
+
+        public ActionResult ExportToExcel(DateTime startDate, DateTime endDate, int areaId, int classId, int itemId, int fieldId)
         {
             /* 查詢日期 */
             int fromDate = System.Convert.ToInt32(startDate.ToString("yyyyMMdd"));
@@ -188,10 +217,10 @@ namespace InspectSystem.Controllers
                 searchList = searchList.Where(s => s.ItemID == itemId);
             }
 
-            /* 查詢欄位關鍵字 */
-            if (fieldSearchText != "")
+            /* 查詢欄位 */
+            if (fieldId != 0)
             {
-                searchList = searchList.Where(s => s.FieldName.Contains(fieldSearchText));
+                searchList = searchList.Where(s => s.FieldID == fieldId);
             }
 
             //ClosedXML的用法 先new一個Excel Workbook
