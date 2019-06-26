@@ -9,6 +9,11 @@ using System.Web.Mvc;
 using WebMatrix.WebData;
 using InspectSystem.Models;
 using System.Web.Security;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace InspectSystem.Controllers
 {
@@ -165,7 +170,7 @@ namespace InspectSystem.Controllers
         // POST: InspectDocChecker/FlowDocEditForChecker
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlowDocEditForChecker(InspectDocFlow inspectDocFlow)
+        public async Task<ActionResult> FlowDocEditForChecker(InspectDocFlow inspectDocFlow)
         {
             int userID = inspectDocFlow.EditorID;
             int docID = inspectDocFlow.DocID;
@@ -198,6 +203,30 @@ namespace InspectSystem.Controllers
                 {
                     db.InspectDocFlows.Add(nextDocFlow);
                     db.SaveChanges();
+
+                    //Send Mail
+                    Mail mail = new Mail();
+                    string body = "";
+                    mail.from = inspectDocFlow.CheckerID + "@cch.org.tw";
+                    mail.to = inspectDocFlow.WorkerID + "@cch.org.tw";
+                    mail.subject = "巡檢系統[退件通知]";
+                    body += "<p>表單編號：" + inspectDoc.DocID + "</p>";
+                    body += "<p>日期：" + inspectDoc.Date.ToString("yyyy/MM/dd") + "</p>";
+                    body += "<p>區域：" + db.InspectAreas.Find(inspectDoc.AreaID).AreaName + "</p>";
+                    body += "<p><a href='https://inspectsys.azurewebsites.net/'" + ">處理案件</a></p>";
+                    body += "<br/>";
+                    body += "<h3>此封信件為系統通知郵件，請勿回覆。</h3>";
+                    body += "<br/>";
+                    mail.msg = body;
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
+                    string url = "WebApi/Mail/SendMail";
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+                    var content = new StringContent(JsonConvert.SerializeObject(mail), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync(url, content);
                 }
             }
             else if(nextFlowStatusID == 2) // If doc closed.

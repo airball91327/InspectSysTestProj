@@ -257,6 +257,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BMEDcontext.cs" />
     <Compile Include="Models\ClassesOfAreas.cs" />
+    <Compile Include="Models\EmailSender.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InspectAreaChecker.cs" />
     <Compile Include="Models\InspectAreas.cs" />
