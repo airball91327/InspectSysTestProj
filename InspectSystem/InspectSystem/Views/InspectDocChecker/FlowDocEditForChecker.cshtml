@@ -18,13 +18,13 @@
             }
             else {
                 $("#errorMsg").html("");
-                $("form").submit();
+                $("#checkForm").submit();
             }
         });
     });
 </script>
 
-@using (Html.BeginForm("FlowDocEditForChecker", "InspectDocChecker"))
+@using (Html.BeginForm("FlowDocEditForChecker", "InspectDocChecker", FormMethod.Post, new { id = "checkForm" }))
 {
     @Html.AntiForgeryToken()
 
