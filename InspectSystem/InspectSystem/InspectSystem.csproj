@@ -244,8 +244,7 @@
     <Compile Include="Areas\Mobile\Controllers\InspectDocResendController.cs" />
     <Compile Include="Areas\Mobile\MobileAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\WebApi\Test2Controller.cs" />
-    <Compile Include="Controllers\WebApi\TestController.cs" />
+    <Compile Include="Controllers\WebApi\DaliyCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreaCheckersController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
