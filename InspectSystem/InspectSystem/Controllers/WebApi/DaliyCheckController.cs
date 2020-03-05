@@ -65,7 +65,7 @@ namespace InspectSystem.Controllers.WebApi
                         mail.to += checker.Email + ";";
                     }
                     mail.to = mail.to.TrimEnd(new char[] { ';' });
-                    mail.subject = "巡檢系統[每日通知(人員尚未登入之區域)](測試信件)";
+                    mail.subject = "巡檢系統[每日通知(人員尚未登入之區域)]";
                     body += "<p>日期：" + dateTimeNow.Date.ToString("yyyy/MM/dd") + "</p>";
                     body += "<p>區域：" + areaNames + "</p>";
                     body += "<p>信件發送時間：" + DateTime.UtcNow.AddHours(8) + "</p>";
@@ -95,7 +95,7 @@ namespace InspectSystem.Controllers.WebApi
 
         // POST: /DaliyCheck/ProgressCheck
         [HttpPost]
-        public async Task<ApiResult> ProgressCheck()
+        public async Task<ActionResult> ProgressCheck()
         {
             string debugString = "";
             DateTime dateTimeNow = DateTime.UtcNow.AddHours(8);
@@ -103,8 +103,7 @@ namespace InspectSystem.Controllers.WebApi
             DateTime startDate = DateTime.UtcNow.AddHours(8).AddDays(-1);
             DateTime endDate = DateTime.UtcNow.AddHours(8).AddDays(1);
             // If time is between 17:00 to 17:10
-            //if (dateTimeNow.Hour == 17 && dateTimeNow.Minute >= 00 && dateTimeNow.Minute <= 10)
-            if (dateTimeNow.Hour >= 14)
+            if (dateTimeNow.Hour == 17 && dateTimeNow.Minute >= 00 && dateTimeNow.Minute <= 10)
             {
                 var areas = db.InspectAreas.ToList();
                 var inspectDocs = db.InspectDocs.ToList();
@@ -116,8 +115,7 @@ namespace InspectSystem.Controllers.WebApi
                 {
                     var targetAreaDoc = inspectDocs.Where(i => i.AreaID == item.AreaID)
                                                    .Where(i => i.Date.Date == dateTimeNowDate).FirstOrDefault();
-                    //if (targetAreaDoc != null && item.AreaID != 7)
-                    if (targetAreaDoc != null)
+                    if (targetAreaDoc != null && item.AreaID != 7)
                     {
                         var isDocSend = inspectDocDetails.Where(i => i.AreaID == item.AreaID)
                                                          .Where(i => i.InspectDocs.Date.Date == dateTimeNowDate).FirstOrDefault();
@@ -164,15 +162,16 @@ namespace InspectSystem.Controllers.WebApi
                             new MediaTypeWithQualityHeaderValue("application/json"));
                         var content = new StringContent(JsonConvert.SerializeObject(mail), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync(url, content);
+                        return Json("200");
                     }
                 }
-                return new ApiResult(debugString);
-                //return Json(debugString);
+                //return new ApiResult(debugString);
+                return Json("401");
             }
             else
             {
-                return new ApiResult("400", "執行失敗!");
-                //return Json(debugString);
+                //return new ApiResult("400", "執行失敗!");
+                return Json("400");
             }
         }
     }

@@ -244,7 +244,6 @@
     <Compile Include="Areas\Mobile\Controllers\InspectDocResendController.cs" />
     <Compile Include="Areas\Mobile\MobileAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\WebApi\DaliyCheckController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspectAreaCheckersController.cs" />
     <Compile Include="Controllers\InspectAreasController.cs" />
@@ -262,6 +261,7 @@
     <Compile Include="Controllers\InspectMembersController.cs" />
     <Compile Include="Controllers\InspectPrecautionsController.cs" />
     <Compile Include="Controllers\InspectReportsController.cs" />
+    <Compile Include="Controllers\WebApi\DaliyCheckController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -920,7 +920,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Mobile\Models\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="Views\Test2\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
