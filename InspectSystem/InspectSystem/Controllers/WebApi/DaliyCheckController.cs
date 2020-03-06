@@ -95,9 +95,8 @@ namespace InspectSystem.Controllers.WebApi
 
         // POST: /DaliyCheck/ProgressCheck
         [HttpPost]
-        public async Task<ActionResult> ProgressCheck()
+        public async Task<ApiResult> ProgressCheck()
         {
-            string debugString = "";
             DateTime dateTimeNow = DateTime.UtcNow.AddHours(8);
             DateTime dateTimeNowDate = DateTime.UtcNow.AddHours(8).Date;
             DateTime startDate = DateTime.UtcNow.AddHours(8).AddDays(-1);
@@ -137,14 +136,12 @@ namespace InspectSystem.Controllers.WebApi
                         Mail mail = new Mail();
                         string body = "";
                         mail.from = "181316@cch.org.tw";
-                        //foreach (var checker in areaCheckers)
-                        //{
-                        //    mail.to += checker.Email + ";";
-                        //}
-                        //mail.to = mail.to.TrimEnd(new char[] { ';' });
-                        //mail.to += inspectDoc.WorkerID + "@cch.org.tw";
-                        mail.to = "airball91327@gmail.com";
-                        mail.subject = "巡檢系統[每日通知(案件尚未送出之區域)](測試信件)";
+                        foreach (var checker in areaCheckers)
+                        {
+                            mail.to += checker.Email + ";";
+                        }
+                        mail.to += inspectDoc.WorkerID + "@cch.org.tw";
+                        mail.subject = "巡檢系統[每日通知(案件尚未送出之區域)]";
                         body += "<p>日期：" + dateTimeNow.Date.ToString("yyyy/MM/dd") + "</p>";
                         body += "<p>區域：" + db.InspectAreas.Find(areaId).AreaName + "</p>";
                         body += "<p>巡檢人員：" + inspectDoc.WorkerName + "</p>";
@@ -162,16 +159,13 @@ namespace InspectSystem.Controllers.WebApi
                             new MediaTypeWithQualityHeaderValue("application/json"));
                         var content = new StringContent(JsonConvert.SerializeObject(mail), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync(url, content);
-                        return Json("200");
                     }
                 }
-                //return new ApiResult(debugString);
-                return Json("401");
+                return new ApiResult();
             }
             else
             {
-                //return new ApiResult("400", "執行失敗!");
-                return Json("400");
+                return new ApiResult("400", "執行失敗!");
             }
         }
     }
