@@ -61,7 +61,7 @@ namespace InspectSystem.Controllers
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 //
                 HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri("http://dms.cch.org.tw:80/");
+                client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
                 //string url = "WebApi/Accounts/CheckPasswd?id=" + model.UserName;
                 string url = "WebApi/Accounts/CheckPasswdForCch?id=" + model.UserName;
                 url += "&pwd=" + HttpUtility.UrlEncode(model.Password, Encoding.GetEncoding("UTF-8"));
@@ -80,7 +80,7 @@ namespace InspectSystem.Controllers
                 {
                     // Get user role
                     HttpClient clientRole = new HttpClient();
-                    clientRole.BaseAddress = new Uri("http://dms.cch.org.tw:80/");
+                    clientRole.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
                     string urlRole = "WebApi/Accounts/GetRoles?id=" + model.UserName;
                     clientRole.DefaultRequestHeaders.Accept.Clear();
                     clientRole.DefaultRequestHeaders.Accept.Add(
