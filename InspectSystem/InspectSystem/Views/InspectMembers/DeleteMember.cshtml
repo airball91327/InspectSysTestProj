@@ -1,0 +1,39 @@
+﻿@model InspectSystem.Models.InspectMembers
+
+@{
+    ViewBag.Title = "DeleteMember";
+}
+
+<h2>刪除巡檢人員</h2>
+
+<h3>是否確定要刪除該巡檢人員?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MemberName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="刪除" class="btn btn-default" /> |
+            @Html.ActionLink("回到列表", "Index")
+        </div>
+    }
+</div>

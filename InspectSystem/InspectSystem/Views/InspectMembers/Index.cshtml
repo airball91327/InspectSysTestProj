@@ -6,7 +6,10 @@
 <h2>
     <b>巡檢人員列表</b>
 </h2>
-<br />
+
+<p>
+    <a class="btn btn-primary" href="@Url.Action("CreateMember")">新增人員</a>
+</p>
 
 <table class="table table-hover">
     <tr>
@@ -22,7 +25,8 @@
         <th>
             @Html.DisplayNameFor(model => model.InspectMemberAreas.FirstOrDefault().AreaId)
         </th>
-        <th></th>
+        <th>區域編輯功能</th>
+        <th>人員編輯功能</th>
     </tr>
 
     @foreach (var item in Model.InspectMembers)
@@ -63,6 +67,10 @@
                         @Html.ActionLink("刪除區域", "EditList", new { id = item.MemberId })
                     }
                 }
+            </td>
+            <td>
+                @Html.ActionLink("人員編輯", "EditMember", new { id = item.MemberId }) |
+                @Html.ActionLink("刪除", "DeleteMember", new { id = item.MemberId })
             </td>
         </tr>
     }

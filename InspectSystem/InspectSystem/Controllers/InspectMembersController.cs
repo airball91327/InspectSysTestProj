@@ -204,6 +204,104 @@ namespace InspectSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: InspectMembers/CreateMember
+        public ActionResult CreateMember()
+        {
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach (var item in db.InspectAreas.ToList())
+            {
+                areaList.Add(item);
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName");
+            return View();
+        }
+
+        // POST: InspectMembers/CreateMember/5
+        [HttpPost]
+        public ActionResult CreateMember([Bind(Include = "MemberId, MemberName, Department")] InspectMembers members, int areaId)
+        {
+            var memberExist = db.InspectMembers.Find(members.MemberId);
+            if (memberExist != null)
+            {
+                ModelState.AddModelError("MemberId", "已有此員工代號!");
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    db.InspectMembers.Add(members);
+                    db.SaveChanges();
+                    //
+                    InspectMemberAreas memberAreas = new InspectMemberAreas();
+                    memberAreas.MemberId = members.MemberId;
+                    memberAreas.AreaId = areaId;
+                    db.InspectMemberAreas.Add(memberAreas);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+
+            List<InspectAreas> areaList = new List<InspectAreas>();
+            foreach (var item in db.InspectAreas.ToList())
+            {
+                areaList.Add(item);
+            }
+            ViewBag.AreaId = new SelectList(areaList, "AreaID", "AreaName");
+            return View(members);
+        }
+
+        // GET: InspectMembers/EditMember/5
+        public ActionResult EditMember(int id)
+        {
+            var member = db.InspectMembers.Find(id);
+            if (member == null)
+            {
+                return HttpNotFound();
+            }
+            return View(member);
+        }
+
+        // POST: InspectMembers/EditMember/5
+        [HttpPost]
+        public ActionResult EditMember([Bind(Include = "MemberId, MemberName, Department")] InspectMembers members)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(members).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(members);
+        }
+
+        // GET: InspectAreas/DeleteMember/5
+        public ActionResult DeleteMember(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            InspectMembers inspectMembers = db.InspectMembers.Find(id);
+            if (inspectMembers == null)
+            {
+                return HttpNotFound();
+            }
+            return View(inspectMembers);
+        }
+
+        // POST: InspectAreas/DeleteMember/5
+        [HttpPost, ActionName("DeleteMember")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMemberConfirmed(int id)
+        {
+            InspectMembers inspectMembers = db.InspectMembers.Find(id);
+            db.InspectMembers.Remove(inspectMembers);
+            var inspectMemberAreas = db.InspectMemberAreas.Where(a => a.MemberId == id);
+            db.InspectMemberAreas.RemoveRange(inspectMemberAreas);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

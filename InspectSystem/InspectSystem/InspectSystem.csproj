@@ -915,6 +915,9 @@
     <Content Include="Views\InspectDocSearch\DocTempIndex.cshtml" />
     <Content Include="Views\InspectReports\Index.cshtml" />
     <Content Include="Views\InspectDocDtlValSearch\Index.cshtml" />
+    <Content Include="Views\InspectMembers\CreateMember.cshtml" />
+    <Content Include="Views\InspectMembers\EditMember.cshtml" />
+    <Content Include="Views\InspectMembers\DeleteMember.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
