@@ -918,6 +918,7 @@
     <Content Include="Views\InspectMembers\CreateMember.cshtml" />
     <Content Include="Views\InspectMembers\EditMember.cshtml" />
     <Content Include="Views\InspectMembers\DeleteMember.cshtml" />
+    <Content Include="Views\Home\LoginMsg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

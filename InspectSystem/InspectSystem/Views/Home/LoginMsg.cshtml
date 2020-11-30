@@ -1,0 +1,13 @@
+﻿@Scripts.Render("~/bundles//jquery")
+
+@{
+    ViewBag.Title = "Message";
+    Layout = null;
+}
+
+<script>
+    $(function () {
+        alert('【週三提醒事項】\n 訂購液態氧')
+        window.location.href = '@Url.Action("Index", "Home", new { Area = "" })'
+    });
+</script>

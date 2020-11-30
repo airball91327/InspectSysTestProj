@@ -13,13 +13,15 @@ using System.Net.Http.Headers;
 using Microsoft.AspNet.Identity;
 using InspectSystem.Models;
 using System.Web.Routing;
+using WebMatrix.WebData;
 
 namespace InspectSystem.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        
+        private BMEDcontext db = new BMEDcontext();
+
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -33,6 +35,20 @@ namespace InspectSystem.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
+                // 每周三工務二課人員登入時跳出提醒訊息
+                var todayOfWeek = DateTime.UtcNow.AddHours(8).DayOfWeek;
+                if (todayOfWeek == DayOfWeek.Wednesday)
+                {
+                    var userName = Convert.ToInt32(User.Identity.Name);
+                    var member = db.InspectMembers.Where(m => m.MemberId == userName).FirstOrDefault();
+                    if (member != null)
+                    {
+                        if (member.Department.Contains("二課"))
+                        {
+                            return RedirectToAction("LoginMsg", "Home");
+                        }
+                    }
+                }
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -117,6 +133,20 @@ namespace InspectSystem.Controllers
                     var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);                  
                     Response.Cookies.Add(authCookie);
 
+                    // 每周三工務二課人員登入時跳出提醒訊息
+                    var todayOfWeek = DateTime.UtcNow.AddHours(8).DayOfWeek;
+                    if (todayOfWeek == DayOfWeek.Wednesday)
+                    {
+                        var userName = Convert.ToInt32(model.UserName);
+                        var member = db.InspectMembers.Where(m => m.MemberId == userName).FirstOrDefault();
+                        if (member != null)
+                        {
+                            if (member.Department.Contains("二課"))
+                            {
+                                return RedirectToAction("LoginMsg", "Home");
+                            }
+                        }
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 else
