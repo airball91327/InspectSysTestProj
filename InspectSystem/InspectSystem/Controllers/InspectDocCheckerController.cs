@@ -228,7 +228,7 @@ namespace InspectSystem.Controllers
                     mail.msg = body;
 
                     HttpClient client = new HttpClient();
-                    client.BaseAddress = new Uri("http://dms.cch.org.tw:8080/");
+                    client.BaseAddress = new Uri("http://dms.cch.org.tw/");
                     string url = "WebApi/Mail/SendMail";
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(
